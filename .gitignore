@@ -1,0 +1,5 @@
+target
+.VSCodeCounter
+backend/.env
+backend-axum/.env
+frontend/.env
