@@ -281,4 +281,3 @@ pub async fn user_update_profile(db: Database, user_new: UserNew, token: &str) -
         Err(Error::new("No token").extend_with(|err, eev| eev.set("details", err.message.as_str())))
     }
 }
-

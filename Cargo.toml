@@ -1,3 +1,6 @@
 [workspace]
 members = [ "backend", "frontend", "backend-axum" ]
 resolver = "2"
+
+[profile.release]
+lto = true

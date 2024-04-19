@@ -1,6 +1,10 @@
+pub mod articles;
+pub mod categories;
 pub mod dbs;
 pub mod gql;
+pub mod topics;
 pub mod users;
+
 pub mod utils;
 
 // custom mods
@@ -13,7 +17,6 @@ use axum::{
     middleware::Next,
 };
 
-
 #[derive(Clone)]
 pub struct AppState {
     pub schema: async_graphql::Schema<
@@ -22,7 +25,6 @@ pub struct AppState {
         async_graphql::EmptySubscription,
     >,
 }
-
 
 // https://github.com/tokio-rs/axum/blob/main/examples/consume-body-in-extractor-or-middleware/src/main.rs
 pub async fn log_requests(req: Request, next: Next) -> Result<Response<Body>, StatusCode> {

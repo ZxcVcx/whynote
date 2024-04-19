@@ -1,5 +1,11 @@
 use bson::{oid::ObjectId, DateTime};
 use serde::{Deserialize, Serialize};
+
+use crate::{
+    articles::{models::Article, services::articles_by_user_id},
+    dbs::mongo::DataSource,
+    utils::constants::GqlResult,
+};
 // /// Simple Object
 // #[derive(async_graphql::SimpleObject, Serialize, Deserialize, Clone, Debug)]
 // pub struct User {
@@ -33,14 +39,14 @@ pub struct User {
 
 #[async_graphql::ComplexObject]
 impl User {
-    // pub async fn articles(
-    //     &self,
-    //     ctx: &async_graphql::Context<'_>,
-    //     published: i32,
-    // ) -> GqlResult<Vec<Article>> {
-    //     let db = ctx.data_unchecked::<DataSource>().db.clone();
-    //     articles_by_user_id(db, self._id, published).await
-    // }
+    pub async fn articles(
+        &self,
+        ctx: &async_graphql::Context<'_>,
+        published: i32,
+    ) -> GqlResult<Vec<Article>> {
+        let db = ctx.data_unchecked::<DataSource>().db.clone();
+        articles_by_user_id(db, self.id, published).await
+    }
 }
 
 //// Normal Object
@@ -90,4 +96,3 @@ pub struct SignInfo {
     pub username: String,
     pub token: String,
 }
-

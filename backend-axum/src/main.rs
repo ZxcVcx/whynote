@@ -9,9 +9,8 @@ use backend_axum::{gql, utils, AppState};
 use std::sync::Arc;
 
 use gql::{build_schema, graphiql, graphql};
-use utils::constants::CFG;
 use tower_http::cors::CorsLayer;
-
+use utils::constants::CFG;
 
 #[tokio::main]
 async fn main() -> Result<(), std::io::Error> {

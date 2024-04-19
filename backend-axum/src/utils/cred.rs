@@ -1,7 +1,5 @@
 use base64::Engine;
-use jsonwebtoken::{
-    decode, errors::Error, DecodingKey, TokenData, Validation,
-};
+use jsonwebtoken::{decode, errors::Error, DecodingKey, TokenData, Validation};
 use ring::{digest, pbkdf2};
 use serde::{Deserialize, Serialize};
 use std::num::NonZeroU32;
@@ -73,8 +71,11 @@ pub struct Claims {
     pub exp: u64,
 }
 impl Claims {
-    pub fn new (email: String, username: String) -> Self {
-        let uat = std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap().as_secs();
+    pub fn new(email: String, username: String) -> Self {
+        let uat = std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap()
+            .as_secs();
         Self {
             email: email,
             username: username,
@@ -86,5 +87,9 @@ impl Claims {
 
 pub async fn token_data(token: &str) -> Result<TokenData<Claims>, Error> {
     let decoding_key = DecodingKey::from_secret(CFG.get("JWT_SECRET").unwrap().as_bytes());
-    decode::<Claims>(token, &decoding_key, &Validation::new(jsonwebtoken::Algorithm::HS512))
+    decode::<Claims>(
+        token,
+        &decoding_key,
+        &Validation::new(jsonwebtoken::Algorithm::HS512),
+    )
 }

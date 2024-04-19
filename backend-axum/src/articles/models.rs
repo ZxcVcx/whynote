@@ -1,16 +1,21 @@
-use serde::{Serialize, Deserialize};
+use async_graphql::SimpleObject;
 use mongodb::bson::{oid::ObjectId, DateTime};
-use chrono::FixedOffset;
+use serde::{Deserialize, Serialize};
 
-use crate::util::constant::{GqlResult, DT_F};
+use crate::categories::models::Category;
 use crate::dbs::mongo::DataSource;
-use crate::categories::{self, models::Category};
-use crate::topics::{self, models::Topic};
+use crate::topics::models::Topic;
+use crate::utils::constants::GqlResult;
+use crate::{categories, topics};
+// use crate::categories::{self, models::Category};
+// use crate::topics::{self, models::Topic};
 use crate::users::{self, models::User};
 
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(SimpleObject, Serialize, Deserialize, Clone)]
+#[graphql(complex)]
 pub struct Article {
-    pub _id: ObjectId,
+    #[serde(rename = "_id")]
+    pub id: ObjectId,
     pub user_id: ObjectId,
     pub subject: String,
     pub category_id: ObjectId,
@@ -25,42 +30,10 @@ pub struct Article {
     pub updated_at: DateTime,
 }
 
-#[async_graphql::Object]
+#[async_graphql::ComplexObject]
 impl Article {
-    pub async fn id(&self) -> ObjectId {
-        self._id.clone()
-    }
-
-    pub async fn user_id(&self) -> ObjectId {
-        self.user_id.clone()
-    }
-
-    pub async fn subject(&self) -> &str {
-        self.subject.as_str()
-    }
-
-    pub async fn category_id(&self) -> ObjectId {
-        self.category_id.clone()
-    }
-
-    pub async fn summary(&self) -> &str {
-        self.summary.as_str()
-    }
-
-    pub async fn slug(&self) -> &str {
-        self.slug.as_str()
-    }
-
-    pub async fn uri(&self) -> &str {
-        self.uri.as_str()
-    }
-
-    pub async fn content(&self) -> &str {
-        self.content.as_str()
-    }
-
     pub async fn content_html(&self) -> String {
-        use pulldown_cmark::{Parser, Options, html};
+        use pulldown_cmark::{html, Options, Parser};
 
         let mut options = Options::empty();
         options.insert(Options::ENABLE_TABLES);
@@ -77,56 +50,19 @@ impl Article {
         content_html
     }
 
-    pub async fn published(&self) -> bool {
-        self.published
-    }
-
-    pub async fn top(&self) -> bool {
-        self.top
-    }
-
-    pub async fn recommended(&self) -> bool {
-        self.recommended
-    }
-
-    pub async fn created_at(&self) -> String {
-        self.created_at
-            .to_chrono()
-            .with_timezone(&FixedOffset::east(8 * 3600))
-            .format(DT_F)
-            .to_string()
-    }
-
-    pub async fn updated_at(&self) -> String {
-        self.updated_at
-            .to_chrono()
-            .with_timezone(&FixedOffset::east(8 * 3600))
-            .format(DT_F)
-            .to_string()
-    }
-
-    pub async fn user(
-        &self,
-        ctx: &async_graphql::Context<'_>,
-    ) -> GqlResult<User> {
+    pub async fn user(&self, ctx: &async_graphql::Context<'_>) -> GqlResult<User> {
         let db = ctx.data_unchecked::<DataSource>().db.clone();
         users::services::user_by_id(db, self.user_id).await
     }
 
-    pub async fn category(
-        &self,
-        ctx: &async_graphql::Context<'_>,
-    ) -> GqlResult<Category> {
+    pub async fn category(&self, ctx: &async_graphql::Context<'_>) -> GqlResult<Category> {
         let db = ctx.data_unchecked::<DataSource>().db.clone();
         categories::services::category_by_id(db, self.category_id).await
     }
 
-    pub async fn topics(
-        &self,
-        ctx: &async_graphql::Context<'_>,
-    ) -> GqlResult<Vec<Topic>> {
+    pub async fn topics(&self, ctx: &async_graphql::Context<'_>) -> GqlResult<Vec<Topic>> {
         let db = ctx.data_unchecked::<DataSource>().db.clone();
-        topics::services::topics_by_article_id(db, self._id).await
+        topics::services::topics_by_article_id(db, self.id).await
     }
 }
 
