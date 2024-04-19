@@ -1,6 +1,5 @@
-use bson::oid::ObjectId;
+use bson::{oid::ObjectId, DateTime};
 use serde::{Deserialize, Serialize};
-
 // /// Simple Object
 // #[derive(async_graphql::SimpleObject, Serialize, Deserialize, Clone, Debug)]
 // pub struct User {
@@ -21,19 +20,27 @@ pub struct User {
     pub id: ObjectId,
     pub email: String,
     pub username: String,
+    pub nickname: String,
+    pub picture: String,
     pub cred: String,
+    pub blog_name: String,
+    pub website: String,
+    pub bio: String,
+    pub created_at: DateTime,
+    pub updated_at: DateTime,
+    pub banned: bool,
 }
 
 #[async_graphql::ComplexObject]
 impl User {
-    pub async fn from(&self) -> String {
-        let mut from = String::new();
-        from.push_str(&self.username);
-        from.push_str(" <");
-        from.push_str(&self.email);
-        from.push_str(">");
-        from
-    }
+    // pub async fn articles(
+    //     &self,
+    //     ctx: &async_graphql::Context<'_>,
+    //     published: i32,
+    // ) -> GqlResult<Vec<Article>> {
+    //     let db = ctx.data_unchecked::<DataSource>().db.clone();
+    //     articles_by_user_id(db, self._id, published).await
+    // }
 }
 
 //// Normal Object
@@ -64,10 +71,23 @@ impl User {
 // }
 
 /// New User
-#[derive(Serialize, Deserialize, async_graphql::InputObject, Clone)]
-pub struct NewUser {
+#[derive(async_graphql::InputObject, Serialize, Deserialize, Clone)]
+pub struct UserNew {
     pub email: String,
     pub username: String,
-    #[graphql(skip)]
+    pub nickname: String,
     pub cred: String,
+    pub blog_name: String,
+    pub website: String,
+    pub bio: String,
+    #[graphql(skip)]
+    pub banned: bool,
 }
+
+#[derive(async_graphql::SimpleObject, Serialize, Deserialize, Clone)]
+pub struct SignInfo {
+    pub email: String,
+    pub username: String,
+    pub token: String,
+}
+

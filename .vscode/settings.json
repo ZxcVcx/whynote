@@ -4,5 +4,13 @@
     ],
     "emmet.includeLanguages": {
         "rust": "html",
-    }
+    },
+    "VSCodeCounter.exclude": [
+        "**/.gitignore",
+        "**/.vscode/**",
+        "**/node_modules/**",
+        "**/dist/**",
+        "**/target/**",
+        "**/Cargo.lock"
+    ]
 }

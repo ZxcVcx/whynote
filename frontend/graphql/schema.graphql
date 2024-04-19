@@ -1,0 +1,31 @@
+schema {
+  query: QueryRoot
+  mutation: MutationRoot
+}
+
+type MutationRoot {
+  newUser(newUser: NewUser!): User!
+}
+
+# New User
+input NewUser {
+  email: String!
+  username: String!
+}
+
+scalar ObjectId
+
+type QueryRoot {
+  allUsers: [User!]!
+  getUserByEmail(email: String!): User!
+}
+
+# Complex Object
+# https://async-graphql.github.io/async-graphql/en/define_simple_object.html#user-defined-resolvers
+type User {
+  id: ObjectId!
+  email: String!
+  username: String!
+  cred: String!
+  from: String!
+}

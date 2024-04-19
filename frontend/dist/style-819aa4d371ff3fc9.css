@@ -1,0 +1,20 @@
+.logo-title {
+  line-height: 40px;
+  font-size: larger;
+  display: flex;
+  align-items: center;
+}
+
+.nav {
+  line-height: 30px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.projects {
+  background-color: green;
+}
+
+/*# sourceMappingURL=data:application/json;charset=utf-8,%7B%22version%22:3,%22sourceRoot%22:%22%22,%22sources%22:%5B%22../../assets/css/style.scss%22%5D,%22names%22:%5B%5D,%22mappings%22:%22AAAA;EACI;EACA;EACA;EACA;;;AAGJ;EACI;EACA;EACA;EACA;EACA;;;AAKJ;EACI,kBAHa%22,%22file%22:%22style.css%22%7D */

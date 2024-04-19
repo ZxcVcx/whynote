@@ -24,8 +24,8 @@ pub static CFG: Lazy<HashMap<&'static str, String>> = Lazy::new(|| {
     );
 
     map.insert(
-        "SITE_KEY",
-        dotenv::var("SITE_KEY").expect("Expected SITE_KEY to be set in env!"),
+        "JWT_SECRET",
+        dotenv::var("JWT_SECRET").expect("Expected JWT_SECRET to be set in env!"),
     );
     map.insert(
         "CLAIM_EXP",
