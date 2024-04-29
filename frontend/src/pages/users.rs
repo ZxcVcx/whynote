@@ -7,7 +7,7 @@ pub struct UsersProps {}
 pub fn Users(props: &UsersProps) -> Html {
     let UsersProps {} = props;
     html! {
-        <div>
+        <div class={classes!("users")}>
         { "Users List - Blue" }
         </div>
     }

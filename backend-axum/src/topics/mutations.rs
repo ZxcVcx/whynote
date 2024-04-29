@@ -73,7 +73,7 @@ impl TopicMutation {
         &self,
         ctx: &Context<'_>,
         category_id: ObjectId,
-        published: i32,
+        published: bool,
     ) -> GqlResult<Vec<Topic>> {
         let db = ctx.data_unchecked::<DataSource>().db.clone();
         super::services::topics_by_category_id(db, category_id, published).await

@@ -229,7 +229,7 @@ pub async fn topics_by_username(db: Database, username: &str) -> GqlResult<Vec<T
 pub async fn topics_by_category_id(
     db: Database,
     category_id: ObjectId,
-    published: i32,
+    published: bool,
 ) -> GqlResult<Vec<Topic>> {
     let articles =
         crate::articles::services::articles_by_category_id(db.clone(), category_id, published)

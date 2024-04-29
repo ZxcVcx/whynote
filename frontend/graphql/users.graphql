@@ -1,0 +1,9 @@
+query Users($token: String!) {
+  Users(
+    token: $token
+  ) {
+    id
+    email
+    username
+  }
+}

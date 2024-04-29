@@ -23,7 +23,7 @@ pub struct Topic {
 impl Topic {
     pub async fn articles(&self, ctx: &async_graphql::Context<'_>) -> GqlResult<Vec<Article>> {
         let db = ctx.data_unchecked::<DataSource>().db.clone();
-        articles_by_topic_id(db, self.id, 1).await
+        articles_by_topic_id(db, self.id, true).await
     }
 }
 
@@ -40,6 +40,7 @@ pub struct TopicNew {
 
 #[derive(SimpleObject, Serialize, Deserialize, Clone)]
 pub struct TopicArticle {
+    #[serde(rename = "_id")]
     pub id: ObjectId,
     pub user_id: ObjectId,
     pub article_id: ObjectId,

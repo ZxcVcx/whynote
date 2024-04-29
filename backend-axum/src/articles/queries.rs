@@ -23,7 +23,7 @@ impl ArticleQuery {
     }
 
     // Get all articles
-    async fn articles(&self, ctx: &Context<'_>, published: i32) -> GqlResult<Vec<Article>> {
+    async fn articles(&self, ctx: &Context<'_>, published: bool) -> GqlResult<Vec<Article>> {
         let db = ctx.data_unchecked::<DataSource>().db.clone();
         articles::services::articles(db, published).await
     }
@@ -44,7 +44,7 @@ impl ArticleQuery {
         &self,
         ctx: &Context<'_>,
         user_id: ObjectId,
-        published: i32,
+        published: bool,
     ) -> GqlResult<Vec<Article>> {
         let db = ctx.data_unchecked::<DataSource>().db.clone();
         articles::services::articles_by_user_id(db, user_id, published).await
@@ -55,7 +55,7 @@ impl ArticleQuery {
         &self,
         ctx: &Context<'_>,
         username: String,
-        published: i32,
+        published: bool,
     ) -> GqlResult<Vec<Article>> {
         let db = ctx.data_unchecked::<DataSource>().db.clone();
         articles::services::articles_by_username(db, &username, published).await
@@ -66,7 +66,7 @@ impl ArticleQuery {
         &self,
         ctx: &Context<'_>,
         category_id: ObjectId,
-        published: i32,
+        published: bool,
     ) -> GqlResult<Vec<Article>> {
         let db = ctx.data_unchecked::<DataSource>().db.clone();
         articles::services::articles_by_category_id(db, category_id, published).await
@@ -77,7 +77,7 @@ impl ArticleQuery {
         &self,
         ctx: &Context<'_>,
         topic_id: ObjectId,
-        published: i32,
+        published: bool,
     ) -> GqlResult<Vec<Article>> {
         let db = ctx.data_unchecked::<DataSource>().db.clone();
         articles::services::articles_by_topic_id(db, topic_id, published).await

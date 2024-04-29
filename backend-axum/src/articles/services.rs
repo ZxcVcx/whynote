@@ -73,13 +73,10 @@ pub async fn article_by_slug(db: Database, username: &str, slug: &str) -> GqlRes
     Ok(article)
 }
 
-pub async fn articles(db: Database, published: i32) -> GqlResult<Vec<Article>> {
+pub async fn articles(db: Database, published: bool) -> GqlResult<Vec<Article>> {
+    
     let mut find_doc = doc! {};
-    if published > 0 {
-        find_doc.insert("published", true);
-    } else if published < 0 {
-        find_doc.insert("published", false);
-    }
+    find_doc.insert("published", published);
     let coll = db.collection::<Document>("articles");
 
     let find_options = FindOptions::builder().sort(doc! {"updated_at": -1}).build();
@@ -146,14 +143,15 @@ pub async fn articles_in_position(
 pub async fn articles_by_user_id(
     db: Database,
     user_id: ObjectId,
-    published: i32,
+    published: bool,
 ) -> GqlResult<Vec<Article>> {
     let mut find_doc = doc! {"user_id": user_id};
-    if published > 0 {
-        find_doc.insert("published", true);
-    } else if published < 0 {
-        find_doc.insert("published", false);
-    }
+    // if published > 0 {
+    //     find_doc.insert("published", true);
+    // } else if published < 0 {
+    //     find_doc.insert("published", false);
+    // }
+    find_doc.insert("published", published);
     let find_options = FindOptions::builder().sort(doc! {"updated_at": -1}).build();
 
     let coll = db.collection::<Document>("articles");
@@ -178,7 +176,7 @@ pub async fn articles_by_user_id(
 pub async fn articles_by_username(
     db: Database,
     username: &str,
-    published: i32,
+    published: bool,
 ) -> GqlResult<Vec<Article>> {
     let user = users::services::user_by_username(db.clone(), username).await?;
     self::articles_by_user_id(db, user.id, published).await
@@ -188,14 +186,15 @@ pub async fn articles_by_username(
 pub async fn articles_by_category_id(
     db: Database,
     category_id: ObjectId,
-    published: i32,
+    published: bool,
 ) -> GqlResult<Vec<Article>> {
     let mut find_doc = doc! {"category_id": category_id};
-    if published > 0 {
-        find_doc.insert("published", true);
-    } else if published < 0 {
-        find_doc.insert("published", false);
-    }
+    // if published > 0 {
+    //     find_doc.insert("published", true);
+    // } else if published < 0 {
+    //     find_doc.insert("published", false);
+    // }
+    find_doc.insert("published", published);
     let find_options = FindOptions::builder().sort(doc! {"updated_at": -1}).build();
 
     let coll = db.collection::<Document>("articles");
@@ -221,7 +220,7 @@ pub async fn articles_by_category_id(
 pub async fn articles_by_topic_id(
     db: Database,
     topic_id: ObjectId,
-    published: i32,
+    published: bool,
 ) -> GqlResult<Vec<Article>> {
     let topics_articles = topics_articles_by_topic_id(db.clone(), topic_id).await;
 
@@ -233,11 +232,12 @@ pub async fn articles_by_topic_id(
     article_ids.dedup();
 
     let mut find_doc = doc! {"_id": {"$in": article_ids}};
-    if published > 0 {
-        find_doc.insert("published", true);
-    } else if published < 0 {
-        find_doc.insert("published", false);
-    }
+    // if published > 0 {
+    //     find_doc.insert("published", true);
+    // } else if published < 0 {
+    //     find_doc.insert("published", false);
+    // }
+    find_doc.insert("published", published);
     let find_options = FindOptions::builder().sort(doc! {"updated_at": -1}).build();
 
     let coll = db.collection::<Document>("articles");

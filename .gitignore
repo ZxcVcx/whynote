@@ -3,3 +3,4 @@ target
 backend/.env
 backend-axum/.env
 frontend/.env
+frontend/dist

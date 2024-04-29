@@ -29,6 +29,9 @@ async fn main() -> Result<(), std::io::Error> {
             CorsLayer::new()
                 .allow_origin("*".parse::<HeaderValue>().unwrap())
                 .allow_methods([Method::GET, Method::POST, Method::OPTIONS])
+                .allow_headers(
+                    tower_http::cors::Any,
+                )
                 .allow_credentials(false),
         )
         .with_state(shared_state);

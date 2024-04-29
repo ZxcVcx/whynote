@@ -1,0 +1,8 @@
+[site]
+title = "子线程 | SubThread"
+
+[gql]
+protocol = "http"
+host = "127.0.0.1"
+port = "8000"
+path = "graphql"

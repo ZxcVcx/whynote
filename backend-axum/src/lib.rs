@@ -31,6 +31,7 @@ pub async fn log_requests(req: Request, next: Next) -> Result<Response<Body>, St
     let path = req.uri().path().to_owned();
     let method = req.method().to_string();
     tracing::info!("Incoming request: {} {}", method, path);
+    // tracing::info!("Headers: {:#?}", req.headers());
 
     let start = std::time::Instant::now();
     let res = next.run(req).await;

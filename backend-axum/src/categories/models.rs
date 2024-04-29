@@ -26,12 +26,12 @@ pub struct Category {
 impl Category {
     pub async fn articles(&self, ctx: &async_graphql::Context<'_>) -> GqlResult<Vec<Article>> {
         let db = ctx.data_unchecked::<DataSource>().db.clone();
-        articles_by_category_id(db, self.id, 1).await
+        articles_by_category_id(db, self.id, true).await
     }
 
     pub async fn topics(&self, ctx: &async_graphql::Context<'_>) -> GqlResult<Vec<Topic>> {
         let db = ctx.data_unchecked::<DataSource>().db.clone();
-        topics_by_category_id(db, self.id, 1).await
+        topics_by_category_id(db, self.id, true).await
     }
 }
 

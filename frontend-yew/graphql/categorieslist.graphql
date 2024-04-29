@@ -1,0 +1,10 @@
+query CategoriesList {
+	categories {
+  	name
+    description
+    slug
+    articles {
+      subject
+    }
+  }
+}

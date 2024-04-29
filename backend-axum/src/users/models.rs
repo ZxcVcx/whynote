@@ -42,7 +42,7 @@ impl User {
     pub async fn articles(
         &self,
         ctx: &async_graphql::Context<'_>,
-        published: i32,
+        published: bool,
     ) -> GqlResult<Vec<Article>> {
         let db = ctx.data_unchecked::<DataSource>().db.clone();
         articles_by_user_id(db, self.id, published).await

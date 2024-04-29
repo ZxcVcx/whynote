@@ -67,6 +67,7 @@ pub async fn cred_verify(username: &str, pwd_try: &str, actual_credential: &str)
 pub struct Claims {
     pub email: String,
     pub username: String,
+    // pub role: String,
     pub uat: u64,
     pub exp: u64,
 }
@@ -93,3 +94,4 @@ pub async fn token_data(token: &str) -> Result<TokenData<Claims>, Error> {
         &Validation::new(jsonwebtoken::Algorithm::HS512),
     )
 }
+

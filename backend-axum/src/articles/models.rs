@@ -26,6 +26,7 @@ pub struct Article {
     pub published: bool,
     pub top: bool,
     pub recommended: bool,
+    // #[graphql()]
     pub created_at: DateTime,
     pub updated_at: DateTime,
 }
@@ -64,6 +65,8 @@ impl Article {
         let db = ctx.data_unchecked::<DataSource>().db.clone();
         topics::services::topics_by_article_id(db, self.id).await
     }
+
+    
 }
 
 #[derive(Serialize, Deserialize, async_graphql::InputObject)]

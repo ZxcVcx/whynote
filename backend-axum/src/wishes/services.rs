@@ -82,8 +82,10 @@ pub async fn random_wish(db: Database, username: &str) -> GqlResult<Wish> {
 
     let one_wish = self::one_wish(db.clone(), match_doc).await;
     if one_wish.is_ok() {
+        // println!("ok");
         one_wish
     } else {
+        // println!("no");
         self::one_wish(db, doc! {"$match": {"published": true}}).await
     }
 }
