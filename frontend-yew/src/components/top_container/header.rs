@@ -40,7 +40,7 @@ pub fn header() -> Html {
               html! {
                 <a class="link-secondary" href="#" aria-label="Profile">
                 //   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="mx-3" role="img" viewBox="0 0 24 24"><title>{"Profile"}</title><circle cx="12" cy="12" r="10"/><path d="M16 12l-4 4-4-4"/></svg>
-                <img class="rounded-circle" src={create_gravatar_url(get_pair_value("email").unwrap().as_str(), 40)} width="auto" />
+                <img class="rounded-circle" src={create_gravatar_url(get_pair_value("email").unwrap().as_str(), 80)} width="40" />
                 </a>
               }
             } else {
