@@ -727,20 +727,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "frontend"
-version = "0.1.0"
-dependencies = [
- "graphql_client",
- "serde",
- "serde_json",
- "wasm-bindgen",
- "wasm-bindgen-futures",
- "web-sys",
- "yew",
- "yew-router",
-]
-
-[[package]]
 name = "frontend-yew"
 version = "0.1.0"
 dependencies = [

@@ -1,5 +1,5 @@
 [workspace]
-members = ["frontend", "backend-axum" , "frontend-yew"]
+members = ["backend-axum" , "frontend-yew"]
 resolver = "2"
 
 [profile.release]
