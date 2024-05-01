@@ -25,17 +25,24 @@ pub fn ArticlesList(props: &ArticlesListProps) -> Html {
                     let subject = article_card.get("subject").unwrap().as_str().unwrap();
                     let summary = article_card.get("summary").unwrap().as_str().unwrap();
                     let updated_at = format_date(article_card.get("updatedAt").unwrap(), "%b %d, %Y").unwrap();
-                    // let slug = article_card.get("slug").unwrap().as_str().unwrap();
+                    let slug = article_card.get("slug").unwrap().as_str().unwrap().to_string();
                     let category = article_card.get("category").unwrap().get("name").unwrap().as_str().unwrap();
                     let user = article_card.get("user").unwrap().as_object().unwrap();
                     let nickname = user.get("nickname").unwrap().as_str().unwrap();
                     let username = user.get("username").unwrap().as_str().unwrap();
 
-                    let on_click = {
+                    let on_username_click = {
                         let navigator = navigator.clone();
                         let username = username.to_string();
                         Callback::from(move |_| {
                             navigator.push(&MainRoute::UserPage { username: username.clone() });
+                        })
+                    };
+
+                    let on_content_click = {
+                        let navigator = navigator.clone();
+                        Callback::from(move |_| {
+                            navigator.push(&MainRoute::ArticlePage {slug: slug.clone() });
                         })
                     };
 
@@ -48,15 +55,15 @@ pub fn ArticlesList(props: &ArticlesListProps) -> Html {
                                     <div class="card-body">
                                         <div class="d-flex justify-content-between align-items-center mb-2">
                                             <span class="text-muted">{format!{"{} by ", updated_at}}
-                                            <a onclick={on_click} style="color: blue; cursor: pointer;">{nickname} </a>
+                                            <a onclick={on_username_click} style="color: blue; cursor: pointer;">{nickname} </a>
                                             </span>
-
-                                        
                                         </div>
-                                        <h5 class="article-card-title">{subject}</h5>
-                                        <p class="article-card-text">{summary}</p>
-                                        <p class="badge bg-secondary">{category}</p>
-                                        <p class="article-read-time">{"2 min read"}</p>
+                                        <div onclick={on_content_click} style="cursor: pointer;">
+                                            <h5 class="article-card-title">{subject}</h5>
+                                            <p class="article-card-text">{summary}</p>
+                                            <p class="badge bg-secondary">{category}</p>
+                                            <p class="article-read-time">{"2 min read"}</p>
+                                        </div>
                                     </div>
                                 </div>
                                 // <div class="col-md-2">

@@ -93,7 +93,8 @@ type QueryRoot {
   userById(id: ObjectId!): User!
   userByUsername(username: String!): User!
   userSignIn(signature: String!, cred: String!): SignInfo!
-  articleBySlug(username: String!, slug: String!): Article!
+  articleByUsernameAndSlug(username: String!, slug: String!): Article!
+  articleBySlug(slug: String!): Article!
   articles(published: Boolean!): [Article!]!
   articlesInPosition(
     username: String!

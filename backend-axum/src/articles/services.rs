@@ -59,7 +59,7 @@ pub async fn article_new(db: Database, mut article_new: ArticleNew) -> GqlResult
     Ok(article)
 }
 
-pub async fn article_by_slug(db: Database, username: &str, slug: &str) -> GqlResult<Article> {
+pub async fn article_by_username_and_slug(db: Database, username: &str, slug: &str) -> GqlResult<Article> {
     let coll = db.collection::<Document>("articles");
 
     let user = users::services::user_by_username(db.clone(), username).await?;
@@ -72,6 +72,21 @@ pub async fn article_by_slug(db: Database, username: &str, slug: &str) -> GqlRes
     let article: Article = from_document(article_document)?;
     Ok(article)
 }
+
+pub async fn article_by_slug(db: Database, slug: &str) -> GqlResult<Article> {
+    let coll = db.collection::<Document>("articles");
+
+    // let user = users::services::user_by_username(db.clone(), username).await?;
+    let article_document = coll
+        .find_one(doc! {"slug": slug.to_lowercase()}, None)
+        .await
+        .expect("Document not found")
+        .unwrap();
+
+    let article: Article = from_document(article_document)?;
+    Ok(article)
+}
+
 
 pub async fn articles(db: Database, published: bool) -> GqlResult<Vec<Article>> {
     

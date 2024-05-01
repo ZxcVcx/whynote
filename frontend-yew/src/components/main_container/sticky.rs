@@ -1,6 +1,8 @@
 use serde_json::Value;
 use yew::{function_component, html, Html, Properties};
+use yew_router::prelude::*;
 
+use crate::app::MainRoute;
 use crate::utils::common::format_date;
 
 #[derive(PartialEq, Properties)]
@@ -30,10 +32,12 @@ pub fn Sticky(props: &StickyProps) -> Html {
                                 let title = article.get("subject").unwrap().as_str().unwrap();
                                 // let updated_at = article.get("updatedAt").unwrap().as_str().unwrap();
                                 let updated_at = format_date(article.get("updatedAt").unwrap(), "%b %d, %Y").unwrap();
+                                let slug = article.get("slug").unwrap().as_str().unwrap().to_string().clone();
+
                                 html! {
-                                    <li>
-                                        <a class="d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center py-3 link-body-emphasis text-decoration-none border-top"
-                                            href="#">
+                                    <li key={slug.clone()}>
+                                        <Link<MainRoute> classes="d-flex flex-column flex-lg-row gap-3 align-items-start align-items-lg-center py-3 link-body-emphasis text-decoration-none border-top"
+                                            to={MainRoute::ArticlePage {slug: slug.clone() }}>
                                             <svg class="bd-placeholder-img" width="100%" height="96" xmlns="http://www.w3.org/2000/svg"
                                                 aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false">
                                                 <rect width="100%" height="100%" fill="#777" />
@@ -42,7 +46,7 @@ pub fn Sticky(props: &StickyProps) -> Html {
                                                 <h6 class="mb-0">{title}</h6>
                                                 <small class="text-body-secondary">{updated_at}</small>
                                             </div>
-                                        </a>
+                                        </Link<MainRoute>>
                                     </li>
                                 }
                             }).collect::<Html>()

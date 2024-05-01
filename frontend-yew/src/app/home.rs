@@ -53,8 +53,6 @@ pub fn home() -> Html {
                     html! {}
                 }
             }
-
-
         </>
 
         // <div class="container text-center">

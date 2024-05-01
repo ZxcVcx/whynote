@@ -12,6 +12,8 @@ use crate::pages::signin::SignIn;
 use crate::pages::category::CategoryPage;
 use crate::pages::user::UserPage;
 use crate::components::bottom_container::footer::Footer;
+use crate::pages::article::ArticlePage;
+
 /// App routes
 #[derive(Routable, Debug, Clone, PartialEq, Eq)]
 pub enum MainRoute {
@@ -30,6 +32,8 @@ pub enum MainRoute {
     CategoryPage { slug: String},
     #[at("/user/:username")]
     UserPage { username: String },
+    #[at("/article/:slug")]
+    ArticlePage { slug: String },
 
 }
 
@@ -56,7 +60,8 @@ pub fn switch_main(routes: MainRoute) -> Html {
         MainRoute::PageNotFound => html! { "Page not found" },
         // MainRoute::CategoryPage { slug } => html! { format!("Category: {}", slug) },
         MainRoute::CategoryPage { slug } => html! { <CategoryPage {slug} /> },
-        MainRoute::UserPage { username } => html! { <UserPage {username} />},
+        MainRoute::UserPage { username } => html! { <UserPage {username} /> },
+        MainRoute::ArticlePage { slug } => html! { <ArticlePage {slug} /> },
     }
 }
 

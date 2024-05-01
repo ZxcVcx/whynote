@@ -7,8 +7,8 @@ use crate::{app::MainRoute, services::categories::fetch_categories_list};
 // use crate::app::AppRoute;
 
 /// Nav component
-#[function_component(Nav)]
-pub fn nav() -> Html {
+#[function_component]
+pub fn Nav() -> Html {
     let nav_list =
         use_async(async move {
             fetch_categories_list().await

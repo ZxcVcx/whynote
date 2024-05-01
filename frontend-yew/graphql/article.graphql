@@ -15,7 +15,7 @@ query ArticleData(
     }
   }
 
-  articleBySlug(
+  articleByUsernameAndSlug(
     username: $username, 
     slug: $slug
   ) {
@@ -42,3 +42,59 @@ query ArticleData(
     }
   }
 }
+
+query ArticleDataBySlug(
+  $slug: String!
+) {
+  articleBySlug(
+    slug: $slug
+  ) {
+    subject
+    summary
+    slug
+    contentHtml
+    updatedAt
+
+    user {
+      username
+      nickname
+      blogName
+    }
+
+    category {
+      name
+      uri
+    }
+
+    topics {
+      name
+      uri
+    }
+  }
+
+  about: userByEmail(
+    email: "by_whycn@outlook.com"
+  ) {
+    blogName
+    bio
+    website
+  }
+
+  recentArticles: articlesInPosition(
+    username: "-"
+    position: ""
+    limit: 5
+  ) {
+    subject
+    summary
+    slug
+    updatedAt
+    
+    category {
+      name
+      uri
+    }
+  }
+}
+
+
