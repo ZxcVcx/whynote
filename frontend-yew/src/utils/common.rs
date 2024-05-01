@@ -19,5 +19,6 @@ pub fn is_logged_in() -> bool {
 pub fn create_gravatar_url(email: &str, size: i64) -> String {
     let trimmed_email = email.trim().to_lowercase();
     let hash = md5::compute(trimmed_email.as_bytes());
-    format!("https://www.gravatar.com/avatar/{:x}?d=identicon&s={}", hash, size)
+    // format!("https://www.gravatar.com/avatar/{:x}?d=identicon&s={}", hash, size)
+    format!("https://dn-qiniu-avatar.qbox.me/avatar/{:x}?d=identicon&s={}", hash, size)
 }
