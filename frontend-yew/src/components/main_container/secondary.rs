@@ -1,7 +1,6 @@
 use serde_json::Value;
 use yew::{function_component, html, Html, Properties};
 use yew_router::prelude::*;
-use yew::prelude::*;
 
 use crate::utils::common::format_date;
 use crate::app::MainRoute;
