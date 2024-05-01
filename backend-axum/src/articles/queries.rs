@@ -82,4 +82,52 @@ impl ArticleQuery {
         let db = ctx.data_unchecked::<DataSource>().db.clone();
         articles::services::articles_by_topic_id(db, topic_id, published).await
     }
+
+    // async fn articles_in_position_paged(
+    //     &self,
+    //     ctx: &Context<'_>,
+    //     username: String,
+    //     position: String,
+    //     limit: i64,
+    //     skip: i64,
+    // ) -> GqlResult<Vec<Article>> {
+    //     let db = ctx.data_unchecked::<DataSource>().db.clone();
+    //     articles::services::articles_in_position_paged(db, &username, &position, limit, skip).await
+    // }
+
+    // async fn articles_by_username_paged(
+    //     &self,
+    //     ctx: &Context<'_>,
+    //     username: String,
+    //     published: bool,
+    //     limit: i64,
+    //     skip: i64,
+    // ) -> GqlResult<Vec<Article>> {
+    //     let db = ctx.data_unchecked::<DataSource>().db.clone();
+    //     articles::services::articles_by_username_paged(db, &username, published, limit, skip).await
+    // }
+
+    // async fn articles_by_category_id_paged(
+    //     &self,
+    //     ctx: &Context<'_>,
+    //     category_id: ObjectId,
+    //     published: bool,
+    //     limit: i64,
+    //     skip: i64,
+    // ) -> GqlResult<Vec<Article>> {
+    //     let db = ctx.data_unchecked::<DataSource>().db.clone();
+    //     articles::services::articles_by_category_id_paged(db, category_id, published, limit, skip).await
+    // }
+
+    // async fn articles_by_topic_id_paged(
+    //     &self,
+    //     ctx: &Context<'_>,
+    //     topic_id: ObjectId,
+    //     published: bool,
+    //     limit: i64,
+    //     skip: i64,
+    // ) -> GqlResult<Vec<Article>> {
+    //     let db = ctx.data_unchecked::<DataSource>().db.clone();
+    //     articles::services::articles_by_topic_id_paged(db, topic_id, published, limit, skip).await
+    // }
 }

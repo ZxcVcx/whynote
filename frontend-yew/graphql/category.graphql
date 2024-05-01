@@ -1,0 +1,60 @@
+query CategoryData(
+  $slug: String!
+) {
+  categoryBySlug(
+    slug: $slug
+  ) {
+    name
+    quotes
+    description
+    
+    articlesList: articles {
+      subject
+      summary
+      uri
+      slug
+      updatedAt
+
+      user {
+        username
+        nickname
+        blogName
+        picture
+      }
+
+      category {
+        name
+        uri
+      }
+
+      topics {
+        name
+        uri
+      }
+    }
+  }
+
+  about: userByEmail(
+    email: "by_whycn@outlook.com"
+  ) {
+    blogName
+    bio
+    website
+  }
+
+  recentArticles: articlesInPosition(
+    username: "-"
+    position: ""
+    limit: 5
+  ) {
+    subject
+    summary
+    slug
+    updatedAt
+    
+    category {
+      name
+      uri
+    }
+  }
+}

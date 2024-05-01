@@ -1,0 +1,23 @@
+.article-list-card:not(:last-of-type) {
+    border-bottom: 1px solid #ccc;
+}
+/*.article-category {
+    font-size: 0.8rem;
+    font-weight: bold;
+} */
+.article-read-time {
+    font-size: 0.8rem;
+    color: gray;
+}
+.article-card-title {
+    /* font-size: 1.2rem; */
+    font-weight: bold;
+}
+
+.article-card {
+    /* margin-bottom: 0; */
+    /* margin-bottom: 4rem; */
+    /* border-color: black; */
+    border-bottom:0.1rem solid #dee2e6;
+    margin-bottom:1rem
+}

@@ -1,0 +1,13 @@
+query SignInData(
+  $signature: String!
+  $password: String!
+) {
+  userSignIn(
+    signature: $signature
+    cred: $password
+  ) {
+    email
+    username
+    token
+  }
+}

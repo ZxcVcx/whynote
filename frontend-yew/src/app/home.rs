@@ -1,5 +1,5 @@
 use crate::{
-    components::main_container::MainContainer,
+    pages::home::HomePage,
     services::articles::fetch_home_data,
 };
 use yew::prelude::*;
@@ -24,14 +24,6 @@ pub fn home() -> Html {
     html! {
         <>
             {
-                if home_state.loading { // Use the cloned articles_state
-                    html! { "Loading" }
-                } else {
-                    html! {
-                    }
-                }
-            }
-            {
                 if let Some(error) = &home_state.error {
                     html! { error }
                 } else {
@@ -45,12 +37,16 @@ pub fn home() -> Html {
                     let emphasis = top_articles[0].clone();
                     let secondary = vec![top_articles[1].clone(), top_articles[2].clone()];
                     let recommanded = home_data.get("recommendedArticles").unwrap().as_array().unwrap().clone();
+                    let about = home_data.get("about").unwrap().clone();
+                    let recent = home_data.get("recentArticles").unwrap().as_array().unwrap().clone();
 
                     html! {
-                        <MainContainer 
+                        <HomePage 
                             emphasis={emphasis}
                             secondary={secondary}
-                            recommanded={recommanded} 
+                            recommanded={recommanded}
+                            about={about}
+                            recent={recent}
                         />
                     }
                 } else {

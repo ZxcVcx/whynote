@@ -1,7 +1,7 @@
 use yew::prelude::*;
 use yew_hooks::prelude::*;
 use yew_router::prelude::*;
-use crate::{app::AppRoute, services::categories::fetch_categories_list};
+use crate::{app::MainRoute, services::categories::fetch_categories_list};
 
 
 // use crate::app::AppRoute;
@@ -38,9 +38,12 @@ pub fn nav() -> Html {
 
         <div class="nav-scroller py-1 mb-3 border-bottom">
             <nav class="nav nav-underline justify-content-between">
-                <Link<AppRoute> classes="nav-item nav-link link-body-emphasis" to={AppRoute::Home}>
+                <Link<MainRoute> classes="nav-item nav-link link-body-emphasis" to={MainRoute::Home}>
                     { "Home" }
-                </Link<AppRoute>>
+                </Link<MainRoute>>
+                // <Link<AppRoute> to={AppRoute::Editor} classes="nav-item nav-link link-body-emphasis">
+                //     { "Editor" }
+                // </Link<AppRoute>>
 
                 {
                     if nav_list.loading {
@@ -58,9 +61,9 @@ pub fn nav() -> Html {
                                 // let uri = category.get("uri").unwrap().to_string();
                                 html! {
                                     // <a class="nav-item nav-link link-body-emphasis" href="#">{category["name"].as_str()}</a>
-                                    <Link<AppRoute> classes="nav-item nav-link link-body-emphasis" to={AppRoute::Category {slug: category["slug"].as_str().unwrap().to_string() }}>
+                                    <Link<MainRoute> classes="nav-item nav-link link-body-emphasis" to={MainRoute::CategoryPage {slug: category["slug"].as_str().unwrap().to_string() }}>
                                         { category["name"].as_str() }
-                                    </Link<AppRoute>>
+                                    </Link<MainRoute>>
                                 }
                             } else {
                                 html! {}

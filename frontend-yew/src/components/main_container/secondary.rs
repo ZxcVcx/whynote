@@ -20,14 +20,13 @@ pub fn Secondary(props: &SecondaryProps) -> Html {
                     let summary = article.get("summary").unwrap().as_str().unwrap();
                     let category = article.get("category").unwrap().get("name").unwrap().as_str().unwrap();
                     // let updated_at = article.get("updatedAt").unwrap().as_str().unwrap();
-                    let updated_at = format_date(article.get("updatedAt").unwrap()).unwrap();
+                    let updated_at = format_date(article.get("updatedAt").unwrap(), "%b, %d").unwrap();
                     html! {
                         <div class="col-md-6">
                             <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                                 <div class="col p-4 d-flex flex-column position-static">
                                     <strong class="d-inline-block mb-2 text-primary-emphasis">{category}</strong>
                                     <h3 class="mb-0">{title}</h3>
-                                    // <div class="mb-1 text-body-secondary">{"Nov 12"}</div>
                                     <div class="mb-1 text-body-secondary">{updated_at}</div>
                                     <p class="card-text mb-auto">{summary}</p>
                                     <a href="#" class="icon-link gap-1 icon-link-hover stretched-link">

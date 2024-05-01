@@ -1,0 +1,60 @@
+query UserDataByUsername(
+    $username: String!
+) {
+    userByUsername(
+        username: $username
+    ) {
+        username
+        nickname
+        blogName
+        bio
+
+        articlesList: articles(
+            published: true
+        ) {
+            subject
+            summary
+            slug
+            updatedAt
+
+            user {
+                username
+                nickname
+                blogName
+            }
+            category {
+                name
+                uri
+            }
+
+            topics {
+                name
+                uri
+            }
+        }
+    }
+
+    about: userByUsername(
+        username: $username
+    ) {
+        blogName
+        bio
+        website
+    }
+
+    recentArticles: articlesInPosition(
+        username: $username
+        position: ""
+        limit: 5
+    ) {
+        subject
+        summary
+        slug
+        updatedAt
+    
+        category {
+            name
+            uri
+        }
+    }
+}

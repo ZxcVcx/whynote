@@ -31,7 +31,7 @@ pub async fn fetch_with_request(
 ) -> Result<web_sys::Response, FetchError> {
     let window = gloo_utils::window();
     let resp_value = JsFuture::from(window.fetch_with_request(&request)).await?;
-    let resp: web_sys::Response = resp_value.dyn_into().unwrap();
+    let resp: web_sys::Response = resp_value.dyn_into()?;
     Ok(resp)
 }
 
@@ -41,6 +41,12 @@ pub async fn fetch_gql_data(query: Value) -> Result<serde_json::Value, FetchErro
     let response_text = JsFuture::from(response.text()?).await?;
     let data_str = response_text.as_string().unwrap();
     let data_value: serde_json::Value = serde_json::from_str(&data_str).unwrap();
+    if data_value["errors"].as_array().is_some() {
+        let error = data_value["errors"][0]["message"].as_str().unwrap();
+        return Err(FetchError {
+            err: JsValue::from_str(error),
+        });
+    }
     Ok(data_value["data"].clone())
 }
 

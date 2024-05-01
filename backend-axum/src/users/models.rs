@@ -47,34 +47,17 @@ impl User {
         let db = ctx.data_unchecked::<DataSource>().db.clone();
         articles_by_user_id(db, self.id, published).await
     }
+
+    // pub async fn elsewhere(
+    //     &self,
+    //     ctx: &async_graphql::Context<'_>,
+    // ) -> GqlResult<Vec<Link>> {
+    //     let db = ctx.data_unchecked::<DataSource>().db.clone();
+    //     links_by_user_id(db, self.id).await
+    //     // format!("https://www.elsewhere.com/{}", self.username)  
+    // }
+
 }
-
-//// Normal Object
-// #[derive(Serialize, Deserialize, Clone)]
-// pub struct User {
-//     #[serde(rename = "_id")]
-//     pub id: ObjectId,
-//     pub email: String,
-//     pub username: String,
-
-//     pub cred: String,
-// }
-
-// #[async_graphql::Object]
-// impl User {
-//     pub async fn id(&self) -> ObjectId {
-//         self.id.clone()
-//     }
-//     pub async fn email(&self) -> &str {
-//         self.email.as_str()
-//     }
-//     pub async fn username(&self) -> &str {
-//         self.username.as_str()
-//     }
-//     pub async fn cred(&self) -> &str {
-//         self.cred.as_str()
-//     }
-// }
 
 /// New User
 #[derive(async_graphql::InputObject, Serialize, Deserialize, Clone)]
