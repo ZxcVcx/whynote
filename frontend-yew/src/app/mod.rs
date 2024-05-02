@@ -8,11 +8,11 @@ pub mod home;
 use about::About;
 use home::Home;
 
-use crate::pages::signin::SignIn;
-use crate::pages::category::CategoryPage;
-use crate::pages::user::UserPage;
 use crate::components::bottom_container::footer::Footer;
 use crate::pages::article::ArticlePage;
+use crate::pages::category::CategoryPage;
+use crate::pages::signin::SignIn;
+use crate::pages::user::UserPage;
 
 /// App routes
 #[derive(Routable, Debug, Clone, PartialEq, Eq)]
@@ -29,12 +29,11 @@ pub enum MainRoute {
     #[at("/page-not-found")]
     PageNotFound,
     #[at("/category/:slug")]
-    CategoryPage { slug: String},
+    CategoryPage { slug: String },
     #[at("/user/:username")]
     UserPage { username: String },
     #[at("/article/:slug")]
     ArticlePage { slug: String },
-
 }
 
 #[derive(Routable, Debug, Clone, PartialEq, Eq)]
@@ -56,7 +55,9 @@ pub fn switch_main(routes: MainRoute) -> Html {
         MainRoute::Home => html! { <Home /> },
         MainRoute::About => html! { <About /> },
         // MainRoute::ManageRoot => html! { <Redirect<ManageRoute> to={ManageRoute::Profile} /> },
-        MainRoute::ManageRoot | MainRoute::Manage => html! { <Switch<ManageRoute> render={switch_settings} /> },
+        MainRoute::ManageRoot | MainRoute::Manage => {
+            html! { <Switch<ManageRoute> render={switch_settings} /> }
+        }
         MainRoute::PageNotFound => html! { "Page not found" },
         // MainRoute::CategoryPage { slug } => html! { format!("Category: {}", slug) },
         MainRoute::CategoryPage { slug } => html! { <CategoryPage {slug} /> },
@@ -70,7 +71,7 @@ fn switch_settings(routes: ManageRoute) -> Html {
         ManageRoute::Profile => html! {<h1>{"Profile"}</h1>},
         ManageRoute::SignUp => html! {<h1>{"signup"}</h1>},
         ManageRoute::SignIn => html! { <SignIn /> },
-        ManageRoute::NotFound => html! {<Redirect<MainRoute> to={MainRoute::PageNotFound}/>}
+        ManageRoute::NotFound => html! {<Redirect<MainRoute> to={MainRoute::PageNotFound}/>},
     }
 }
 

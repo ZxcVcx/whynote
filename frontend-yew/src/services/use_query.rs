@@ -69,10 +69,13 @@ impl From<JsValue> for FetchError {
     }
 }
 
-
 pub async fn gql_uri() -> String {
-
-    let addr = format!("{}://{}:{}", CFG.get("GQL_PROTOCOL").unwrap(), CFG.get("GQL_HOST").unwrap(), CFG.get("GQL_PORT").unwrap());
+    let addr = format!(
+        "{}://{}:{}",
+        CFG.get("GQL_PROTOCOL").unwrap(),
+        CFG.get("GQL_HOST").unwrap(),
+        CFG.get("GQL_PORT").unwrap()
+    );
     let path = CFG.get("GQL_PATH").unwrap();
 
     format!("{}/{}", addr, path)

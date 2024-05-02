@@ -1,11 +1,11 @@
-use yew::{function_component, html, Html, Properties};
 use yew::prelude::*;
+use yew::{function_component, html, Html, Properties};
 use yew_hooks::prelude::*;
 
-use crate::services::article::fetch_article_data_by_slug;
-use crate::components::top_container::TopContainer;
 use crate::components::main_container::article::Article;
 use crate::components::main_container::sticky::Sticky;
+use crate::components::top_container::TopContainer;
+use crate::services::article::fetch_article_data_by_slug;
 
 #[derive(PartialEq, Properties)]
 pub struct ArticlePageProps {
@@ -16,10 +16,8 @@ pub struct ArticlePageProps {
 pub fn ArticlePage(props: &ArticlePageProps) -> Html {
     // let ArticlePageProps {slug} = props;
     let slug = props.slug.clone();
-    
-    let article_state = use_async(async move {
-        fetch_article_data_by_slug(slug).await
-    });
+
+    let article_state = use_async(async move { fetch_article_data_by_slug(slug).await });
 
     let effect_article_state = article_state.clone();
 
@@ -61,16 +59,16 @@ pub fn ArticlePage(props: &ArticlePageProps) -> Html {
                                         </h3>
                                         <Article {article} />
                                     </div>
-                                    <Sticky 
-                                        about={about.clone()} 
-                                        recent={recent.clone()} 
-                                        // archives={props.archives.clone()} 
+                                    <Sticky
+                                        about={about.clone()}
+                                        recent={recent.clone()}
+                                        // archives={props.archives.clone()}
                                         // elsewhere={props.elsewhere.clone()}
                                     />
                                 </div>
                             </main>
                         </>
-                        
+
                     }
                 } else {
                     html! {}

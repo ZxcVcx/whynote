@@ -4,7 +4,6 @@ use yew_router::prelude::*;
 
 use crate::{app::MainRoute, utils::common::format_date};
 
-
 #[derive(PartialEq, Properties)]
 pub struct ArticlesListProps {
     pub articles_list: Vec<Value>,
@@ -13,7 +12,10 @@ pub struct ArticlesListProps {
 
 #[function_component]
 pub fn ArticlesList(props: &ArticlesListProps) -> Html {
-    let ArticlesListProps { articles_list, description } = props;
+    let ArticlesListProps {
+        articles_list,
+        description,
+    } = props;
     let navigator = use_navigator().expect("Navigator should be available");
     html! {
         <div class="col-md-8 articles-list">

@@ -23,7 +23,7 @@ pub fn Sticky(props: &StickyProps) -> Html {
                     <h4 class="fst-italic">{"About"}</h4>
                     <p class="mb-0">{about.get("bio").unwrap().as_str().unwrap().to_string()}</p>
                 </div>
-            
+
                 <div>
                     <h4 class="fst-italic">{"Recent posts"}</h4>
                     <ul class="list-unstyled">

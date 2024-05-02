@@ -22,15 +22,10 @@ impl ArticleQuery {
         articles::services::article_by_username_and_slug(db, &username, &slug).await
     }
 
-    async fn article_by_slug(
-        &self,
-        ctx: &Context<'_>,
-        slug: String,
-    ) -> GqlResult<Article> {
+    async fn article_by_slug(&self, ctx: &Context<'_>, slug: String) -> GqlResult<Article> {
         let db = ctx.data_unchecked::<DataSource>().db.clone();
         articles::services::article_by_slug(db, &slug).await
     }
-
 
     // Get all articles
     async fn articles(&self, ctx: &Context<'_>, published: bool) -> GqlResult<Vec<Article>> {

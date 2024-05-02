@@ -15,18 +15,16 @@ pub struct MainContainerProps {
 
 #[function_component]
 pub fn MainContainer(props: &MainContainerProps) -> Html {
-    
     html! {
         <div class="row g-5">
             <Articles articles={props.recommanded.clone()}/>
             // nav
-            <Sticky 
-                about={props.about.clone()} 
-                recent={props.recent.clone()} 
-                // archives={props.archives.clone()} 
+            <Sticky
+                about={props.about.clone()}
+                recent={props.recent.clone()}
+                // archives={props.archives.clone()}
                 // elsewhere={props.elsewhere.clone()}
             />
         </div>
     }
 }
-

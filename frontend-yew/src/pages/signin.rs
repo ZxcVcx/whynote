@@ -1,13 +1,14 @@
-
+use crate::{app::MainRoute, services::signin::fetch_sign_in_data, utils::token::store_pair};
 use wasm_bindgen_futures::spawn_local;
 use web_sys::HtmlInputElement;
-use yew::{function_component, html, use_state, Callback, Html, InputEvent, Properties, SubmitEvent, TargetCast};
+use yew::{
+    function_component, html, use_state, Callback, Html, InputEvent, Properties, SubmitEvent,
+    TargetCast,
+};
 use yew_router::prelude::*;
-use crate::{app::MainRoute, services::signin::fetch_sign_in_data, utils::token::store_pair};
 
 #[derive(PartialEq, Properties)]
 pub struct SignInProps {}
-
 
 #[function_component]
 pub fn SignIn(props: &SignInProps) -> Html {
@@ -32,8 +33,6 @@ pub fn SignIn(props: &SignInProps) -> Html {
             password.set(input.value());
         })
     };
-
-    
 
     let on_submit = {
         let navigator = navigator.clone();
@@ -76,14 +75,14 @@ pub fn SignIn(props: &SignInProps) -> Html {
                  <h1 class="h3 mb-3 fw-normal">{"Please sign in"}</h1>
 
                 <div class="form-floating">
-                    <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" 
+                    <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com"
                         value={(*username).clone()}
                         oninput={on_username_change}
                     />
                     <label for="floatingInput">{"Email address"}</label>
                 </div>
                 <div class="form-floating">
-                    <input type="password" class="form-control" id="floatingPassword" placeholder="Password" 
+                    <input type="password" class="form-control" id="floatingPassword" placeholder="Password"
                         value={(*password).clone()}
                         oninput={on_password_change}
                     />

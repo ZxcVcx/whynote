@@ -1,18 +1,14 @@
+use crate::{app::MainRoute, services::categories::fetch_categories_list};
 use yew::prelude::*;
 use yew_hooks::prelude::*;
 use yew_router::prelude::*;
-use crate::{app::MainRoute, services::categories::fetch_categories_list};
-
 
 // use crate::app::AppRoute;
 
 /// Nav component
 #[function_component]
 pub fn Nav() -> Html {
-    let nav_list =
-        use_async(async move {
-            fetch_categories_list().await
-        });
+    let nav_list = use_async(async move { fetch_categories_list().await });
 
     let effect_nav_list = nav_list.clone();
 
@@ -23,9 +19,8 @@ pub fn Nav() -> Html {
 
     // let nav_vec = nav_list.data.clone().unwrap().get("cetegories").unwrap().as_array().unwrap();
 
-
     html! {
-        
+
         // <div class="container py-4">
         //     <nav class="flex space-x-4 items-center">
         //         <Link<AppRoute> to={AppRoute::Home} classes="text-emerald-800 underline" >

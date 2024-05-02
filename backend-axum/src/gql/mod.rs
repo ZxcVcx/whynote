@@ -15,8 +15,8 @@ use axum::{
     Json,
 };
 
-    use crate::utils::constants::CFG;
-    use std::sync::Arc;
+use crate::utils::constants::CFG;
+use std::sync::Arc;
 
 pub async fn build_schema() -> Schema<QueryRoot, MutationRoot, EmptySubscription> {
     let mongo_ds = mongo::DataSource::init().await;

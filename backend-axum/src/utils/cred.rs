@@ -94,4 +94,3 @@ pub async fn token_data(token: &str) -> Result<TokenData<Claims>, Error> {
         &Validation::new(jsonwebtoken::Algorithm::HS512),
     )
 }
-

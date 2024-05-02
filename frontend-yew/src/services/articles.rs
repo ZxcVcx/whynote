@@ -29,7 +29,6 @@ pub async fn fetch_articles_data() -> Result<Value, FetchError> {
     data
 }
 
-
 #[derive(GraphQLQuery)]
 #[graphql(
     schema_path = "./graphql/schema.graphql",

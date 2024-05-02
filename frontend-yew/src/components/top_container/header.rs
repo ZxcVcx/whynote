@@ -1,7 +1,7 @@
 use crate::app::ManageRoute;
 use crate::utils;
-use crate::utils::token::get_pair_value;
 use crate::utils::common::create_gravatar_url;
+use crate::utils::token::get_pair_value;
 use yew::prelude::*;
 use yew_router::prelude::*;
 

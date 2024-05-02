@@ -21,7 +21,10 @@ async fn query(username: String, slug: String) -> Value {
     query
 }
 
-pub async fn fetch_article_data_by_username_and_slug(username: String, slug: String) -> Result<Value, FetchError> {
+pub async fn fetch_article_data_by_username_and_slug(
+    username: String,
+    slug: String,
+) -> Result<Value, FetchError> {
     let query = query(username, slug).await;
     let data = super::use_query::fetch_gql_data(query).await;
     data

@@ -1,11 +1,10 @@
+use crate::components::top_container::TopContainer;
 use serde_json::Value;
 use yew::prelude::*;
-use crate::components::top_container::TopContainer;
-
 
 use crate::components::main_container::emphasis::Emphasis;
-use crate::components::main_container::secondary::Secondary;
 use crate::components::main_container::main_container::MainContainer;
+use crate::components::main_container::secondary::Secondary;
 
 #[derive(PartialEq, Properties)]
 pub struct HomePageProps {
@@ -27,7 +26,7 @@ pub fn HomePage(props: &HomePageProps) -> Html {
             <Emphasis emphasis={props.emphasis.clone()}/>
             <Secondary secondary={props.secondary.clone()}/>
             // <Articles articles={props.recommanded.clone()}/>
-            <MainContainer 
+            <MainContainer
                 recommanded={props.recommanded.clone()}
                 about={props.about.clone()}
                 recent={props.recent.clone()}

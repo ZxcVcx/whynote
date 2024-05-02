@@ -54,9 +54,8 @@ impl User {
     // ) -> GqlResult<Vec<Link>> {
     //     let db = ctx.data_unchecked::<DataSource>().db.clone();
     //     links_by_user_id(db, self.id).await
-    //     // format!("https://www.elsewhere.com/{}", self.username)  
+    //     // format!("https://www.elsewhere.com/{}", self.username)
     // }
-
 }
 
 /// New User

@@ -8,7 +8,7 @@ edition = "2021"
 [dependencies]
 async-graphql = { version = "7.0.3", features = ["bson", "chrono"] }
 axum = "0.7.5"
-base64 = "0.22.0"
+base64 = "0.22.1"
 bson = "2.10.0"
 deunicode = "1.4.4"
 dotenv = "0.15.0"

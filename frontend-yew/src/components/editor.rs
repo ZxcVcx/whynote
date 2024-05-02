@@ -3,7 +3,6 @@
 
 // use wasm_bindgen::prelude::*;
 
-
 // #[wasm_bindgen(module = "/assets/easymde.min.js")]
 // extern "C" {
 //     pub type EasyMDE;

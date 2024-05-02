@@ -1,7 +1,12 @@
 use async_graphql::Context;
 use bson::oid::ObjectId;
 
-use crate::{categories::{self, models::Category}, dbs::mongo::DataSource, topics::models::Topic, utils::constants::GqlResult};
+use crate::{
+    categories::{self, models::Category},
+    dbs::mongo::DataSource,
+    topics::models::Topic,
+    utils::constants::GqlResult,
+};
 
 #[derive(Default)]
 pub struct TopicMutation;

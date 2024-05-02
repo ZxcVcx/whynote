@@ -13,7 +13,13 @@ pub struct EmphasisProps {
 pub fn Emphasis(props: &EmphasisProps) -> Html {
     let title = props.emphasis.get("subject").unwrap().as_str().unwrap();
     let summary = props.emphasis.get("summary").unwrap().as_str().unwrap();
-    let slug = props.emphasis.get("slug").unwrap().as_str().unwrap().to_string();
+    let slug = props
+        .emphasis
+        .get("slug")
+        .unwrap()
+        .as_str()
+        .unwrap()
+        .to_string();
 
     html! {
         <div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">

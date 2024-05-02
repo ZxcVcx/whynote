@@ -15,21 +15,13 @@ impl TopicQuery {
     }
 
     // get topic info by id
-    async fn topic_by_id(
-        &self,
-        ctx: &Context<'_>,
-        id: ObjectId,
-    ) -> GqlResult<Topic> {
+    async fn topic_by_id(&self, ctx: &Context<'_>, id: ObjectId) -> GqlResult<Topic> {
         let db = ctx.data_unchecked::<DataSource>().db.clone();
         super::services::topic_by_id(db, id).await
     }
 
     // get topic info by slug
-    async fn topic_by_slug(
-        &self,
-        ctx: &Context<'_>,
-        slug: String,
-    ) -> GqlResult<Topic> {
+    async fn topic_by_slug(&self, ctx: &Context<'_>, slug: String) -> GqlResult<Topic> {
         let db = ctx.data_unchecked::<DataSource>().db.clone();
         super::services::topic_by_slug(db, &slug).await
     }
@@ -72,7 +64,6 @@ impl TopicQuery {
         published: bool,
     ) -> GqlResult<Vec<Topic>> {
         let db = ctx.data_unchecked::<DataSource>().db.clone();
-        super::services::topics_by_category_id(db, category_id, published)
-            .await
+        super::services::topics_by_category_id(db, category_id, published).await
     }
 }

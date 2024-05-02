@@ -1,10 +1,10 @@
-use yew::{function_component, html, Html, Properties};
-use yew::prelude::*;
-use yew_hooks::prelude::*;
-use crate::services::user::fetch_user_data_by_username;
 use crate::components::main_container::articles_list::ArticlesList;
-use crate::components::top_container::TopContainer;
 use crate::components::main_container::sticky::Sticky;
+use crate::components::top_container::TopContainer;
+use crate::services::user::fetch_user_data_by_username;
+use yew::prelude::*;
+use yew::{function_component, html, Html, Properties};
+use yew_hooks::prelude::*;
 
 #[derive(PartialEq, Properties)]
 pub struct UserPageProps {
@@ -15,9 +15,7 @@ pub struct UserPageProps {
 pub fn UserPage(props: &UserPageProps) -> Html {
     let username = props.username.clone();
 
-    let data_state = use_async(async move {
-        fetch_user_data_by_username(username).await
-    });
+    let data_state = use_async(async move { fetch_user_data_by_username(username).await });
 
     let effect_data_state = data_state.clone();
 
@@ -47,10 +45,10 @@ pub fn UserPage(props: &UserPageProps) -> Html {
                             <main class="container">
                                 <div class="row g-5">
                                     <ArticlesList {articles_list} description={bio} />
-                                    <Sticky 
-                                        about={about.clone()} 
-                                        recent={recent.clone()} 
-                                        // archives={props.archives.clone()} 
+                                    <Sticky
+                                        about={about.clone()}
+                                        recent={recent.clone()}
+                                        // archives={props.archives.clone()}
                                         // elsewhere={props.elsewhere.clone()}
                                     />
                                 </div>

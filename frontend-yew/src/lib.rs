@@ -1,5 +1,5 @@
 pub mod app;
 pub mod components;
-pub mod utils;
-pub mod services;
 pub mod pages;
+pub mod services;
+pub mod utils;

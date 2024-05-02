@@ -3,10 +3,10 @@ use yew_hooks::prelude::*;
 
 use yew::{function_component, html, Html, Properties};
 
-use crate::services::categories::fetch_category_data_by_slug;
 use crate::components::main_container::articles_list::ArticlesList;
-use crate::components::top_container::TopContainer;
 use crate::components::main_container::sticky::Sticky;
+use crate::components::top_container::TopContainer;
+use crate::services::categories::fetch_category_data_by_slug;
 
 #[derive(PartialEq, Properties)]
 pub struct CategoryPageProps {
@@ -18,9 +18,7 @@ pub fn CategoryPage(props: &CategoryPageProps) -> Html {
     // let CategoryPageProps { slug } = props;
     let slug = props.slug.clone();
 
-    let data_state = use_async(async move {
-        fetch_category_data_by_slug(slug).await
-    });
+    let data_state = use_async(async move { fetch_category_data_by_slug(slug).await });
 
     let effect_data_state = data_state.clone();
 
@@ -28,7 +26,7 @@ pub fn CategoryPage(props: &CategoryPageProps) -> Html {
         effect_data_state.run();
         || ()
     });
-    
+
     html! {
         <>
             {
@@ -52,10 +50,10 @@ pub fn CategoryPage(props: &CategoryPageProps) -> Html {
                             <main class="container">
                                 <div class="row g-5">
                                     <ArticlesList {articles_list} {description} />
-                                    <Sticky 
-                                        about={about.clone()} 
-                                        recent={recent.clone()} 
-                                        // archives={props.archives.clone()} 
+                                    <Sticky
+                                        about={about.clone()}
+                                        recent={recent.clone()}
+                                        // archives={props.archives.clone()}
                                         // elsewhere={props.elsewhere.clone()}
                                     />
                                 </div>

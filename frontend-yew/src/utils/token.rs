@@ -10,7 +10,7 @@ pub fn store_pair(key: &str, value: &str, remember: bool) {
 
         local_storage
             .set_item(key, value)
-            .expect(format!{"failed to set {}", key}.as_str());
+            .expect(format! {"failed to set {}", key}.as_str());
     } else {
         let session_storage = window
             .session_storage()
@@ -19,11 +19,9 @@ pub fn store_pair(key: &str, value: &str, remember: bool) {
 
         session_storage
             .set_item(key, value)
-            .expect(format!{"failed to set {}", key}.as_str());
+            .expect(format! {"failed to set {}", key}.as_str());
     }
 }
-
-
 
 // pub fn set_token(token: &str, remember: bool) {
 //     let window = window().expect("no global `window` exists");
@@ -49,7 +47,7 @@ pub fn store_pair(key: &str, value: &str, remember: bool) {
 //     }
 // }
 
-pub fn get_pair_value(key: &str) -> Option<String>{
+pub fn get_pair_value(key: &str) -> Option<String> {
     let window = window().expect("no global `window` exists");
 
     if let Ok(Some(storage)) = window.session_storage() {
@@ -65,7 +63,6 @@ pub fn get_pair_value(key: &str) -> Option<String>{
     }
     None
 }
-
 
 // pub fn get_token() -> Option<String> {
 //     let window = window().expect("no global `window` exists");
@@ -88,15 +85,13 @@ pub fn remove_pair(key: &str) {
     let window = window().expect("no global `window` exists");
 
     if let Ok(Some(local_storage)) = window.local_storage() {
-        let _ = local_storage
-            .remove_item(key);
-            // .expect("failed to remove token");
+        let _ = local_storage.remove_item(key);
+        // .expect("failed to remove token");
     }
 
     if let Ok(Some(session_storage)) = window.session_storage() {
-        let _ = session_storage
-            .remove_item(key);
-            // .expect("failed to remove token");
+        let _ = session_storage.remove_item(key);
+        // .expect("failed to remove token");
     }
 }
 
@@ -115,4 +110,3 @@ pub fn remove_pair(key: &str) {
 //             // .expect("failed to remove token");
 //     }
 // }
-

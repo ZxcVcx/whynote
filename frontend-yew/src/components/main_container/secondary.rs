@@ -2,9 +2,8 @@ use serde_json::Value;
 use yew::{function_component, html, Html, Properties};
 use yew_router::prelude::*;
 
-use crate::utils::common::format_date;
 use crate::app::MainRoute;
-
+use crate::utils::common::format_date;
 
 #[derive(PartialEq, Properties)]
 pub struct SecondaryProps {
@@ -107,6 +106,6 @@ pub fn Secondary(props: &SecondaryProps) -> Html {
         //     </div>
         //   </div>
         </div>
-    
+
     }
 }

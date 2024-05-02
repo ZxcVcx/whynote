@@ -1,7 +1,4 @@
-use crate::{
-    pages::home::HomePage,
-    services::articles::fetch_home_data,
-};
+use crate::{pages::home::HomePage, services::articles::fetch_home_data};
 use yew::prelude::*;
 use yew_hooks::prelude::*;
 
@@ -41,7 +38,7 @@ pub fn home() -> Html {
                     let recent = home_data.get("recentArticles").unwrap().as_array().unwrap().clone();
 
                     html! {
-                        <HomePage 
+                        <HomePage
                             emphasis={emphasis}
                             secondary={secondary}
                             recommanded={recommanded}

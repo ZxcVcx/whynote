@@ -1,10 +1,10 @@
-pub mod nav;
 pub mod header;
+pub mod nav;
 // pub mod top_container;
 
-use yew::prelude::*;
-use nav::Nav;
 use header::Header;
+use nav::Nav;
+use yew::prelude::*;
 /// Nav component
 #[function_component(TopContainer)]
 pub fn top_container() -> Html {

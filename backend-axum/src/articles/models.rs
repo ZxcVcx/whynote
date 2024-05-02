@@ -65,8 +65,6 @@ impl Article {
         let db = ctx.data_unchecked::<DataSource>().db.clone();
         topics::services::topics_by_article_id(db, self.id).await
     }
-
-    
 }
 
 #[derive(Serialize, Deserialize, async_graphql::InputObject)]
