@@ -1,4 +1,4 @@
-use crate::{pages::home::HomePage, services::articles::fetch_home_data};
+use crate::{pages::common::home::HomePage, services::articles::fetch_home_data};
 use yew::prelude::*;
 use yew_hooks::prelude::*;
 

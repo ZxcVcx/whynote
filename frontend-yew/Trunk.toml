@@ -1,6 +1,9 @@
+# https://github.com/trunk-rs/trunk/blob/main/Trunk.toml
+
 [build]
 target = "index.html"
 dist = "dist"
+public_url = "/"
 
 
 [serve]

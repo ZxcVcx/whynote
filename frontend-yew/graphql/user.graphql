@@ -58,3 +58,81 @@ query UserDataByUsername(
         }
     }
 }
+
+query UserDataByEmail(
+    $email: String!
+) {
+    userByEmail(
+        email: $email
+    ) {
+        id
+        email
+        username
+        nickname
+        # picture
+        blogName
+        website
+        bio
+        banned
+
+        articles(published: true) {
+            subject
+            summary
+            slug
+            updatedAt
+            category {
+                name
+                uri
+            }
+            topics {
+                name
+                uri
+            }
+        }
+
+        crafts: articles(published: false) {
+            subject
+            summary
+            slug
+            updatedAt
+            category {
+                name
+                uri
+            }
+            topics {
+                name
+                uri
+            }
+        }
+    }
+}
+
+# mutation UserUpdateProfile(
+#     $email: String!
+#     $username: String!
+#     $nickname: String!
+#     $cred: String!
+#     $blogName: String!
+#     $website: String!
+#     $bio: String!
+
+# ) {
+#     userUpdateProfile(
+#         userNew: {
+#             email: $email
+#             username: $username
+#             nickname: $nickname
+#             cred: $cred
+#             blogName: $blogName
+#             website: $website
+#             bio: $bio
+#         }
+#     ) {
+#         email
+#         username
+#         nickname
+#         blogName
+#         website
+#         bio
+#     }
+# }

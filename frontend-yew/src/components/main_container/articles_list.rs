@@ -51,10 +51,10 @@ pub fn ArticlesList(props: &ArticlesListProps) -> Html {
                     // let avatar = user.get("picture").unwrap().as_str().unwrap();
                     // let topics = article_card.get("topics").unwrap().as_array().unwrap();
                     html! {
-                        <div key={username} class="article-card">
+                        <div key={article_card.get("slug").unwrap().as_str().unwrap().to_string()} class="article-card">
                             <div class="row g-0">
                                 <div class="col-md-10">
-                                    <div class="card-body">
+                                    <div class="article-card-body">
                                         <div class="d-flex justify-content-between align-items-center mb-2">
                                             <span class="text-muted">{format!{"{} by ", updated_at}}
                                             <a onclick={on_username_click} style="color: blue; cursor: pointer;">{nickname} </a>

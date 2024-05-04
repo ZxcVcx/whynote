@@ -1,14 +1,23 @@
 use crate::app::ManageRoute;
 use crate::utils;
-use crate::utils::common::create_gravatar_url;
-use crate::utils::token::get_pair_value;
 use yew::prelude::*;
 use yew_router::prelude::*;
 
-#[function_component(Header)]
-pub fn header() -> Html {
+use super::user_drop_down::UserDropDown;
+
+#[derive(PartialEq, Properties)]
+pub struct HeaderProps {
+    pub login_state: UseStateHandle<bool>
+    // pub archives: Vec<Value>,
+    // pub elsewhere: Vec<Value>,
+}
+
+#[function_component]
+pub fn Header(props: &HeaderProps) -> Html {
+    let login_state = props.login_state.clone();
     let title = utils::constants::CFG.get("SITE_TITLE").unwrap().to_string();
     let navigator = use_navigator().expect("Navigator should be available");
+    
 
     let on_sign_in_click = {
         let navigator = navigator.clone();
@@ -36,12 +45,13 @@ pub fn header() -> Html {
           </a>
 
         {
-            if utils::common::is_logged_in() {
+            if *login_state {
               html! {
-                <a class="link-secondary" href="#" aria-label="Profile">
-                //   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="mx-3" role="img" viewBox="0 0 24 24"><title>{"Profile"}</title><circle cx="12" cy="12" r="10"/><path d="M16 12l-4 4-4-4"/></svg>
-                <img class="rounded-circle" src={create_gravatar_url(get_pair_value("email").unwrap().as_str(), 80)} width="40" />
-                </a>
+                <UserDropDown {login_state} />
+                // <a class="link-secondary" href="#" aria-label="Profile">
+                // //   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="mx-3" role="img" viewBox="0 0 24 24"><title>{"Profile"}</title><circle cx="12" cy="12" r="10"/><path d="M16 12l-4 4-4-4"/></svg>
+                // <img class="rounded-circle" src={create_gravatar_url(get_pair_value("email").unwrap().as_str(), 80)} width="40" />
+                // </a>
               }
             } else {
                 html! {

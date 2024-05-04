@@ -1,4 +1,4 @@
-use crate::{app::MainRoute, services::signin::fetch_sign_in_data, utils::token::store_pair};
+use crate::{app::MainRoute, services::signin::fetch_sign_in_data, utils::storage::store_pair};
 use wasm_bindgen_futures::spawn_local;
 use web_sys::HtmlInputElement;
 use yew::{
