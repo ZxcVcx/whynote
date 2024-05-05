@@ -27,6 +27,11 @@ impl ArticleQuery {
         articles::services::article_by_slug(db, &slug).await
     }
 
+    async fn article_by_id(&self, ctx: &Context<'_>, id: ObjectId) -> GqlResult<Article> {
+        let db = ctx.data_unchecked::<DataSource>().db.clone();
+        articles::services::article_by_id(db, id).await
+    }
+
     // Get all articles
     async fn articles(&self, ctx: &Context<'_>, published: bool) -> GqlResult<Vec<Article>> {
         let db = ctx.data_unchecked::<DataSource>().db.clone();

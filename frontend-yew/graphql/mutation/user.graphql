@@ -1,0 +1,26 @@
+mutation UserUpdateProfile (
+    $email: String!,
+    $username: String!,
+    $nickname: String!,
+    $cred: String!,
+    $blogName: String!,
+    $website: String!,
+    $bio: String!,
+    $token: String!,
+) {
+    userUpdateProfile (
+        userNew: {
+            email: $email,
+            username: $username,
+            nickname: $nickname,
+            cred: $cred,
+            blogName: $blogName,
+            website: $website,
+            bio: $bio,
+        },
+        token: $token,
+    ) {
+        id
+        email
+    }
+}

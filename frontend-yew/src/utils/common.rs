@@ -1,7 +1,7 @@
 use chrono::{format::strftime::StrftimeItems, DateTime, Utc};
 use serde_json::Value;
-use wasm_bindgen::JsValue;
 use std::str::FromStr;
+use wasm_bindgen::JsValue;
 
 pub fn format_date(date: &Value, format: &str) -> Result<String, Box<dyn std::error::Error>> {
     let datetime = DateTime::<Utc>::from_str(date.as_str().unwrap())?;
@@ -14,6 +14,11 @@ pub fn format_date(date: &Value, format: &str) -> Result<String, Box<dyn std::er
 
 pub fn is_logged_in() -> bool {
     super::storage::get_pair_value("jwt").is_some()
+}
+
+pub fn log_out() {
+    super::storage::remove_pair("jwt");
+    super::storage::remove_pair("email");
 }
 
 pub fn create_gravatar_url(email: &str, size: i64) -> String {
@@ -43,7 +48,10 @@ pub fn shorter_string(summary: &str, length: usize) -> String {
     if result.len() < summary.len() {
         result.push_str("...");
     } else {
-        web_sys::console::log_2(&JsValue::from_str(&result), &JsValue::from_f64(current_length as f64));
+        web_sys::console::log_2(
+            &JsValue::from_str(&result),
+            &JsValue::from_f64(current_length as f64),
+        );
     }
     result
 }

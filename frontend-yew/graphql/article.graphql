@@ -72,8 +72,74 @@ query ArticleDataBySlug(
     }
   }
 
-  about: userByEmail(
-    email: "by_whycn@outlook.com"
+  about: userById(
+    id: "66307ddc88f9002de74ae7b9"
+  ) {
+    blogName
+    bio
+    website
+  }
+
+  recentArticles: articlesInPosition(
+    username: "-"
+    position: ""
+    limit: 5
+  ) {
+    subject
+    summary
+    slug
+    updatedAt
+    
+    category {
+      name
+      uri
+    }
+  }
+}
+
+
+
+query ArticleDataById(
+  $id: String!
+) {
+  articleById(
+    id: $id
+  ) {
+    id
+    userId
+    subject
+    categoryId
+    summary
+    content
+    contentHtml
+    published
+    top
+    recommended
+    createdAt
+    updatedAt
+
+    user {
+      id
+      username
+      nickname
+      blogName
+    }
+
+    category {
+      id
+      name
+      uri
+    }
+
+    topics {
+      id
+      name
+      uri
+    }
+  }
+
+  about: userById(
+    id: "66307ddc88f9002de74ae7b9"
   ) {
     blogName
     bio

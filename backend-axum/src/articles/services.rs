@@ -1,3 +1,5 @@
+// use std::result;
+
 use futures::stream::StreamExt;
 use mongodb::{
     bson::{doc, from_document, oid::ObjectId, to_document, DateTime, Document},
@@ -5,11 +7,88 @@ use mongodb::{
     Database,
 };
 
-use crate::utils::{common::slugify, constants::GqlResult};
+use crate::utils::{common::slugify, constants::GqlResult, cred::token_data};
 use crate::{topics::models::TopicArticle, users};
 
 // use crate::topics::models::TopicArticle;
 use super::models::{Article, ArticleNew};
+
+pub async fn article_delete(db: Database, article_id: ObjectId, token: &str) -> GqlResult<Article> {
+    let coll = db.collection::<Document>("articles");
+
+    let article_document = coll
+        .find_one(doc! {"_id": article_id}, None)
+        .await
+        .expect("Document not found")
+        .unwrap();
+
+    let article: Article = from_document(article_document)?;
+
+    let token_data = token_data(token).await;
+    if token_data.is_err() {
+        return Err("Token is invalid!".into());
+    }
+    let token_email = token_data.unwrap().claims.email;
+    let user = users::services::user_by_email(db.clone(), &token_email).await?;
+    let user_id = user.id;
+    if user_id.eq(&article.user_id) {
+        coll.delete_one(doc! {"_id": article_id}, None)
+            .await
+            .expect("Failed to delete a MongoDB document!");
+    }
+    Ok(article)
+}
+
+pub async fn article_update(
+    db: Database,
+    article_id: ObjectId,
+    mut article_new: ArticleNew,
+    token: &str,
+) -> GqlResult<Article> {
+    let coll = db.collection::<Document>("articles");
+
+    let article_document = coll
+        .find_one(doc! {"_id": article_id}, None)
+        .await
+        .expect("Document not found")
+        .unwrap();
+
+    let article: Article = from_document(article_document)?;
+
+    let token_data = token_data(token).await;
+    if token_data.is_err() {
+        return Err("Token is invalid!".into());
+    }
+    let token_email = token_data.unwrap().claims.email;
+    let user = users::services::user_by_email(db.clone(), &token_email).await?;
+    let user_id = user.id;
+    if user_id.eq(&article.user_id) {
+        let slug = slugify(&article_new.subject).await;
+
+        let user = users::services::user_by_id(db.clone(), article_new.user_id).await?;
+        let uri = format!("/{}/{}", &user.username, &slug);
+
+        article_new.slug = slug;
+        article_new.uri = uri;
+        // article_new.published = false; // false;
+        // article_new.top = false; // false;
+        // article_new.recommended = false; // false;
+
+        let mut article_new_document = to_document(&article_new)?;
+        let now = DateTime::now();
+        article_new_document.insert("updated_at", now);
+
+        // Insert into a MongoDB collection
+        coll.update_one(
+            doc! {"_id": article_id},
+            doc! {"$set": article_new_document},
+            None,
+        )
+        .await
+        .expect("Failed to update a MongoDB document!");
+    }
+    self::article_by_slug(db, slugify(&article_new.subject).await.as_str()).await
+}
 
 pub async fn article_new(db: Database, mut article_new: ArticleNew) -> GqlResult<Article> {
     let coll = db.collection::<Document>("articles");
@@ -83,6 +162,19 @@ pub async fn article_by_slug(db: Database, slug: &str) -> GqlResult<Article> {
     // let user = users::services::user_by_username(db.clone(), username).await?;
     let article_document = coll
         .find_one(doc! {"slug": slug.to_lowercase()}, None)
+        .await
+        .expect("Document not found")
+        .unwrap();
+
+    let article: Article = from_document(article_document)?;
+    Ok(article)
+}
+
+pub async fn article_by_id(db: Database, article_id: ObjectId) -> GqlResult<Article> {
+    let coll = db.collection::<Document>("articles");
+
+    let article_document = coll
+        .find_one(doc! {"_id": article_id}, None)
         .await
         .expect("Document not found")
         .unwrap();

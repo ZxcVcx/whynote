@@ -78,10 +78,10 @@ pub struct ArticleNew {
     #[graphql(skip)]
     pub uri: String,
     pub content: String,
-    #[graphql(skip)]
+    // #[graphql(skip)]
     pub published: bool,
-    #[graphql(skip)]
+    // #[graphql(skip)]
     pub top: bool,
-    #[graphql(skip)]
+    // #[graphql(skip)]
     pub recommended: bool,
 }

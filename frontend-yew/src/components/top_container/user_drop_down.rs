@@ -1,11 +1,9 @@
-use yew_router::prelude::*;
-use yew::prelude::*;
 use crate::app::MainRoute;
-use crate::{app::ManageRoute, utils::common::create_gravatar_url};
 use crate::utils::storage::{self, get_pair_value};
+use crate::{app::ManageRoute, utils::common::create_gravatar_url};
+use yew::prelude::*;
 use yew::{function_component, html, Html, Properties};
-
-
+use yew_router::prelude::*;
 
 #[derive(PartialEq, Properties)]
 pub struct UserDropDownProps {

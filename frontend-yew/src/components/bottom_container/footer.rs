@@ -9,7 +9,7 @@ pub struct FooterProps {}
 pub fn Footer(props: &FooterProps) -> Html {
     let FooterProps {} = props;
     let back_to_top = {
-        Callback::from( move |_| {
+        Callback::from(move |_| {
             gloo_utils::document_element().set_scroll_top(0);
         })
     };

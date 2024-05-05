@@ -76,6 +76,7 @@ query UserDataByEmail(
         banned
 
         articles(published: true) {
+            id
             subject
             summary
             slug
@@ -91,6 +92,7 @@ query UserDataByEmail(
         }
 
         crafts: articles(published: false) {
+            id
             subject
             summary
             slug

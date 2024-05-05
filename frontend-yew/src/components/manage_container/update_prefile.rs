@@ -1,11 +1,11 @@
 use yew::{function_component, html, Html, Properties};
 
 #[derive(PartialEq, Properties)]
-pub struct ManagePageProps {}
+pub struct UpdateProfileProps {}
 
 #[function_component]
-pub fn ManagePage(props: &ManagePageProps) -> Html {
-    let ManagePageProps {} = props;
+pub fn UpdateProfile(props: &UpdateProfileProps) -> Html {
+    let UpdateProfileProps {} = props;
     html! {
         <div></div>
     }

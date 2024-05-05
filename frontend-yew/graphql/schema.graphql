@@ -29,6 +29,9 @@ input ArticleNew {
   categoryId: ObjectId!
   summary: String!
   content: String!
+  published: Boolean!
+  top: Boolean!
+  recommended: Boolean!
 }
 
 type Category {
@@ -72,17 +75,17 @@ type MutationRoot {
   userUpdateProfile(userNew: UserNew!, token: String!): User!
   wishNew(wishNew: WishNew!): Wish!
   articleNew(articleNew: ArticleNew!): Article!
+  articleDelete(articleId: ObjectId!, token: String!): Article!
+  articleUpdate(
+    articleId: ObjectId!
+    articleNew: ArticleNew!
+    token: String!
+  ): Article!
   categoryNew(categoryNew: CategoryNew!): Category!
   categoryUserNew(categoryUserNew: CategoryUserNew!): CategoryUser!
-  categoryById(id: ObjectId!): Category!
-  categoryBySlug(slug: String!): Category!
-  topics: [Topic!]!
-  topicById(id: ObjectId!): Topic!
-  topicBySlug(slug: String!): Topic!
-  topicsByArticleId(articleId: ObjectId!): [Topic!]!
-  topicsByUserId(userId: ObjectId!): [Topic!]!
-  topicsByUsername(username: String!): [Topic!]!
-  topicsByCategoryId(categoryId: ObjectId!, published: Boolean!): [Topic!]!
+  topicsNew(topicNames: String!): [Topic!]!
+  topicNew(topicNew: TopicNew!): Topic!
+  topicArticleNew(topicArticleNew: TopicArticleNew!): TopicArticle!
 }
 
 scalar ObjectId
@@ -95,6 +98,7 @@ type QueryRoot {
   userSignIn(signature: String!, cred: String!): SignInfo!
   articleByUsernameAndSlug(username: String!, slug: String!): Article!
   articleBySlug(slug: String!): Article!
+  articleById(id: ObjectId!): Article!
   articles(published: Boolean!): [Article!]!
   articlesInPosition(
     username: String!
@@ -136,6 +140,23 @@ type Topic {
   createdAt: DateTime!
   updatedAt: DateTime!
   articles: [Article!]!
+}
+
+type TopicArticle {
+  id: ObjectId!
+  userId: ObjectId!
+  articleId: ObjectId!
+  topicId: ObjectId!
+}
+
+input TopicArticleNew {
+  userId: ObjectId!
+  articleId: ObjectId!
+  topicId: ObjectId!
+}
+
+input TopicNew {
+  name: String!
 }
 
 # Complex Object

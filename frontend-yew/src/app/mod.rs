@@ -9,11 +9,13 @@ use about::About;
 use home::Home;
 
 use crate::components::bottom_container::footer::Footer;
+use crate::components::theme_toggle::ThemeToggle;
 use crate::pages::common::article::ArticlePage;
 use crate::pages::common::category::CategoryPage;
+use crate::pages::common::user::UserPage;
+use crate::pages::manage::editor::EditorPage;
 use crate::pages::manage::profile::ProfilePage;
 use crate::pages::manage::signin::SignIn;
-use crate::pages::common::user::UserPage;
 
 /// App routes
 #[derive(Routable, Debug, Clone, PartialEq, Eq)]
@@ -52,6 +54,8 @@ pub enum ManageRoute {
     NotFound,
     #[at("/manage/content")]
     Content,
+    #[at("/manage/editor/article/:id")]
+    Editor { id: String },
 }
 
 /// Switch app routes
@@ -79,17 +83,18 @@ fn switch_settings(routes: ManageRoute) -> Html {
         ManageRoute::SignIn => html! { <SignIn /> },
         ManageRoute::NotFound => html! {<Redirect<MainRoute> to={MainRoute::PageNotFound}/>},
         ManageRoute::Content => html! {<h1>{"Content"}</h1>},
+        ManageRoute::Editor { id } => html! { <EditorPage {id} /> },
     }
 }
 
 /// Root app component
 #[function_component(App)]
 pub fn app() -> Html {
-
     html! {
         // <HashRouter>
         <BrowserRouter>
             <>
+                <ThemeToggle />
                 <Switch<MainRoute> render={switch_main} />
                 <Footer />
             </>

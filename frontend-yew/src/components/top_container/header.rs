@@ -7,9 +7,8 @@ use super::user_drop_down::UserDropDown;
 
 #[derive(PartialEq, Properties)]
 pub struct HeaderProps {
-    pub login_state: UseStateHandle<bool>
-    // pub archives: Vec<Value>,
-    // pub elsewhere: Vec<Value>,
+    pub login_state: UseStateHandle<bool>, // pub archives: Vec<Value>,
+                                           // pub elsewhere: Vec<Value>,
 }
 
 #[function_component]
@@ -17,7 +16,6 @@ pub fn Header(props: &HeaderProps) -> Html {
     let login_state = props.login_state.clone();
     let title = utils::constants::CFG.get("SITE_TITLE").unwrap().to_string();
     let navigator = use_navigator().expect("Navigator should be available");
-    
 
     let on_sign_in_click = {
         let navigator = navigator.clone();

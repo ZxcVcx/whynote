@@ -1,0 +1,73 @@
+mutation ArticleUpdate (
+  $articleId: String!,
+  $userId: String!,
+  $subject: String!,
+  $categoryId: String!,
+  $summary: String!,
+  $content: String!,
+  $published: Boolean!,
+  $top: Boolean!,
+  $recommended: Boolean!
+  $token: String!
+) {
+  articleUpdate(
+    articleId: $articleId,
+    articleNew: {
+      userId: $userId,
+      subject: $subject,
+      categoryId: $categoryId,
+      summary: $summary,
+      content: $content,
+      published: $published,
+      top: $top,
+      recommended: $recommended
+    },
+    token: $token,
+  ) {
+    id
+    subject
+    summary
+    slug
+  }
+}
+
+mutation ArticleNew (
+  $userId: String!,
+  $subject: String!,
+  $categoryId: String!,
+  $summary: String!,
+  $content: String!,
+  $published: Boolean!,
+  $top: Boolean!,
+  $recommended: Boolean!
+) {
+  articleNew(
+    articleNew: {
+      userId: $userId,
+      subject: $subject,
+      categoryId: $categoryId,
+      summary: $summary,
+      content: $content,
+      published: $published,
+      top: $top,
+      recommended: $recommended
+    }
+  ) {
+    id
+    subject
+    summary
+    slug
+  }
+}
+
+mutation ArticleDelete (
+  $articleId: String!,
+  $token: String!
+) {
+  articleDelete(
+    articleId: $articleId,
+    token: $token
+  ) {
+    id
+  }
+}

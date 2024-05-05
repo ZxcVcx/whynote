@@ -37,3 +37,36 @@ pub async fn fetch_user_data_by_email(email: String) -> Result<Value, FetchError
     let data = super::use_query::fetch_gql_data(query).await?;
     Ok(data)
 }
+
+#[derive(GraphQLQuery)]
+#[graphql(
+    schema_path = "./graphql/schema.graphql",
+    query_path = "./graphql/mutation/user.graphql",
+    response_derives = "Debug, Clone"
+)]
+struct UserUpdateProfile;
+
+pub async fn user_update_profile_data(
+    email: String,
+    username: String,
+    nickname: String,
+    blog_name: String,
+    website: String,
+    bio: String,
+    token: String,
+) -> Result<Value, FetchError> {
+    let veriables = user_update_profile::Variables {
+        email,
+        username,
+        nickname,
+        cred: "anyway".to_string(),
+        blog_name,
+        website,
+        bio,
+        token,
+    };
+    let query_body = UserUpdateProfile::build_query(veriables);
+    let query = json!(query_body);
+    let data = super::use_query::fetch_gql_data(query).await?;
+    Ok(data)
+}

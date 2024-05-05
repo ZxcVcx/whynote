@@ -34,8 +34,8 @@ query CategoryData(
     }
   }
 
-  about: userByEmail(
-    email: "by_whycn@outlook.com"
+  about: userById(
+    id: "66307ddc88f9002de74ae7b9"
   ) {
     blogName
     bio

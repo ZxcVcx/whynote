@@ -1,5 +1,6 @@
 query CategoriesList {
 	categories {
+    id
   	name
     description
     slug
