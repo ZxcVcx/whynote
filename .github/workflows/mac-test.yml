@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        use: actions/checkout@v4
+        uses: actions/checkout@v4
       - name: Build Backend
         working-directory: ./backend-axum
         run: cargo build --release
