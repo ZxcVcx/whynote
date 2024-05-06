@@ -11,21 +11,16 @@ env:
 
 jobs:
   aarch64-apple-darwin-build:
-
+    name: aarch64-apple-darwin-build
     runs-on: macos-latest
-
     steps:
-
     - name: Checkout
       uses: actions/checkout@v4
-    
     - name: Build Backend
       working-directory: ./backend-axum
       run: cargo build --release
-      
     - name: Run tests
       run: cargo test --verbose
-
     - name: Upload aarch64-apple-darwin Build
       uses: actions/upload-artifact@v4
       with:
@@ -34,21 +29,16 @@ jobs:
 
 
   x86_64-unknown-linux-gnu-build:
-
+    name: x86_64-unknown-linux-gnu-build
     runs-on: ubuntu-latest
-
     steps:
-
       - name: Checkout
         use: actions/checkout@v4
-
       - name: Build Backend
         working-directory: ./backend-axum
         run: cargo build --release
-
       - name: Run tests
         run: cargo test --verbose
-
       - name: Upload x86_64-unknown-linux-gnu Build
         uses: actions/upload-artifact@v4
         with:
