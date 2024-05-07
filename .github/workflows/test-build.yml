@@ -1,4 +1,4 @@
-name: mac-test
+name: test-build
 
 on:
   push:
@@ -47,3 +47,20 @@ jobs:
           name: backend-axum-x86_64-unknown-linux-gnu-${{ github.sha }}
           path: ./target/release/backend-axum
 
+  x86_64-pc-windows-msvc-build:
+    name: x86_64-pc-windows-msvc-build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build Backend
+        working-directory: ./backend-axum
+        run: cargo build --release
+      # - name: Run tests
+      #   working-directory: ./backend-axum
+      #   run: cargo test --verbose
+      - name: Upload x86_64-unknown-linux-gnu Build
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-axum-x86_64-pc-windows-msvc-${{ github.sha }}
+          path: ./target/release/backend-axum
