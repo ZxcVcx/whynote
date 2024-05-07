@@ -1,8 +1,8 @@
 use serde_json::Value;
+use wasm_bindgen_futures::spawn_local;
 // use wasm_bindgen_futures::spawn_local;
 use crate::{
-    app::{MainRoute, ManageRoute},
-    utils::common::{format_date, shorter_string},
+    app::{MainRoute, ManageRoute}, services::article::delete_article_data, utils::{common::{format_date, shorter_string}, storage::get_pair_value}
 };
 use yew::prelude::*;
 use yew::{function_component, html, Html, Properties};
@@ -57,6 +57,29 @@ pub fn ContentCard(props: &ContentCardProps) -> Html {
                         navigator.push(&MainRoute::ArticlePage {slug: slug.clone() });
                     })
                 };
+                let on_delete_click = {
+                    // let navigator = navigator.clone();
+                    let article_id = article_id.clone();
+                    Callback::from(move |_| {
+                        // let navigator = navigator.clone();
+                        let article_id = article_id.clone();
+                        spawn_local(async move {
+                            let _data = delete_article_data(article_id.clone(), get_pair_value("jwt").unwrap_or("".to_string())).await;
+                            web_sys::window().unwrap().location().reload().unwrap();
+                            // match data {
+                            //     Ok(_) => {
+                            //         // web_sys::window().unwrap().alert_with_message("Delete successfully!");
+                            //         // navigator.push(&ManageRoute::Profile);
+                            //     }
+                            //     Err(_) => {
+                            //         // navigator.push(&ManageRoute::Profile);
+                            //     }
+                            // }
+
+                        }
+                        )
+                    })
+                };
                 html! {
                     <div class="article-card">
                         <div class="row g-0">
@@ -105,7 +128,7 @@ pub fn ContentCard(props: &ContentCardProps) -> Html {
                                             <Link<ManageRoute> to={ManageRoute::Editor {id: article_id.clone()} } classes="dropdown-item">{"Edit"}</Link<ManageRoute>>
                                         </li>
                                         <li><a class="dropdown-item"
-                                        // onclick={on_delete_click}
+                                        onclick={on_delete_click}
                                         >
                                         {"Delete"}</a></li>
                                     </ul>

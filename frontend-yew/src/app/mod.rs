@@ -5,7 +5,7 @@ pub mod about;
 pub mod home;
 
 // use crate::components::nav::Nav;
-use about::About;
+// use about::About;
 use home::Home;
 
 use crate::components::bottom_container::footer::Footer;
@@ -16,14 +16,15 @@ use crate::pages::common::user::UserPage;
 use crate::pages::manage::editor::EditorPage;
 use crate::pages::manage::profile::ProfilePage;
 use crate::pages::manage::signin::SignIn;
+use crate::pages::manage::new_editor::NewEditorPage;
 
 /// App routes
 #[derive(Routable, Debug, Clone, PartialEq, Eq)]
 pub enum MainRoute {
     #[at("/")]
     Home,
-    #[at("/about")]
-    About,
+    // #[at("/about")]
+    // About,
     #[at("/manage")]
     ManageRoot,
     #[at("/manage/*")]
@@ -56,13 +57,15 @@ pub enum ManageRoute {
     Content,
     #[at("/manage/editor/article/:id")]
     Editor { id: String },
+    #[at("/manage/editor/new")]
+    NewEditor,
 }
 
 /// Switch app routes
 pub fn switch_main(routes: MainRoute) -> Html {
     match routes.clone() {
         MainRoute::Home => html! { <Home /> },
-        MainRoute::About => html! { <About /> },
+        // MainRoute::About => html! { <About /> },
         // MainRoute::ManageRoot => html! { <Redirect<ManageRoute> to={ManageRoute::Profile} /> },
         MainRoute::ManageRoot | MainRoute::Manage => {
             html! { <Switch<ManageRoute> render={switch_settings} /> }
@@ -84,6 +87,7 @@ fn switch_settings(routes: ManageRoute) -> Html {
         ManageRoute::NotFound => html! {<Redirect<MainRoute> to={MainRoute::PageNotFound}/>},
         ManageRoute::Content => html! {<h1>{"Content"}</h1>},
         ManageRoute::Editor { id } => html! { <EditorPage {id} /> },
+        ManageRoute::NewEditor => html! { <NewEditorPage />},
     }
 }
 

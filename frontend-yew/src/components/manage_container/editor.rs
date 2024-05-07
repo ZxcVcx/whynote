@@ -8,7 +8,7 @@ use yew::{function_component, html, Html, Properties};
 use yew_router::prelude::*;
 
 use crate::app::ManageRoute;
-use crate::services::article::{delete_article_data, update_article_data};
+use crate::services::article::{delete_article_data, new_article_data, update_article_data};
 use crate::services::categories::fetch_categories_list;
 use crate::utils::storage::get_pair_value;
 
@@ -194,20 +194,48 @@ pub fn Editor(props: &EditorProps) -> Html {
             let user_id = user_id.clone();
             spawn_local(async move {
                 let token = get_pair_value("jwt").unwrap();
-                let data = update_article_data(
-                    article_id.to_string().clone(),
-                    user_id.to_string().clone(),
-                    subject.clone(),
-                    (*category_id).clone(),
-                    (*summary).clone(),
-                    (*content).clone(),
-                    true,
-                    *top.clone(),
-                    *recommended.clone(),
-                    token,
-                )
-                .await
-                .unwrap();
+                let new_flag = article_id.is_empty();
+                let data = match new_flag {
+                    true => new_article_data(
+                        user_id.to_string().clone(),
+                        subject.clone(),
+                        (*category_id).clone(),
+                        (*summary).clone(),
+                        (*content).clone(),
+                        true,
+                        *top.clone(),
+                        *recommended.clone(),
+                    )
+                    .await.unwrap(),
+                    false => update_article_data(
+                        "".to_string(),
+                        user_id.to_string().clone(),
+                        subject.clone(),
+                        (*category_id).clone(),
+                        (*summary).clone(),
+                        (*content).clone(),
+                        true,
+                        *top.clone(),
+                        *recommended.clone(),
+                        token,
+                    )
+                    .await
+                    .unwrap(),
+                };
+                // let data = update_article_data(
+                //     article_id.to_string().clone(),
+                //     user_id.to_string().clone(),
+                //     subject.clone(),
+                //     (*category_id).clone(),
+                //     (*summary).clone(),
+                //     (*content).clone(),
+                //     true,
+                //     *top.clone(),
+                //     *recommended.clone(),
+                //     token,
+                // )
+                // .await
+                // .unwrap();
                 web_sys::console::log_1(&JsValue::from_str(&data.to_string()));
             });
             // web_sys::console::log_1(&JsValue::from_str(&markdown.clone()));
@@ -243,20 +271,34 @@ pub fn Editor(props: &EditorProps) -> Html {
             let user_id = user_id.clone();
             spawn_local(async move {
                 let token = get_pair_value("jwt").unwrap();
-                let data = update_article_data(
-                    article_id.to_string().clone(),
-                    user_id.to_string().clone(),
-                    subject.clone(),
-                    (*category_id).clone(),
-                    (*summary).clone(),
-                    (*content).clone(),
-                    false,
-                    *top.clone(),
-                    *recommended.clone(),
-                    token,
-                )
-                .await
-                .unwrap();
+                let new_flag = article_id.is_empty();
+                let data = match new_flag {
+                    true => new_article_data(
+                        user_id.to_string().clone(),
+                        subject.clone(),
+                        (*category_id).clone(),
+                        (*summary).clone(),
+                        (*content).clone(),
+                        false,
+                        *top.clone(),
+                        *recommended.clone(),
+                    )
+                    .await.unwrap(),
+                    false => update_article_data(
+                        "".to_string(),
+                        user_id.to_string().clone(),
+                        subject.clone(),
+                        (*category_id).clone(),
+                        (*summary).clone(),
+                        (*content).clone(),
+                        false,
+                        *top.clone(),
+                        *recommended.clone(),
+                        token,
+                    )
+                    .await
+                    .unwrap(),
+                };
                 web_sys::console::log_1(&JsValue::from_str(&data.to_string()));
             });
             // web_sys::console::log_1(&JsValue::from_str(&markdown.clone()));
