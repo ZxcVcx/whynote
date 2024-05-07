@@ -40,7 +40,7 @@ jobs:
  
       - name: Build Binary
         working-directory: ./backend-axum
-        run: cargo build --verbose --locked --release --target ${{ matrix.target }}
+        run: cargo build --release --target ${{ matrix.target }}
  
       - name: Release Binary
         shell: bash
