@@ -2,18 +2,18 @@ query ArticleData(
   $username: String!, 
   $slug: String!
 ) {
-  randomWish(
-    username: $username
-  ) {
-    aphorism
-    author
+  # randomWish(
+  #   username: $username
+  # ) {
+  #   aphorism
+  #   author
 
-    user {
-      username
-      nickname
-      blogName
-    }
-  }
+  #   user {
+  #     username
+  #     nickname
+  #     blogName
+  #   }
+  # }
 
   articleByUsernameAndSlug(
     username: $username, 
@@ -72,9 +72,7 @@ query ArticleDataBySlug(
     }
   }
 
-  about: userById(
-    id: "66307ddc88f9002de74ae7b9"
-  ) {
+  about: defaultUser {
     blogName
     bio
     website
@@ -138,13 +136,12 @@ query ArticleDataById(
     }
   }
 
-  about: userById(
-    id: "66307ddc88f9002de74ae7b9"
-  ) {
+  about: defaultUser {
     blogName
     bio
     website
   }
+
 
   recentArticles: articlesInPosition(
     username: "-"

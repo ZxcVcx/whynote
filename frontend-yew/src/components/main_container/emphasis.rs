@@ -11,6 +11,9 @@ pub struct EmphasisProps {
 
 #[function_component]
 pub fn Emphasis(props: &EmphasisProps) -> Html {
+    if props.emphasis.is_null() {
+        return html! {};
+    }
     let title = props.emphasis.get("subject").unwrap().as_str().unwrap();
     let summary = props.emphasis.get("summary").unwrap().as_str().unwrap();
     let slug = props

@@ -3,9 +3,13 @@ body {
   height: 100%;
 }
 
-.form-signin {
-  max-width: 330px;
+.form-signin, .form-signup {
+  max-width: 400px;
   padding: 1rem;
+}
+
+.form-signin {
+  z-index: 2;
 }
 
 .form-signin .form-floating:focus-within {

@@ -61,6 +61,7 @@ pub fn SignIn(props: &SignInProps) -> Html {
                     Err(e) => {
                         // log::error!("Error: {:?}", e);
                         web_sys::console::log_1(&format!("Error: {:?}", e).into());
+                        // error.set(e);
                     }
                 }
             });
@@ -68,9 +69,9 @@ pub fn SignIn(props: &SignInProps) -> Html {
     };
 
     html! {
-        <>
-        <main class="form-signin w-100 m-auto">
-            <form onsubmit={on_submit}>
+        <div class="w-100 h-100 bg-body-tertiary">
+        <main class="bg-body-tertiary form-signin h-100 w-100 m-auto d-flex align-items-center justify-content-center">
+            <form class="w-100" onsubmit={on_submit}>
                 // <img class="mb-4" src="../assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
                  <h1 class="h3 mb-3 fw-normal">{"Please sign in"}</h1>
 
@@ -104,6 +105,6 @@ pub fn SignIn(props: &SignInProps) -> Html {
                 // <p class="mt-5 mb-3 text-body-secondary">&copy; 2017–2024</p>
             </form>
         </main>
-        </>
+        </div>
     }
 }

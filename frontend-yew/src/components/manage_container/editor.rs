@@ -206,9 +206,10 @@ pub fn Editor(props: &EditorProps) -> Html {
                         *top.clone(),
                         *recommended.clone(),
                     )
-                    .await.unwrap(),
+                    .await
+                    .unwrap(),
                     false => update_article_data(
-                        "".to_string(),
+                        article_id.to_string(),
                         user_id.to_string().clone(),
                         subject.clone(),
                         (*category_id).clone(),
@@ -283,9 +284,10 @@ pub fn Editor(props: &EditorProps) -> Html {
                         *top.clone(),
                         *recommended.clone(),
                     )
-                    .await.unwrap(),
+                    .await
+                    .unwrap(),
                     false => update_article_data(
-                        "".to_string(),
+                        article_id.to_string(),
                         user_id.to_string().clone(),
                         subject.clone(),
                         (*category_id).clone(),

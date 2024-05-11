@@ -34,9 +34,7 @@ query CategoryData(
     }
   }
 
-  about: userById(
-    id: "66307ddc88f9002de74ae7b9"
-  ) {
+  about: defaultUser {
     blogName
     bio
     website

@@ -7,8 +7,7 @@ use super::user_drop_down::UserDropDown;
 
 #[derive(PartialEq, Properties)]
 pub struct HeaderProps {
-    pub login_state: UseStateHandle<bool>, // pub archives: Vec<Value>,
-                                           // pub elsewhere: Vec<Value>,
+    pub login_state: UseStateHandle<bool>,
 }
 
 #[function_component]
@@ -22,10 +21,10 @@ pub fn Header(props: &HeaderProps) -> Html {
         Callback::from(move |_| navigator.push(&ManageRoute::SignIn))
     };
 
-    let on_sign_up_click = {
-        let navigator = navigator.clone();
-        Callback::from(move |_| navigator.push(&ManageRoute::SignUp))
-    };
+    // let on_init_click = {
+    //     let navigator = navigator.clone();
+    //     Callback::from(move |_| navigator.push(&ManageRoute::Init))
+    // };
     // let title = "Blog Title".to_string();
     html! {
     <header class="border-bottom lh-1 py-3">
@@ -52,12 +51,12 @@ pub fn Header(props: &HeaderProps) -> Html {
                 // </a>
               }
             } else {
-                html! {
-                    <div class="btn-group me-2">
-                        <button type="button" onclick={on_sign_in_click} class="btn btn-sm btn-outline-secondary">{"Sign In"}</button>
-                        <button type="button" onclick={on_sign_up_click}class="btn btn-sm btn-outline-secondary">{"Sign Up"}</button>
-                    </div>
-                }
+               html! {
+                   <div class="btn-group me-2">
+                       <button type="button" onclick={on_sign_in_click} class="btn btn-sm btn-outline-secondary">{"Sign In"}</button>
+                       // <button type="button" onclick={on_init_click}class="btn btn-sm btn-outline-secondary">{"Sign Up"}</button>
+                   </div>
+               }
             }
         }
 

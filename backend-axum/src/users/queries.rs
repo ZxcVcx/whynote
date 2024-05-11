@@ -43,4 +43,9 @@ impl UserQuery {
         let db = ctx.data_unchecked::<DataSource>().db.clone();
         users::services::user_sign_in(db, &signature, &cred).await
     }
+
+    async fn default_user(&self, ctx: &Context<'_>) -> GqlResult<User> {
+        let db = ctx.data_unchecked::<DataSource>().db.clone();
+        users::services::default_user(db).await
+    }
 }

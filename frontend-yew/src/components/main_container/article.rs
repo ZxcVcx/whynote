@@ -18,11 +18,13 @@ pub fn Article(props: &ArticleProps) -> Html {
     content_html_section.set_inner_html(content_html);
     let content_html_node = Html::VRef(content_html_section.into());
     html! {
+        <>
         <article class="blog-post markdown-body">
             <h1 class="display-5 link-body-emphasis mb-1">{ article["subject"].as_str().unwrap() }</h1>
             <p class="blog-post-meta">{ format!("{} by {}", updated_at, article["user"]["username"].as_str().unwrap()) }</p>
             { content_html_node }
-            // <hr />
+            <hr />
         </article>
+        </>
     }
 }

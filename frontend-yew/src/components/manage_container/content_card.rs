@@ -2,7 +2,12 @@ use serde_json::Value;
 use wasm_bindgen_futures::spawn_local;
 // use wasm_bindgen_futures::spawn_local;
 use crate::{
-    app::{MainRoute, ManageRoute}, services::article::delete_article_data, utils::{common::{format_date, shorter_string}, storage::get_pair_value}
+    app::{MainRoute, ManageRoute},
+    services::article::delete_article_data,
+    utils::{
+        common::{format_date, shorter_string},
+        storage::get_pair_value,
+    },
 };
 use yew::prelude::*;
 use yew::{function_component, html, Html, Properties};

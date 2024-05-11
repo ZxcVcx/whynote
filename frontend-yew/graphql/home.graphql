@@ -1,16 +1,16 @@
 query HomeData {
-  randomWish(
-    username: "-"
-  ) {
-    aphorism
-    author
+  # randomWish(
+  #   username: "-"
+  # ) {
+  #   aphorism
+  #   author
 
-    user {
-      username
-      nickname
-      blogName
-    }
-  }
+  #   user {
+  #     username
+  #     nickname
+  #     blogName
+  #   }
+  # }
 
   topArticles: articlesInPosition(
     username: "-"
@@ -67,13 +67,12 @@ query HomeData {
     }
   }
 
-  about: userById(
-    id: "66307ddc88f9002de74ae7b9"
-  ) {
+  about: defaultUser {
     blogName
     bio
     website
   }
+
 
   recentArticles: articlesInPosition(
     username: "-"

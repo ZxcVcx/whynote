@@ -70,11 +70,16 @@ pub async fn user_by_id(db: Database, id: ObjectId) -> GqlResult<User> {
     let user_document = coll
         .find_one(filter, None)
         .await
-        .expect("Document not found")
-        .unwrap();
+        .expect("Document not found");
 
-    let user = bson::from_document(user_document)?;
-    Ok(user)
+    match user_document {
+        Some(user_document) => {
+            let user = bson::from_document(user_document)?;
+            Ok(user)
+        }
+        None => Err(Error::new("User not found")
+            .extend_with(|err, eev| eev.set("details", err.message.as_str()))),
+    }
 }
 
 // get user info by username
@@ -116,10 +121,8 @@ pub async fn user_by_email(db: Database, email: &str) -> GqlResult<User> {
                     .extend_with(|_, e| e.set("details", "Email does not exist"))),
             }
         }
-        Err(_) => {
-            Err(Error::new("2-email")
-                .extend_with(|_, e| e.set("details", "Error querying MongoDB")))
-        }
+        Err(_) => Err(Error::new("Error searching mongodb")
+            .extend_with(|_, e| e.set("details", "Error querying MongoDB"))),
     }
 }
 
@@ -279,5 +282,32 @@ pub async fn user_update_profile(db: Database, user_new: UserNew, token: &str) -
         }
     } else {
         Err(Error::new("No token").extend_with(|err, eev| eev.set("details", err.message.as_str())))
+    }
+}
+
+pub async fn default_user(db: Database) -> GqlResult<User> {
+    let coll = db.collection::<Document>("users");
+
+    // sort users by created_at
+    let find_options = mongodb::options::FindOneOptions::builder()
+        .sort(doc! { "created_at": -1 })
+        .build();
+
+    let user_document = coll
+        .find_one(None, find_options)
+        .await
+        .expect("Document not found");
+
+    match user_document {
+        Some(user_document) => {
+            let user = bson::from_document(user_document)?;
+            Ok(user)
+        }
+        None => Err(Error::new("Default user not found").extend_with(|_, eev| {
+            eev.set(
+                "details",
+                "Default user not found, May be the database is empty",
+            )
+        })),
     }
 }

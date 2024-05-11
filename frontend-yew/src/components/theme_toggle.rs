@@ -1,19 +1,21 @@
 use yew::prelude::*;
 use yew::{function_component, html, Html, Properties};
 
+
 #[derive(PartialEq, Properties)]
 pub struct ThemeToggleProps {}
 
 #[function_component]
 pub fn ThemeToggle(props: &ThemeToggleProps) -> Html {
     let ThemeToggleProps {} = props;
-    let selected_theme = use_state(|| "auto".to_string());
+    let selected_theme = use_state(|| "media-query".to_string());
 
     use_effect_with((), {
         let selected_theme = selected_theme.clone();
         move |_| {
             let html = gloo_utils::document_element();
             let theme = (*selected_theme).clone();
+
             html.set_attribute("data-bs-theme", theme.as_str()).unwrap();
             || {}
         }

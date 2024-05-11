@@ -12,11 +12,13 @@ use crate::components::bottom_container::footer::Footer;
 use crate::components::theme_toggle::ThemeToggle;
 use crate::pages::common::article::ArticlePage;
 use crate::pages::common::category::CategoryPage;
+use crate::pages::common::test::Test;
 use crate::pages::common::user::UserPage;
 use crate::pages::manage::editor::EditorPage;
+use crate::pages::manage::init::InitPage;
+use crate::pages::manage::new_editor::NewEditorPage;
 use crate::pages::manage::profile::ProfilePage;
 use crate::pages::manage::signin::SignIn;
-use crate::pages::manage::new_editor::NewEditorPage;
 
 /// App routes
 #[derive(Routable, Debug, Clone, PartialEq, Eq)]
@@ -25,6 +27,8 @@ pub enum MainRoute {
     Home,
     // #[at("/about")]
     // About,
+    #[at("/test")]
+    Test,
     #[at("/manage")]
     ManageRoot,
     #[at("/manage/*")]
@@ -46,8 +50,8 @@ pub enum ManageRoute {
     Manage,
     #[at("/manage/profile")]
     Profile,
-    #[at("/manage/signup")]
-    SignUp,
+    #[at("/manage/init")]
+    Init,
     #[at("/manage/signin")]
     SignIn,
     #[not_found]
@@ -75,6 +79,7 @@ pub fn switch_main(routes: MainRoute) -> Html {
         MainRoute::CategoryPage { slug } => html! { <CategoryPage {slug} /> },
         MainRoute::UserPage { username } => html! { <UserPage {username} /> },
         MainRoute::ArticlePage { slug } => html! { <ArticlePage {slug} /> },
+        MainRoute::Test => html! { <Test /> },
     }
 }
 
@@ -82,7 +87,7 @@ fn switch_settings(routes: ManageRoute) -> Html {
     match routes.clone() {
         ManageRoute::Manage => html! {<h1>{"Manage"}</h1>},
         ManageRoute::Profile => html! { <ProfilePage /> },
-        ManageRoute::SignUp => html! {<h1>{"signup"}</h1>},
+        ManageRoute::Init => html! { <InitPage /> },
         ManageRoute::SignIn => html! { <SignIn /> },
         ManageRoute::NotFound => html! {<Redirect<MainRoute> to={MainRoute::PageNotFound}/>},
         ManageRoute::Content => html! {<h1>{"Content"}</h1>},

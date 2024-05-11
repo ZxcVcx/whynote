@@ -1,0 +1,116 @@
+mutation RegisterData(
+  $email: String!
+  $username: String!
+  $nickname: String!
+  $cred: String!
+  $blogName: String!
+  $website: String!
+  $bio: String!
+) {
+  userRegister(
+    userNew: {
+      email: $email
+      username: $username
+      nickname: $nickname
+      cred: $cred
+      blogName: $blogName
+      website: $website
+      bio: $bio
+    }
+  ) {
+    id
+    email
+    username
+    nickname
+  }
+}
+
+query UserTokenData(
+  $signature: String!
+  $password: String!
+) {
+  userSignIn(
+    signature: $signature
+    cred: $password
+  ) {
+    email
+    username
+    token
+  }
+}
+
+mutation CategoryNewData(
+  $name: String!
+  $description: String!
+) {
+  categoryNew(
+    categoryNew: {
+      name: $name
+      description: $description
+    }
+  ) {
+    id
+    name
+    description
+  }
+}
+
+mutation CategoryUserNewData(
+  $userId: String!
+  $categoryId: String!
+) {
+  categoryUserNew(
+    categoryUserNew: {
+      userId: $userId
+      categoryId: $categoryId
+    }
+  ) {
+    id
+    userId
+    categoryId
+  }
+}
+
+mutation TopicsNewData(
+  $topicNames: String!
+) {
+  topicsNew(
+      topicNames: $topicNames
+  ) {
+    id
+    name
+    # description
+  }
+}
+
+mutation ArticleNewData(
+  $userId: String!
+  $subject: String!
+  $categoryId: String!
+  $summary: String!
+  $content: String!
+  $published: Boolean!
+  $top: Boolean!
+  $recommended: Boolean!
+) {
+  articleNew(
+    articleNew: {
+      userId: $userId
+      subject: $subject
+      categoryId: $categoryId
+      summary: $summary
+      content: $content
+      published: $published
+      top: $top
+      recommended: $recommended
+    }
+  ) {
+    id
+    userId
+    categoryId
+    subject
+    summary
+    slug
+    content
+  }
+}

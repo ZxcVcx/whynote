@@ -19,7 +19,6 @@ async fn articles_query() -> Value {
     let veriables = articles_data::Variables {};
     let query_body = ArticlesData::build_query(veriables);
     let query = json!(query_body);
-
     query
 }
 

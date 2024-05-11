@@ -1,7 +1,7 @@
 {
-    "emmet.includeLanguages": {
-        "rust": "html",
-    },
+    // "emmet.includeLanguages": {
+    //     "rust": "html",
+    // },
     "VSCodeCounter.exclude": [
         "**/.gitignore",
         "**/.vscode/**",

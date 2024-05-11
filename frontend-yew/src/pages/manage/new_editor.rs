@@ -1,11 +1,11 @@
 // use std::clone;
 
+use serde::Deserialize;
+use serde::Serialize;
 use wasm_bindgen::JsValue;
 use yew::prelude::*;
 use yew::{function_component, html, Html};
 use yew_hooks::prelude::*;
-use serde::Deserialize;
-use serde::Serialize;
 // use yew_router::prelude::*;
 
 use crate::components::manage_container::editor::Editor;
@@ -13,7 +13,6 @@ use crate::components::manage_container::editor::Editor;
 use crate::services::use_query::FetchError;
 use crate::services::user::fetch_user_data_by_email;
 use crate::utils::storage::get_pair_value;
-
 
 #[derive(Serialize, Deserialize)]
 struct User {
@@ -60,21 +59,19 @@ struct Article {
     user: User,
     category: Category,
     topics: Vec<Topics>,
-
 }
 
 #[function_component]
 pub fn NewEditorPage() -> Html {
-    let email:Result<String, FetchError> = match get_pair_value("email") {
+    let email: Result<String, FetchError> = match get_pair_value("email") {
         Some(email) => Ok(email),
-        None => Err(FetchError::from(JsValue::from_str("email not found")))
+        None => Err(FetchError::from(JsValue::from_str("email not found"))),
     };
     if let Some(error) = email.err() {
-        return html! {error}
+        return html! {error};
     }
-    let logged_in_user_data = use_async(async move {
-        fetch_user_data_by_email(get_pair_value("email").unwrap()).await
-    });
+    let logged_in_user_data =
+        use_async(async move { fetch_user_data_by_email(get_pair_value("email").unwrap()).await });
 
     let cloned_logged_in_user_data = logged_in_user_data.clone();
 

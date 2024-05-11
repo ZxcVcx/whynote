@@ -58,7 +58,12 @@ pub async fn category_user_new(
         .await
         .unwrap();
     if let Some(_document) = exist_document {
-        println!("MongoDB document is exist!");
+        // println!("MongoDB document is exist!");
+        tracing::info!(
+            user_id = &category_user_new.user_id.to_hex(),
+            category_id = &category_user_new.category_id.to_hex(),
+            "CategoryUser document is exist!"
+        );
     } else {
         let category_user_new_document = to_document(&category_user_new)?;
         // Insert into a MongoDB collection
@@ -138,7 +143,7 @@ pub async fn categories_by_username(db: Database, username: &str) -> GqlResult<V
     self::categories_by_user_id(db, user.id).await
 }
 
-// get category by its slug
+// get category by its id
 pub async fn category_by_id(db: Database, id: ObjectId) -> GqlResult<Category> {
     let coll = db.collection::<Document>("categories");
 

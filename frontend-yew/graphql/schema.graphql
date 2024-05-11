@@ -96,6 +96,7 @@ type QueryRoot {
   userById(id: ObjectId!): User!
   userByUsername(username: String!): User!
   userSignIn(signature: String!, cred: String!): SignInfo!
+  defaultUser: User!
   articleByUsernameAndSlug(username: String!, slug: String!): Article!
   articleBySlug(slug: String!): Article!
   articleById(id: ObjectId!): Article!

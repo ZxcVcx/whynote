@@ -1,7 +1,7 @@
 use crate::{app::ManageRoute, components::manage_container::content_card::ContentCard};
 use serde_json::Value;
-use yew_router::prelude::*;
 use yew::{function_component, html, Html, Properties};
+use yew_router::prelude::*;
 
 #[derive(PartialEq, Properties)]
 pub struct ContentsListProps {

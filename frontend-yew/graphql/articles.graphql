@@ -1,16 +1,16 @@
 query ArticlesData {
-  randomWish(
-    username: "-"
-  ) {
-    aphorism
-    author
+  # randomWish(
+  #   username: "-"
+  # ) {
+  #   aphorism
+  #   author
 
-    user {
-      username
-      nickname
-      blogName
-    }
-  }
+  #   user {
+  #     username
+  #     nickname
+  #     blogName
+  #   }
+  # }
 
   articles(
     published: true

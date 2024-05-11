@@ -6,7 +6,7 @@ use super::sticky::Sticky;
 
 #[derive(PartialEq, Properties)]
 pub struct MainContainerProps {
-    pub recommanded: Vec<Value>,
+    pub recommended: Vec<Value>,
     pub about: Value,
     pub recent: Vec<Value>,
     // pub archives: Vec<Value>,
@@ -17,7 +17,7 @@ pub struct MainContainerProps {
 pub fn MainContainer(props: &MainContainerProps) -> Html {
     html! {
         <div class="row g-5">
-            <Articles articles={props.recommanded.clone()}/>
+            <Articles articles={props.recommended.clone()}/>
             // nav
             <Sticky
                 about={props.about.clone()}

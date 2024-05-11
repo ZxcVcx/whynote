@@ -8,9 +8,10 @@ use crate::components::main_container::secondary::Secondary;
 
 #[derive(PartialEq, Properties)]
 pub struct HomePageProps {
-    pub emphasis: Value,
-    pub secondary: Vec<Value>,
-    pub recommanded: Vec<Value>,
+    // pub emphasis: Value,
+    // pub secondary: Vec<Value>,
+    pub top: Vec<Value>,
+    pub recommended: Vec<Value>,
     pub about: Value,
     pub recent: Vec<Value>,
     // pub archives: Vec<Value>,
@@ -23,16 +24,57 @@ pub fn HomePage(props: &HomePageProps) -> Html {
         <>
         <TopContainer />
         <main class="container">
-            <Emphasis emphasis={props.emphasis.clone()}/>
-            <Secondary secondary={props.secondary.clone()}/>
-            // <Articles articles={props.recommanded.clone()}/>
-            <MainContainer
-                recommanded={props.recommanded.clone()}
-                about={props.about.clone()}
-                recent={props.recent.clone()}
-                // archives={props.archives.clone()}
-                // elsewhere={props.elsewhere.clone()}
-            />
+            {
+                if props.top.len() < 1 {
+                    html! {
+                        <MainContainer
+                            recommended={props.recommended.clone()}
+                            about={props.about.clone()}
+                            recent={props.recent.clone()}
+                            // archives={props.archives.clone()}
+                            // elsewhere={props.elsewhere.clone()}
+                        />
+                    }
+                } else if props.top.len() < 3 {
+                    html! {
+                        <>
+                            <Emphasis emphasis={props.top[0].clone()}/>
+                            <MainContainer
+                                recommended={props.recommended.clone()}
+                                about={props.about.clone()}
+                                recent={props.recent.clone()}
+                                // archives={props.archives.clone()}
+                                // elsewhere={props.elsewhere.clone()}
+                            />
+                        </>
+                    }
+                } else {
+                    html! {
+                        <>
+                            <Emphasis emphasis={props.top[0].clone()}/>
+                            <Secondary secondary={props.top[1..].to_vec()}/>
+
+                            <MainContainer
+                                recommended={props.recommended.clone()}
+                                about={props.about.clone()}
+                                recent={props.recent.clone()}
+                                // archives={props.archives.clone()}
+                                // elsewhere={props.elsewhere.clone()}
+                            />
+                        </>
+                    }
+                }
+            }
+            // // <Emphasis emphasis={props.emphasis.clone()}/>
+            // // <Secondary secondary={props.secondary.clone()}/>
+            // // <Articles articles={props.recommended.clone()}/>
+            // <MainContainer
+            //     recommended={props.recommended.clone()}
+            //     about={props.about.clone()}
+            //     recent={props.recent.clone()}
+            //     // archives={props.archives.clone()}
+            //     // elsewhere={props.elsewhere.clone()}
+            // />
         </main>
         </>
     }
