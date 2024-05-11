@@ -1,11 +1,11 @@
-use yew::prelude::*;
-use yew::{function_component, html, Html, Properties};
-use yew_hooks::prelude::*;
 use crate::components::main_container::article::Article;
 use crate::components::main_container::sticky::Sticky;
 use crate::components::top_container::TopContainer;
 use crate::services::article::fetch_article_data_by_slug;
 use crate::utils::constants::CFG;
+use yew::prelude::*;
+use yew::{function_component, html, Html, Properties};
+use yew_hooks::prelude::*;
 
 #[derive(PartialEq, Properties)]
 pub struct ArticlePageProps {
@@ -14,7 +14,6 @@ pub struct ArticlePageProps {
 
 #[function_component]
 pub fn ArticlePage(props: &ArticlePageProps) -> Html {
-
     let slug = props.slug.clone();
     let container_ref = use_node_ref();
 
@@ -22,27 +21,64 @@ pub fn ArticlePage(props: &ArticlePageProps) -> Html {
 
     let effect_article_state = article_state.clone();
 
-    
     let ref_clone = container_ref.clone();
 
     let load_giscus_widget = || {
         if let Some(container) = ref_clone.cast::<web_sys::HtmlDivElement>() {
             container.set_inner_html("");
 
-            let widget = gloo_utils::document().create_element("giscus-widget").unwrap();
+            let widget = gloo_utils::document()
+                .create_element("giscus-widget")
+                .unwrap();
             widget.set_attribute("id", "comments").unwrap();
-            widget.set_attribute("repo", CFG.get("COMMENT_REPO").unwrap().as_str()).unwrap();
-            widget.set_attribute("repoid", CFG.get("COMMENT_REPO_ID").unwrap().as_str()).unwrap();
-            widget.set_attribute("category", CFG.get("COMMENT_CATEGORY").unwrap().as_str()).unwrap();
-            widget.set_attribute("categoryid", CFG.get("COMMENT_CATEGORY_ID").unwrap().as_str()).unwrap();
-            widget.set_attribute("mapping", CFG.get("COMMENT_MAPPING").unwrap().as_str()).unwrap();
-            widget.set_attribute("strict", CFG.get("COMMENT_STRICT").unwrap().as_str()).unwrap();
-            widget.set_attribute("reactionsenabled", CFG.get("COMMENT_REACTIONS_ENABLED").unwrap().as_str()).unwrap();
-            widget.set_attribute("emitmetadata", CFG.get("COMMENT_EMIT_METADATA").unwrap().as_str()).unwrap();
-            widget.set_attribute("inputposition", CFG.get("COMMENT_INPUT_POSITION").unwrap().as_str()).unwrap();
-            widget.set_attribute("theme", CFG.get("COMMENT_THEME").unwrap().as_str()).unwrap();
-            widget.set_attribute("lang", CFG.get("COMMENT_LANG").unwrap().as_str()).unwrap();
-            widget.set_attribute("loading", CFG.get("COMMENT_LOADING").unwrap().as_str()).unwrap();
+            widget
+                .set_attribute("repo", CFG.get("COMMENT_REPO").unwrap().as_str())
+                .unwrap();
+            widget
+                .set_attribute("repoid", CFG.get("COMMENT_REPO_ID").unwrap().as_str())
+                .unwrap();
+            widget
+                .set_attribute("category", CFG.get("COMMENT_CATEGORY").unwrap().as_str())
+                .unwrap();
+            widget
+                .set_attribute(
+                    "categoryid",
+                    CFG.get("COMMENT_CATEGORY_ID").unwrap().as_str(),
+                )
+                .unwrap();
+            widget
+                .set_attribute("mapping", CFG.get("COMMENT_MAPPING").unwrap().as_str())
+                .unwrap();
+            widget
+                .set_attribute("strict", CFG.get("COMMENT_STRICT").unwrap().as_str())
+                .unwrap();
+            widget
+                .set_attribute(
+                    "reactionsenabled",
+                    CFG.get("COMMENT_REACTIONS_ENABLED").unwrap().as_str(),
+                )
+                .unwrap();
+            widget
+                .set_attribute(
+                    "emitmetadata",
+                    CFG.get("COMMENT_EMIT_METADATA").unwrap().as_str(),
+                )
+                .unwrap();
+            widget
+                .set_attribute(
+                    "inputposition",
+                    CFG.get("COMMENT_INPUT_POSITION").unwrap().as_str(),
+                )
+                .unwrap();
+            widget
+                .set_attribute("theme", CFG.get("COMMENT_THEME").unwrap().as_str())
+                .unwrap();
+            widget
+                .set_attribute("lang", CFG.get("COMMENT_LANG").unwrap().as_str())
+                .unwrap();
+            widget
+                .set_attribute("loading", CFG.get("COMMENT_LOADING").unwrap().as_str())
+                .unwrap();
 
             container.append_child(&widget).unwrap();
         }

@@ -21,22 +21,20 @@ pub fn InitPage(props: &InitPageProps) -> Html {
 
     let navigator_clone = navigator.clone();
 
-    use_effect_with((),
-        move |_| {
-            let navigator = navigator_clone.clone();
-            spawn_local(async move {
-                let navigator = navigator.clone();
-                let data = fetch_articles_data().await;
-                match data {
-                    Ok(_) => {
-                        navigator.clone().push(&MainRoute::Home);
-                    }
-                    Err(_) => {}
+    use_effect_with((), move |_| {
+        let navigator = navigator_clone.clone();
+        spawn_local(async move {
+            let navigator = navigator.clone();
+            let data = fetch_articles_data().await;
+            match data {
+                Ok(_) => {
+                    navigator.clone().push(&MainRoute::Home);
                 }
-            });
-            || ()
-        }
-    );
+                Err(_) => {}
+            }
+        });
+        || ()
+    });
 
     let user_new_token_state = use_state(|| UserNewToken::empty());
     let cetegories_data_state: yew::prelude::UseStateHandle<Vec<CategoryNewType>> =

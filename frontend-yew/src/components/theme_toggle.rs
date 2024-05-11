@@ -1,7 +1,6 @@
 use yew::prelude::*;
 use yew::{function_component, html, Html, Properties};
 
-
 #[derive(PartialEq, Properties)]
 pub struct ThemeToggleProps {}
 
