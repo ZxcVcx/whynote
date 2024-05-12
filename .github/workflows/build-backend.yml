@@ -1,4 +1,4 @@
-name: build
+name: build-backend
 on: [push]
 env:
   # The project name specified in your Cargo.toml

@@ -12,9 +12,11 @@ env:
   # The project name specified in your Cargo.toml
   PROJECT_NAME: whynote
   BACKEND_NAME: backend-axum
+  FRONTEND_NAME: frontend-yew
+  PUBLIC_URL: /
   # BACKEND_NAME: backend-axum
 jobs:
-  build:
+  backend-build:
     # Set the job to run on the platform specified by the matrix below
     runs-on: ${{ matrix.runner }}
  
@@ -61,15 +63,15 @@ jobs:
           fi
  
           # The built binary output location
-          BIN_OUTPUT="target/${{ matrix.target }}/release/${BACKEND_NAME}${BIN_SUFFIX}"
+          BIN_OUTPUT="target/${{ matrix.target }}/release/${{ env.BACKEND_NAME }}${BIN_SUFFIX}"
  
           # Define a better name for the final binary
-          BIN_RELEASE="${PROJECT_NAME}-${BACKEND_NAME}-${{ matrix.name }}${BIN_SUFFIX}"
-          BIN_RELEASE_VERSIONED="${PROJECT_NAME}-${BACKEND_NAME}-${{ github.ref_name }}-${{ matrix.name }}${BIN_SUFFIX}"
+          BIN_RELEASE="${{ env.PROJECT_NAME }}-${{ env.BACKEND_NAME }}-${{ matrix.name }}${BIN_SUFFIX}"
+          BIN_RELEASE_VERSIONED="${{ env.PROJECT_NAME }}-${{ env.BACKEND_NAME }}-${{ github.ref_name }}-${{ matrix.name }}${BIN_SUFFIX}"
             
           
           # Move the built binary where you want it
-          mv "${BIN_OUTPUT}" "./${BIN_RELEASE}"
+          mv "${BIN_OUTPUT}" "./${BIN_RELEASE_VERSIONED}"
 
       - name: Upload Release
         uses: actions/upload-artifact@v4
@@ -77,8 +79,57 @@ jobs:
           name: ${{ env.PROJECT_NAME }}-${{ env.BACKEND_NAME }}-${{ matrix.name }}
           path: ./*-${{ matrix.name }}*
 
+  frontend-build:
+    # Set the job to run on the platform specified by the matrix below
+    needs: backend-build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+ 
+      - name: Install rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+ 
+      - name: Setup Cache
+        uses: Swatinem/rust-cache@v2
+
+      - name: Install trunk
+        uses: baptiste0928/cargo-install@v3
+        with:
+          crate: trunk
+      
+      - name: Install wasm-bindgen-cli
+        uses: baptiste0928/cargo-install@v3
+        with:
+          crate: wasm-bindgen-cli
+
+      - name: Install wasm-opt
+        uses: baptiste0928/cargo-install@v3
+        with:
+          crate: wasm-opt
+
+      - name: Build frontend
+        working-directory: ./${{ env.FRONTEND_NAME }}
+        run: trunk build --release --public-url "${{ env.PUBLIC_URL }}"
+      
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: ./${{ env.FRONTEND_NAME }}/dist
+
+      - name: Zip dist folder
+        run: zip -r ${{ env.PROJECT_NAME }}-${{ env.FRONTEND_NAME }}.zip ${{ env.FRONTEND_NAME }}/dist
+
+      - name: Upload release file
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.PROJECT_NAME }}-${{ env.FRONTEND_NAME }}-dist-${{ github.sha }}
+          path: ${{ env.PROJECT_NAME }}-${{ env.FRONTEND_NAME }}.zip
+
   release:
-    needs: build
+    needs: frontend-build
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
     steps:

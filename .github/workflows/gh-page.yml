@@ -1,5 +1,9 @@
 
-on: [push]
+on:
+  push:
+    paths:
+      - 'frontend-yew/**'
+
 name: gh-page
 
 permissions:
@@ -10,14 +14,14 @@ env:
   FRONTEND_NAME: frontend-yew
   PUBLIC_URL: /whynote
 jobs:
-  build:
+  deploy:
     # Set the job to run on the platform specified by the matrix below
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
  
-      - name: Install Rust
+      - name: Install rust
         uses: dtolnay/rust-toolchain@stable
         with:
           targets: wasm32-unknown-unknown
@@ -25,7 +29,7 @@ jobs:
       - name: Setup Cache
         uses: Swatinem/rust-cache@v2
 
-      - name: Install Trunk
+      - name: Install trunk
         uses: baptiste0928/cargo-install@v3
         with:
           crate: trunk
@@ -52,7 +56,7 @@ jobs:
       - name: Zip dist folder
         run: zip -r ${{ env.FRONTEND_NAME }}.zip ${{ env.FRONTEND_NAME }}/dist
 
-      - name: Upload Release
+      - name: Upload release file
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.FRONTEND_NAME }}-dist-${{ github.sha }}
