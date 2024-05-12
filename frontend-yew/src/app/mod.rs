@@ -1,7 +1,6 @@
 use yew::prelude::*;
 use yew_router::prelude::*;
 
-pub mod about;
 pub mod home;
 
 // use crate::components::nav::Nav;
@@ -25,8 +24,6 @@ use crate::pages::manage::signin::SignIn;
 pub enum MainRoute {
     #[at("/")]
     Home,
-    // #[at("/about")]
-    // About,
     #[at("/test")]
     Test,
     #[at("/manage")]

@@ -1,4 +1,4 @@
-use crate::app::ManageRoute;
+use crate::app::{MainRoute, ManageRoute};
 use crate::utils;
 use yew::prelude::*;
 use yew_router::prelude::*;
@@ -33,7 +33,8 @@ pub fn Header(props: &HeaderProps) -> Html {
         //   <a class="link-secondary" href="#">{"Subscribe"}</a>
         // </div>
         <div class="col-4 text-center">
-          <a class="blog-header-logo text-body-emphasis text-decoration-none" href="/">{title}</a>
+          // <a class="blog-header-logo text-body-emphasis text-decoration-none" href="/">{title}</a>
+          <Link<MainRoute> to={MainRoute::Home} classes="blog-header-logo text-body-emphasis text-decoration-none">{title}</Link<MainRoute>>
         </div>
         <div class="col-4 d-flex justify-content-end align-items-center">
           <a class="link-secondary" href="#" aria-label="Search">
