@@ -8,7 +8,7 @@ env:
   # The project name specified in your Cargo.toml
   PROJECT_NAME: whynote
   FRONTEND_NAME: frontend-yew
-  PUBLIC_URL: /
+  PUBLIC_URL: /whynote
 jobs:
   build:
     # Set the job to run on the platform specified by the matrix below
@@ -25,11 +25,24 @@ jobs:
       - name: Setup Cache
         uses: Swatinem/rust-cache@v2
 
-      - name: Download Build Tools
+      - name: Install Trunk
+        uses: baptiste0928/cargo-install@v3
+        with:
+          crate: trunk
+      
+      - name: Install wasm-bindgen-cli
+        uses: baptiste0928/cargo-install@v3
+        with:
+          crate: wasm-bindgen-cli
+
+      - name: Install wasm-opt
+        uses: baptiste0928/cargo-install@v3
+        with:
+          crate: wasm-opt
+
+      - name: Build frontend
         working-directory: ./${{ env.FRONTEND_NAME }}
-        run: |
-          cargo install trunk wasm-bindgen-cli wasm-opt
-          trunk build --release --public-url "${{ env.PUBLIC_URL }}"
+        run: trunk build --release --public-url "${{ env.PUBLIC_URL }}"
       
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4

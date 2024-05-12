@@ -12,8 +12,6 @@ version = "0.1.1"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-# log = "0.4"
-# reqwest = { version = "0.12", features = ["json"] }
 yew = { version = "0.21", features = ["csr"] }
 yew-router = "0.18"
 yew-hooks = "0.3"
