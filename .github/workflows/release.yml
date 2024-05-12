@@ -6,8 +6,8 @@ on:
 
 name: release
 
-permissions:
-  contents: write
+# permissions:
+#   contents: write
 env:
   # The project name specified in your Cargo.toml
   PROJECT_NAME: whynote
