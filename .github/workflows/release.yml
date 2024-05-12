@@ -113,11 +113,6 @@ jobs:
       - name: Build frontend
         working-directory: ./${{ env.FRONTEND_NAME }}
         run: trunk build --release --public-url "${{ env.PUBLIC_URL }}"
-      
-      - name: Deploy
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          folder: ./${{ env.FRONTEND_NAME }}/dist
 
       - name: Zip dist folder
         run: zip -r ${{ env.PROJECT_NAME }}-${{ env.FRONTEND_NAME }}.zip ${{ env.FRONTEND_NAME }}/dist
@@ -125,7 +120,7 @@ jobs:
       - name: Upload release file
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ env.PROJECT_NAME }}-${{ env.FRONTEND_NAME }}-dist-${{ github.sha }}
+          name: ${{ env.PROJECT_NAME }}-${{ env.FRONTEND_NAME }}-dist
           path: ${{ env.PROJECT_NAME }}-${{ env.FRONTEND_NAME }}.zip
 
   release:
