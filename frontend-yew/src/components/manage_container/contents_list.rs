@@ -16,11 +16,17 @@ pub fn ContentsList(props: &ContentsListProps) -> Html {
     html! {
     <div class="p-2">
         <div class="row">
-            <div class="col-4"></div>
-            <div class="col-4"></div>
-            <div class="col-4">
+            <div class="col"></div>
+            // <div class="col-4"></div>
+            <div class="col d-flex justify-content-end align-items-center">
                 <Link<ManageRoute> to={ManageRoute::NewEditor }>
-                    <button class="btn btn-primary">{"Create"}</button>
+                    <button class="btn btn-primary ms-2">{"Create"}</button>
+                </Link<ManageRoute>>
+                <Link<ManageRoute> to={ManageRoute::NewEditor }>
+                    <button class="btn btn-secondary ms-2">{"Export"}</button>
+                </Link<ManageRoute>>
+                <Link<ManageRoute> to={ManageRoute::NewEditor }>
+                    <button class="btn btn-danger ms-2">{"Delete All"}</button>
                 </Link<ManageRoute>>
             </div>
         </div>

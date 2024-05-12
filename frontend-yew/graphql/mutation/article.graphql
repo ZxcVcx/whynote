@@ -25,6 +25,8 @@ mutation ArticleUpdate (
     token: $token,
   ) {
     id
+    userId
+    categoryId
     subject
     summary
     slug

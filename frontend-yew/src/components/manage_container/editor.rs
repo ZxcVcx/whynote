@@ -184,6 +184,7 @@ pub fn Editor(props: &EditorProps) -> Html {
         let article_id = article_id.clone();
         let user_id = user_id.clone();
         Callback::from(move |_| {
+            let navigator = navigator.clone();
             let subject = (*subject).clone();
             let summary = summary.clone();
             let category_id = category_id.clone();
@@ -223,29 +224,8 @@ pub fn Editor(props: &EditorProps) -> Html {
                     .await
                     .unwrap(),
                 };
-                // let data = update_article_data(
-                //     article_id.to_string().clone(),
-                //     user_id.to_string().clone(),
-                //     subject.clone(),
-                //     (*category_id).clone(),
-                //     (*summary).clone(),
-                //     (*content).clone(),
-                //     true,
-                //     *top.clone(),
-                //     *recommended.clone(),
-                //     token,
-                // )
-                // .await
-                // .unwrap();
                 web_sys::console::log_1(&JsValue::from_str(&data.to_string()));
             });
-            // web_sys::console::log_1(&JsValue::from_str(&markdown.clone()));
-            // web_sys::console::log_1(&JsValue::from_str(&subject.clone()));
-            // web_sys::console::log_1(&JsValue::from_str(&summary.clone()));
-            // web_sys::console::log_1(&JsValue::from_str(&category_id.clone()));
-            // web_sys::console::log_1(&JsValue::from_bool(*published.clone()));
-            // web_sys::console::log_1(&JsValue::from_bool(*recommended.clone()));
-            // web_sys::console::log_1(&JsValue::from_bool(*top.clone()));
             navigator.push(&ManageRoute::Profile);
         })
     };
@@ -262,6 +242,7 @@ pub fn Editor(props: &EditorProps) -> Html {
         let article_id = article_id.clone();
         let user_id = user_id.clone();
         Callback::from(move |_| {
+            let navigator = navigator.clone();
             let subject = (*subject).clone();
             let summary = summary.clone();
             let category_id = category_id.clone();
@@ -303,13 +284,6 @@ pub fn Editor(props: &EditorProps) -> Html {
                 };
                 web_sys::console::log_1(&JsValue::from_str(&data.to_string()));
             });
-            // web_sys::console::log_1(&JsValue::from_str(&markdown.clone()));
-            // web_sys::console::log_1(&JsValue::from_str(&subject.clone()));
-            // web_sys::console::log_1(&JsValue::from_str(&summary.clone()));
-            // web_sys::console::log_1(&JsValue::from_str(&category_id.clone()));
-            // web_sys::console::log_1(&JsValue::from_bool(*published.clone()));
-            // web_sys::console::log_1(&JsValue::from_bool(*recommended.clone()));
-            // web_sys::console::log_1(&JsValue::from_bool(*top.clone()));
             navigator.push(&ManageRoute::Profile);
         })
     };

@@ -3,7 +3,7 @@ use wasm_bindgen_futures::spawn_local;
 // use wasm_bindgen_futures::spawn_local;
 use crate::{
     app::{MainRoute, ManageRoute},
-    services::article::delete_article_data,
+    services::article::{delete_article_data, fetch_article_data_by_id, update_article_data},
     utils::{
         common::{format_date, shorter_string},
         storage::get_pair_value,
@@ -60,6 +60,32 @@ pub fn ContentCard(props: &ContentCardProps) -> Html {
                     let navigator = navigator.clone();
                     Callback::from(move |_| {
                         navigator.push(&MainRoute::ArticlePage {slug: slug.clone() });
+                    })
+                };
+
+                let on_publish_click = {
+                    let article_id = article_id.clone();
+                    Callback::from(move |_| {
+                        let article_id = article_id.clone();
+                        spawn_local(async move {
+                            // let _data = delete_article_data(article_id.clone(), get_pair_value("jwt").unwrap_or("".to_string())).await;
+                            // web_sys::window().unwrap().location().reload().unwrap();
+                            let old = fetch_article_data_by_id(article_id.clone()).await.unwrap();
+                            let _new = update_article_data(
+                                article_id.clone(),
+                                old["articleById"]["userId"].as_str().unwrap().to_string(),
+                                old["articleById"]["subject"].as_str().unwrap().to_string(),
+                                old["articleById"]["categoryId"].as_str().unwrap().to_string(),
+                                old["articleById"]["summary"].as_str().unwrap().to_string(),
+                                old["articleById"]["content"].as_str().unwrap().to_string(),
+                                true,
+                                old["articleById"]["top"].as_bool().unwrap(),
+                                old["articleById"]["recommended"].as_bool().unwrap(),
+                                get_pair_value("jwt").unwrap_or("".to_string()),
+                            ).await;
+                            web_sys::window().unwrap().location().reload().unwrap();
+                        }
+                        )
                     })
                 };
                 let on_delete_click = {
@@ -124,7 +150,7 @@ pub fn ContentCard(props: &ContentCardProps) -> Html {
                                                 // };
                                                 html! {
                                                     <li>
-                                                        <a class="dropdown-item" href="#">{"Publish"}</a>
+                                                        <a class="dropdown-item" onclick={on_publish_click}>{"Publish"}</a>
                                                     </li>
                                                 }
                                             }
@@ -132,6 +158,7 @@ pub fn ContentCard(props: &ContentCardProps) -> Html {
                                         <li>
                                             <Link<ManageRoute> to={ManageRoute::Editor {id: article_id.clone()} } classes="dropdown-item">{"Edit"}</Link<ManageRoute>>
                                         </li>
+                                        <li><hr class="dropdown-divider" /></li>
                                         <li><a class="dropdown-item"
                                         onclick={on_delete_click}
                                         >

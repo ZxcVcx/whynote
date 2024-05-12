@@ -53,9 +53,7 @@ pub fn Nav() -> Html {
                         let nav_vec = data.get("categories").unwrap().as_array().unwrap();
                         nav_vec.into_iter().map(|category| {
                             if category.get("articles").unwrap().as_array().unwrap().len() > 0 {
-                                // let uri = category.get("uri").unwrap().to_string();
                                 html! {
-                                    // <a class="nav-item nav-link link-body-emphasis" href="#">{category["name"].as_str()}</a>
                                     <Link<MainRoute> classes="nav-item nav-link link-body-emphasis" to={MainRoute::CategoryPage {slug: category["slug"].as_str().unwrap().to_string() }}>
                                         { category["name"].as_str() }
                                     </Link<MainRoute>>
@@ -68,18 +66,6 @@ pub fn Nav() -> Html {
                         html! {}
                     }
                 }
-                // <a class="nav-item nav-link link-body-emphasis active" href="#">{"World"}</a>
-                // <a class="nav-item nav-link link-body-emphasis" href="#">{"U.S."}</a>
-                // <a class="nav-item nav-link link-body-emphasis" href="#">{"Technology"}</a>
-                // <a class="nav-item nav-link link-body-emphasis" href="#">{"Design"}</a>
-                // <a class="nav-item nav-link link-body-emphasis" href="#">{"Culture"}</a>
-                // <a class="nav-item nav-link link-body-emphasis" href="#">{"Business"}</a>
-                // <a class="nav-item nav-link link-body-emphasis" href="#">{"Politics"}</a>
-                // <a class="nav-item nav-link link-body-emphasis" href="#">{"Opinion"}</a>
-                // <a class="nav-item nav-link link-body-emphasis" href="#">{"Science"}</a>
-                // <a class="nav-item nav-link link-body-emphasis" href="#">{"Health"}</a>
-                // <a class="nav-item nav-link link-body-emphasis" href="#">{"Style"}</a>
-                // <a class="nav-item nav-link link-body-emphasis" href="#">{"Travel"}</a>
             </nav>
         </div>
     }

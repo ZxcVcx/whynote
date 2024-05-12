@@ -30,7 +30,6 @@ pub fn Emphasis(props: &EmphasisProps) -> Html {
             <h1 class="display-4 fst-italic">{title}</h1>
             <p class="lead my-3">{summary}</p>
             <p class="lead mb-0">
-            // <a href="#" class="text-body-emphasis fw-bold">{"Continue reading..."}</a>
               <Link<MainRoute> classes="text-body-emphasis fw-bold" to={MainRoute::ArticlePage {slug: slug.clone() }}>
                 {"Continue reading..."}
               </Link<MainRoute>>

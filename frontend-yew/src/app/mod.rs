@@ -18,6 +18,7 @@ use crate::pages::manage::init::InitPage;
 use crate::pages::manage::new_editor::NewEditorPage;
 use crate::pages::manage::profile::ProfilePage;
 use crate::pages::manage::signin::SignIn;
+use crate::pages::common::search::SearchPage;
 
 /// App routes
 #[derive(Routable, Debug, Clone, PartialEq, Eq)]
@@ -39,6 +40,8 @@ pub enum MainRoute {
     UserPage { username: String },
     #[at("/article/:slug")]
     ArticlePage { slug: String },
+    #[at("/search")]
+    SearchPage,
 }
 
 #[derive(Routable, Debug, Clone, PartialEq, Eq)]
@@ -77,6 +80,7 @@ pub fn switch_main(routes: MainRoute) -> Html {
         MainRoute::UserPage { username } => html! { <UserPage {username} /> },
         MainRoute::ArticlePage { slug } => html! { <ArticlePage {slug} /> },
         MainRoute::Test => html! { <Test /> },
+        MainRoute::SearchPage => html! { <SearchPage /> },
     }
 }
 

@@ -70,7 +70,7 @@ pub fn ProfilePage(props: &ProfilePageProps) -> Html {
                     // let carft = user_data["carft"].clone().as_array().unwrap();
                     // let published = user_data["published"].clone().as_array().unwrap();
                     html! {
-                        <main class="container">
+                        <main class="container" style="min-height:100%;">
                             <div class="row g-1">
                                 <Profile user={user.clone()} />
                                 <div class="col-md-9">
