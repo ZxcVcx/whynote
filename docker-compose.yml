@@ -1,0 +1,33 @@
+# version: '3.4'
+
+# services:
+#   whynote:
+#     image: whynote
+#     build:
+#       context: .
+#       dockerfile: ./Dockerfile
+services:
+  frontend:
+    build: ./frontend-yew
+    ports:
+      - '8001:8001'
+    volumes:
+      - ./frontend-yew:/frontend-yew
+
+  backend:
+    build: ./backend-axum
+    ports:
+      - '8009:8009'
+    volumes:
+      - ./backend-axum:/usr/src/whynote-backend
+
+  mongo:
+    image: mongo
+    restart: always
+    volumes:
+      - mongodb_data:/data/db
+    ports:
+      - "27017:27017"
+
+volumes:
+  mongodb_data:
