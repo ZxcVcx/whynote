@@ -6,8 +6,8 @@ on:
 
 name: release
 
-# permissions:
-#   contents: write
+permissions:
+  contents: write
 env:
   # The project name specified in your Cargo.toml
   PROJECT_NAME: whynote
@@ -74,7 +74,7 @@ jobs:
       - name: Upload Release
         uses: actions/upload-artifact@v4
         with:
-          name: ${PROJECT_NAME}-${BACKEND_NAME}-${{ matrix.name }}
+          name: ${{ env.PROJECT_NAME }}-${{ env.BACKEND_NAME }}-${{ matrix.name }}
           path: ./*-${{ matrix.name }}*
 
   release:
@@ -87,8 +87,8 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           body: Bump Version
-          files: ./${PROJECT_NAME}-*
-          # token: ${{ secrets.RELEASE_TOKEN }}
+          files: ./${{ env.PROJECT_NAME }}-*
+          token: ${{ secrets.RELEASE_TOKEN }}
           # release_name: ${{ github.ref_name }}
           # release_body: ${{ github.event.head_commit.message }}
           tag_name: ${{ github.ref_name }}
