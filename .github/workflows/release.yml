@@ -86,7 +86,7 @@ jobs:
       - name: Release with action-gh-release
         uses: softprops/action-gh-release@v2
         with:
-          body: Bump Version
+          # body: Bump Version
           files: ${{ env.PROJECT_NAME }}-*
           token: ${{ secrets.RELEASE_TOKEN }}
           # release_name: ${{ github.ref_name }}
