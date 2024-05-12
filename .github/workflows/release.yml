@@ -1,0 +1,97 @@
+
+on:
+  push:
+    tags:
+      - '*'
+
+name: release
+
+permissions:
+  contents: write
+env:
+  # The project name specified in your Cargo.toml
+  PROJECT_NAME: whynote
+  BACKEND_NAME: backend-axum
+  # BACKEND_NAME: backend-axum
+jobs:
+  build:
+    # Set the job to run on the platform specified by the matrix below
+    runs-on: ${{ matrix.runner }}
+ 
+    # Define the build matrix for cross-compilation
+    strategy:
+      matrix:
+        include:
+          - name: linux-amd64
+            runner: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+          - name: win-amd64
+            runner: windows-latest
+            target: x86_64-pc-windows-msvc
+          - name: macos-amd64
+            runner: macos-latest
+            target: x86_64-apple-darwin
+          - name: macos-arm64
+            runner: macos-latest
+            target: aarch64-apple-darwin
+ 
+    # The steps to run for each matrix item
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+ 
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: "${{ matrix.target }}"
+ 
+      - name: Setup Cache
+        uses: Swatinem/rust-cache@v2
+ 
+      - name: Build Binary
+        working-directory: ./backend-axum
+        run: cargo build --release --target ${{ matrix.target }}
+ 
+      - name: Release Binary
+        shell: bash
+        run: |
+          BIN_SUFFIX=""
+          if [[ "${{ matrix.runner }}" == "windows-latest" ]]; then
+            BIN_SUFFIX=".exe"
+          fi
+ 
+          # The built binary output location
+          BIN_OUTPUT="target/${{ matrix.target }}/release/${BACKEND_NAME}${BIN_SUFFIX}"
+ 
+          # Define a better name for the final binary
+          BIN_RELEASE="${PROJECT_NAME}-${BACKEND_NAME}-${{ matrix.name }}${BIN_SUFFIX}"
+          BIN_RELEASE_VERSIONED="${PROJECT_NAME}-${BACKEND_NAME}-${{ github.ref_name }}-${{ matrix.name }}${BIN_SUFFIX}"
+            
+          
+          # Move the built binary where you want it
+          mv "${BIN_OUTPUT}" "./${BIN_RELEASE}"
+
+      - name: Upload Release
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${PROJECT_NAME}-${BACKEND_NAME}-${{ matrix.name }}
+          path: ./*-${{ matrix.name }}*
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+    steps:
+      - uses: actions/download-artifact@v4
+      - name: Release with action-gh-release
+        uses: softprops/action-gh-release@v2
+        with:
+          body: Bump Version
+          files: ./${PROJECT_NAME}-*
+          # token: ${{ secrets.RELEASE_TOKEN }}
+          # release_name: ${{ github.ref_name }}
+          # release_body: ${{ github.event.head_commit.message }}
+          tag_name: ${{ github.ref_name }}
+          draft: false
+          prerelease: true
+      
