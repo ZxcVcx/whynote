@@ -1,0 +1,46 @@
+
+on: [push]
+name: gh-page
+
+permissions:
+  contents: write
+env:
+  # The project name specified in your Cargo.toml
+  PROJECT_NAME: whynote
+  FRONTEND_NAME: frontend-yew
+  PUBLIC_URL: /
+jobs:
+  build:
+    # Set the job to run on the platform specified by the matrix below
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+ 
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+ 
+      - name: Setup Cache
+        uses: Swatinem/rust-cache@v2
+
+      - name: Download Build Tools
+        working-directory: ./backend-axum
+        run: |
+          cargo install trunk wasm-bindgen-cli wasm-opt
+          trunk build --release --public-url "${{ env.PUBLIC_URL }}"
+      
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: ./${{ env.FRONTEND_NAME }}/dist
+
+      - name: Zip dist folder
+        run: zip -r ${{ env.FRONTEND_NAME }}.zip ${{ env.FRONTEND_NAME }}/dist
+
+      - name: Upload Release
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ env.FRONTEND_NAME }}-dist-${{ github.sha }}
+          path: ${{ env.FRONTEND_NAME }}.zip
