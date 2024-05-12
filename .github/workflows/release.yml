@@ -83,6 +83,8 @@ jobs:
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
     steps:
       - uses: actions/download-artifact@v4
+      - name: Display structre of downloaded files
+        run: ls -R
       - name: Release with action-gh-release
         uses: softprops/action-gh-release@v2
         with:
