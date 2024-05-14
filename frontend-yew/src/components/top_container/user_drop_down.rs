@@ -34,7 +34,7 @@ pub fn UserDropDown(props: &UserDropDownProps) -> Html {
             // <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             //     <img class="rounded-circle" src={create_gravatar_url(get_pair_value("email").unwrap().as_str(), 80)} width="40" />
             // </button>
-            <img class="rounded-circle" role="button" data-bs-toggle="dropdown" aria-expanded="false" src={create_gravatar_url(get_pair_value("email").unwrap().as_str(), 80)} width="40" />
+            <img class="rounded-circle" data-bs-toggle="dropdown" aria-expanded="false" src={create_gravatar_url(get_pair_value("email").unwrap().as_str(), 80)} width="40" alt="avatar" />
             <ul class="dropdown-menu dropdown-menu-end">
                 <li>
                     <Link<ManageRoute> classes="dropdown-item" to={ManageRoute::Profile}>

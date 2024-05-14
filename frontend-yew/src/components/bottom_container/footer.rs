@@ -21,7 +21,8 @@ pub fn Footer(props: &FooterProps) -> Html {
                 //     href="https://twitter.com/mdo">Nathan Wang</a>."}</p>
                 <p>{"© 2024 Blog build for WhyNote by Nathan Wang."}</p>
                 <p class="mb-0">
-                <a onclick={back_to_top}>{"Back to top"}</a>
+                // <a onclick={back_to_top} href="" >{"Back to top"}</a>
+                <button class="btn btn-outline-secondary" onclick={back_to_top}>{"Back to top"}</button>
                 </p>
             </footer>
             <LoadJs />

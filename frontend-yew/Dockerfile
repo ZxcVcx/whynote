@@ -3,6 +3,7 @@ FROM rust:latest as builder
 WORKDIR /frontend-yew
 
 # 安装 Trunk 和 wasm-bindgen-cli
+# TODO  
 RUN cargo install trunk wasm-bindgen-cli wasm-opt
 RUN rustup target add wasm32-unknown-unknown
 

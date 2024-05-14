@@ -20,12 +20,12 @@ pub fn Sticky(props: &StickyProps) -> Html {
         <div class="col-md-4">
             <div class="position-sticky" style="top: 2rem;">
                 <div class="p-4 mb-3 bg-body-tertiary rounded">
-                    <h4 class="fst-italic">{"About"}</h4>
+                    <h2 class="fst-italic">{"About"}</h2>
                     <p class="mb-0">{about.get("bio").unwrap().as_str().unwrap().to_string()}</p>
                 </div>
 
                 <div>
-                    <h4 class="fst-italic">{"Recent posts"}</h4>
+                    <h3 class="fst-italic">{"Recent posts"}</h3>
                     <ul class="list-unstyled">
                         {
                             recent.into_iter().map(|article| {
@@ -43,7 +43,7 @@ pub fn Sticky(props: &StickyProps) -> Html {
                                                 <rect width="100%" height="100%" fill="#777" />
                                             </svg>
                                             <div class="col-lg-8">
-                                                <h6 class="mb-0">{title}</h6>
+                                                <h4 class="mb-0 fs-6">{title}</h4>
                                                 <small class="text-body-secondary">{updated_at}</small>
                                             </div>
                                         </Link<MainRoute>>

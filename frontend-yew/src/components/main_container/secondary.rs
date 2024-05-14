@@ -28,7 +28,7 @@ pub fn Secondary(props: &SecondaryProps) -> Html {
                             <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                                 <div class="col p-4 d-flex flex-column position-static">
                                     <strong class="d-inline-block mb-2 text-primary-emphasis">{category}</strong>
-                                    <h3 class="mb-0">{title}</h3>
+                                    <h2 class="mb-0">{title}</h2>
                                     <div class="mb-1 text-body-secondary">{updated_at}</div>
                                     <p class="card-text mb-auto">{summary}</p>
                                     <Link<MainRoute> classes="icon-link gap-1 icon-link-hover stretched-link" to={MainRoute::ArticlePage {slug: slug.clone() }}>

@@ -3,7 +3,6 @@
 [build]
 target = "index.html"
 dist = "dist"
-public_url = "/"
 
 
 [serve]

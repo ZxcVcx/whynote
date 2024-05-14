@@ -32,7 +32,7 @@ pub fn ContentsList(props: &ContentsListProps) -> Html {
         </div>
         <h3>{"crafts"}</h3>
         <ContentCard contents={crafts.clone()} published={false} />
-        <h3>{"articles"}</h3>
+        <h3 class="mt-5">{"articles"}</h3>
         <ContentCard contents={articles.clone()} published={true} />
     </div>
     }

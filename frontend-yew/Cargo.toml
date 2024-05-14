@@ -32,7 +32,7 @@ md5 = "0.7.0"
 markdown = "1.0.0-alpha.17"
 zip = { version = "1.2.3", features = ["deflate"], default-features = false }
 js-sys = "0.3.69"
-stylist = { version = "0.13.0", features = ["yew", "yew_use_media_query"] }
+# stylist = { version = "0.13.0", features = ["yew", "yew_use_media_query"] }
 
 [dependencies.web-sys]
  version = "0.3"
