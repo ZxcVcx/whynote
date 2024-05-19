@@ -1,22 +1,11 @@
 query ArticlesData {
-  # randomWish(
-  #   username: "-"
-  # ) {
-  #   aphorism
-  #   author
-
-  #   user {
-  #     username
-  #     nickname
-  #     blogName
-  #   }
-  # }
-
   articles(
     published: true
   ) {
+    id
     subject
     summary
+    content
     slug
     updatedAt
     

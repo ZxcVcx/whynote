@@ -91,13 +91,19 @@ pub fn ArticlePage(props: &ArticlePageProps) -> Html {
 
     html! {
         <>
-        // {
-        //     if article_state.loading {
-        //         html! { <div>{ "Loading..." }</div>}
-        //     } else {
-        //         html! {}
-        //     }
-        // }
+            {
+                if article_state.loading {
+                    html! {
+                        <div class="container py-4 position-fixed">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">{ "Loading..." }</span>
+                            </div>
+                        </div>
+                    }
+                } else {
+                    html! {}
+                }
+            }
             {
                 if let Some(error) = &article_state.error {
                     html! { error }

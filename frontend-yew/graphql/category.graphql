@@ -9,6 +9,7 @@ query CategoryData(
     description
     
     articlesList: articles {
+      id
       subject
       summary
       uri

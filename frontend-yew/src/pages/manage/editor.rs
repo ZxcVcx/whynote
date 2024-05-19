@@ -4,6 +4,8 @@ use yew_hooks::prelude::*;
 // use yew_router::prelude::*;
 
 use crate::components::manage_container::editor::Editor;
+use crate::components::top_container::TopContainer;
+// use crate::components::top_container::header::Header;
 use crate::services::article::fetch_article_data_by_id;
 
 #[derive(PartialEq, Properties)]
@@ -25,7 +27,13 @@ pub fn EditorPage(props: &EditorPageProps) -> Html {
         <>
             {
                 if article_state.loading {
-                    html! { "Loading" }
+                    html! {
+                        <div class="container py-4 position-fixed">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">{ "Loading..." }</span>
+                            </div>
+                        </div>
+                    }
                 } else {
                     html! {}
                 }
@@ -41,7 +49,11 @@ pub fn EditorPage(props: &EditorPageProps) -> Html {
                 if let Some(article_data) = &article_state.data {
                     let article = article_data["articleById"].clone();
                     html! {
+                        <>
+                        <TopContainer />
                         <Editor {article} />
+                        </>
+
                     }
                 } else {
                     html! {}

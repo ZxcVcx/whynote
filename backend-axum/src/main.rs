@@ -22,8 +22,10 @@ async fn main() -> Result<(), std::io::Error> {
     let shared_state = Arc::new(AppState { schema });
     // let app_state = AppState {schema : schema};
     let app = Router::new()
-        .route("/graphql", post(graphql))
-        .route("/graphiql", get(graphiql))
+        // .route("/graphql", post(graphql))
+        .route(CFG["GQL_PATH"].as_str(), post(graphql))
+        .route(CFG["GIQL_PATH"].as_str(), get(graphiql))
+        // .route("/graphiql", get(graphiql))
         .layer(middleware::from_fn(backend_axum::log_requests))
         .layer(
             CorsLayer::new()

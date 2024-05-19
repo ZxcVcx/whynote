@@ -5,3 +5,4 @@ pub mod init;
 pub mod signin;
 pub mod use_query;
 pub mod user;
+pub mod search;

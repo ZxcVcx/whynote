@@ -4,6 +4,7 @@ use serde_json::{json, Value};
 use super::use_query::FetchError;
 
 type DateTime = String;
+type ObjectId = String;
 
 #[derive(GraphQLQuery)]
 #[graphql(

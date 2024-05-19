@@ -1,0 +1,1 @@
+*  引入LSP(Language Server Protocol) server支持前端`Markdown`的编辑器和代码块的语法高亮

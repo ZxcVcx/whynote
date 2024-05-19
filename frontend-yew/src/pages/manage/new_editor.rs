@@ -84,7 +84,13 @@ pub fn NewEditorPage() -> Html {
         <>
             {
                 if logged_in_user_data.loading {
-                    html! { "Loading" }
+                    html! {
+                        <div class="container py-4 position-fixed">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">{ "Loading..." }</span>
+                            </div>
+                        </div>
+                    }
                 } else {
                     html! {}
                 }

@@ -2,7 +2,7 @@ use serde_json::Value;
 use yew::prelude::*;
 use yew_router::prelude::*;
 
-use crate::{app::MainRoute, utils::common::format_date};
+use crate::{app::{MainRoute, ManageRoute}, utils::common::{format_date, is_logged_in}};
 
 #[derive(PartialEq, Properties)]
 pub struct ArticlesListProps {
@@ -32,6 +32,7 @@ pub fn ArticlesList(props: &ArticlesListProps) -> Html {
                     let user = article_card.get("user").unwrap().as_object().unwrap();
                     let nickname = user.get("nickname").unwrap().as_str().unwrap();
                     let username = user.get("username").unwrap().as_str().unwrap();
+                    let id = article_card.get("id").unwrap().as_str().unwrap().to_string();
 
                     let on_username_click = {
                         let navigator = navigator.clone();
@@ -48,6 +49,13 @@ pub fn ArticlesList(props: &ArticlesListProps) -> Html {
                         })
                     };
 
+                    let on_edit_click = {
+                        let navigator = navigator.clone();
+                        Callback::from(move |_| {
+                            navigator.push(&ManageRoute::Editor {id : id.clone() });
+                        })
+                    };
+
                     // let avatar = user.get("picture").unwrap().as_str().unwrap();
                     // let topics = article_card.get("topics").unwrap().as_array().unwrap();
                     html! {
@@ -57,8 +65,20 @@ pub fn ArticlesList(props: &ArticlesListProps) -> Html {
                                     <div class="article-card-body">
                                         <div class="d-flex justify-content-between align-items-center mb-2">
                                             <span class="text-muted">{format!{"{} by ", updated_at}}
-                                            <a onclick={on_username_click} style="color: blue; cursor: pointer;">{nickname} </a>
+                                                <a onclick={on_username_click} style="color: blue; cursor: pointer;">{nickname} </a>
                                             </span>
+                                            {
+                                                if is_logged_in() {
+                                                    html! {
+                                                        // <Link<ManageRoute> classes="icon-link gap-1 icon-link-hover stretched-link" to={ManageRoute::Editor {id : id.to_string() }}>
+                                                        //     {"Edit"}
+                                                        // </Link<ManageRoute>>
+                                                        <button onclick={on_edit_click} class="btn btn-secondary">{"Edit"}</button>
+                                                    }
+                                                } else {
+                                                    html! {}
+                                                }
+                                            }
                                         </div>
                                         <div onclick={on_content_click} style="cursor: pointer;">
                                             <h5 class="article-card-title">{subject}</h5>

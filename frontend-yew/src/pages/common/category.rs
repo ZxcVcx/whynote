@@ -36,6 +36,20 @@ pub fn CategoryPage(props: &CategoryPageProps) -> Html {
                     html! {}
                 }
             }
+
+            {
+                if data_state.loading {
+                    html! {
+                        <div class="container py-4 position-fixed">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">{ "Loading..." }</span>
+                            </div>
+                        </div>
+                    }
+                } else {
+                    html! {}
+                }
+            }
             {
                 if let Some(category_data) = &data_state.data {
                     let category = category_data.get("categoryBySlug").unwrap().clone();

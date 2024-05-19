@@ -139,7 +139,8 @@ pub fn ContentCard(props: &ContentCardProps) -> Html {
                                     <ul class="dropdown-menu">
                                         {
 
-                                            if published.clone() {
+                                            if *published {
+                                            // if published.clone() {
                                                 html! {}
                                             } else {
                                                 // let on_publish_click = {

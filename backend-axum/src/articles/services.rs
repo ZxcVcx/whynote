@@ -110,9 +110,9 @@ pub async fn article_new(db: Database, mut article_new: ArticleNew) -> GqlResult
 
         article_new.slug = slug;
         article_new.uri = uri;
-        article_new.published = article_new.published; // false;
-        article_new.top = article_new.top; // false;
-        article_new.recommended = article_new.recommended; // false;
+        // article_new.published = article_new.published; // false;
+        // article_new.top = article_new.top; // false;
+        // article_new.recommended = article_new.recommended; // false;
 
         let mut article_new_document = to_document(&article_new)?;
         let now = DateTime::now();

@@ -17,8 +17,9 @@ impl DataSource {
         let mut client_options = ClientOptions::parse(CFG.get("MONGODB_URI").unwrap())
             .await
             .expect("Failed to parse options!");
-        // 可选：自定义一个 options 选项
-        client_options.app_name = Some("tide-graphql-mongodb".to_string());
+        // // 可选：自定义一个 options 选项
+        // client_options.app_name = Some("axum-graphql-mongodb".to_string());
+        client_options.app_name = Some("backend-axum".to_string());
 
         // 客户端句柄
         let client = Client::with_options(client_options).expect("Failed to initialize database!");

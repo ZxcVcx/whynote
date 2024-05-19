@@ -45,10 +45,15 @@ pub fn ProfilePage(props: &ProfilePageProps) -> Html {
         <>
             {
                 if user_state.loading {
-                    html! { "Loading" }
-                } else {
                     html! {
+                        <div class="container py-4 position-fixed">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">{ "Loading..." }</span>
+                            </div>
+                        </div>
                     }
+                } else {
+                    html! {}
                 }
             }
             {
