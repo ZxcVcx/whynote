@@ -9,6 +9,7 @@ use yew_hooks::prelude::*;
 // use yew_router::prelude::*;
 
 use crate::components::manage_container::editor::Editor;
+use crate::components::top_container::TopContainer;
 // use crate::services::article::fetch_article_data_by_id;
 use crate::services::use_query::FetchError;
 use crate::services::user::fetch_user_data_by_email;
@@ -138,7 +139,10 @@ pub fn NewEditorPage() -> Html {
                     let empty_article = serde_json::to_value(&empty_article).unwrap();
                     // let empty_article = JsValue::from_str(&empty_article);
                     html! {
-                        <Editor article={empty_article} />
+                        <>
+                            <TopContainer />
+                            <Editor article={empty_article} />
+                        </>
                     }
                 } else {
                     html! {}

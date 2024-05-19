@@ -109,6 +109,14 @@ query UserDataByEmail(
     }
 }
 
+query DefaultUser {
+  defaultUser {
+    blogName
+    bio
+    website
+  }
+}
+
 # mutation UserUpdateProfile(
 #     $email: String!
 #     $username: String!

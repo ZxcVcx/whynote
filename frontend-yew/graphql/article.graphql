@@ -19,6 +19,7 @@ query ArticleData(
     username: $username, 
     slug: $slug
   ) {
+    id
     subject
     summary
     uri
@@ -49,6 +50,7 @@ query ArticleDataBySlug(
   articleBySlug(
     slug: $slug
   ) {
+    id
     subject
     summary
     slug

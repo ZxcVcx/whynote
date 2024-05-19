@@ -11,6 +11,7 @@ use crate::components::manage_container::contents_list::ContentsList;
 use crate::components::manage_container::profile::Profile;
 use crate::utils::common::log_out;
 use crate::utils::storage::get_pair_value;
+use crate::components::top_container::manage_top_container::ManageTopContainer;
 
 #[derive(PartialEq, Properties)]
 pub struct ProfilePageProps {}
@@ -75,6 +76,8 @@ pub fn ProfilePage(props: &ProfilePageProps) -> Html {
                     // let carft = user_data["carft"].clone().as_array().unwrap();
                     // let published = user_data["published"].clone().as_array().unwrap();
                     html! {
+                        <>
+                        <ManageTopContainer />
                         <main class="container" style="min-height:100%;">
                             <div class="row g-1">
                                 <Profile user={user.clone()} />
@@ -83,6 +86,8 @@ pub fn ProfilePage(props: &ProfilePageProps) -> Html {
                                 </div>
                             </div>
                         </main>
+                        </>
+
                     }
                 } else {
                     html! {}

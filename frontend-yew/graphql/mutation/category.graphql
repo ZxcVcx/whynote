@@ -1,0 +1,61 @@
+mutation CategoryUpdate (
+  $categoryId: String!,
+  $name: String!,
+  $description: String!,
+  $token: String!,
+) {
+  categoryUpdate(
+    categoryId: $categoryId,
+    categoryNew: {
+      name: $name,
+      description: $description,
+    },
+    token: $token,
+  ) {
+    id
+    name
+    description
+    slug
+    updatedAt
+    articles {
+      slug
+      subject
+    }
+  }
+}
+
+mutation CategoryNewByToken (
+  $name: String!,
+  $description: String!,
+  $token: String!,
+) {
+  categoryNewByToken(
+    categoryNew: {
+      name: $name,
+      description: $description,
+    },
+    token: $token,
+  ) {
+    id
+    name
+    description
+    slug
+    createdAt
+    updatedAt
+  }
+}
+
+mutation CategoryDelete (
+  $categoryId: String!,
+  $token: String!
+) {
+  categoryDelete (
+    categoryId: $categoryId,
+    token: $token,
+  ) {
+    id
+    name
+    description
+    slug
+  }
+}

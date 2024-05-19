@@ -107,8 +107,7 @@ pub fn ContentCard(props: &ContentCardProps) -> Html {
                             //     }
                             // }
 
-                        }
-                        )
+                        })
                     })
                 };
                 html! {

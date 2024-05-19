@@ -1,7 +1,7 @@
 use crate::app::MainRoute;
 use crate::components::manage_container::init::new_articles::NewArticlesComponent;
 use crate::components::manage_container::init::new_user::NewUserComponent;
-use crate::services::articles::fetch_articles_data;
+use crate::services::articles::fetch_home_data;
 use crate::types::init::UserNewToken;
 use crate::types::init::{ArticleType, CategoryNewType};
 use wasm_bindgen_futures::spawn_local;
@@ -25,7 +25,7 @@ pub fn InitPage(props: &InitPageProps) -> Html {
         let navigator = navigator_clone.clone();
         spawn_local(async move {
             let navigator = navigator.clone();
-            let data = fetch_articles_data().await;
+            let data = fetch_home_data().await;
             match data {
                 Ok(_) => {
                     navigator.clone().push(&MainRoute::Home);

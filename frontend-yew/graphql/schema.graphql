@@ -83,6 +83,13 @@ type MutationRoot {
   ): Article!
   categoryNew(categoryNew: CategoryNew!): Category!
   categoryUserNew(categoryUserNew: CategoryUserNew!): CategoryUser!
+  categoryNewByToken(categoryNew: CategoryNew!, token: String!): Category!
+  categoryDelete(categoryId: ObjectId!, token: String!): Category!
+  categoryUpdate(
+    categoryId: ObjectId!
+    categoryNew: CategoryNew!
+    token: String!
+  ): Category!
   topicsNew(topicNames: String!): [Topic!]!
   topicNew(topicNew: TopicNew!): Topic!
   topicArticleNew(topicArticleNew: TopicArticleNew!): TopicArticle!

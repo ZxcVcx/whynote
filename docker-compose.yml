@@ -10,7 +10,7 @@ services:
   frontend:
     build: ./frontend-yew
     ports:
-      - '8001:8001'
+      - '8001:80'
     volumes:
       - ./frontend-yew:/frontend-yew
 

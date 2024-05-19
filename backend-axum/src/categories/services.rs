@@ -1,3 +1,4 @@
+use async_graphql::{Error, ErrorExtensions};
 use futures::stream::StreamExt;
 use mongodb::{
     bson::{doc, from_document, oid::ObjectId, to_document, DateTime, Document},
@@ -5,9 +6,32 @@ use mongodb::{
     Database,
 };
 
-use crate::utils::{common::slugify, constants::GqlResult};
+use crate::{users, utils::{common::slugify, constants::GqlResult, cred::token_data}};
 
 use super::models::{Category, CategoryNew, CategoryUser, CategoryUserNew};
+
+
+pub async fn category_new_by_token(
+    db: Database,
+    category_new_data: CategoryNew,
+    token: &str,
+) -> GqlResult<Category> {
+    let token_data = token_data(token).await;
+    if token_data.is_ok() {
+        let token_email = token_data.unwrap().claims.email;
+        let user = users::services::user_by_email(db.clone(), &token_email).await?;
+        let user_id = user.id;
+        let category: Category = category_new(db.clone(), category_new_data).await?;
+        let category_user_new_data = CategoryUserNew {
+            user_id,
+            category_id: category.id,
+        };
+        category_user_new(db.clone(), category_user_new_data).await?;
+        Ok(category)
+    } else {
+        Err(Error::new("No token").extend_with(|err, eev| eev.set("details", err.message.as_str())))
+    }
+}
 
 // Create new category
 pub async fn category_new(db: Database, mut category_new: CategoryNew) -> GqlResult<Category> {
@@ -80,6 +104,90 @@ pub async fn category_user_new(
 
     let category_user: CategoryUser = from_document(category_user_document)?;
     Ok(category_user)
+}
+
+pub async fn category_delete(
+    db: Database,
+    category_id: ObjectId,
+    token: &str,
+) -> GqlResult<Category> {
+    let token_data = token_data(token).await;
+    if token_data.is_ok() {
+        let coll = db.collection::<Document>("categories");
+
+        let category_document = coll
+            .find_one(doc! {"_id": category_id}, None)
+            .await
+            .expect("Document not found")
+            .unwrap();
+
+        let category: Category = from_document(category_document)?;
+
+        let articles_published =
+            crate::articles::services::articles_by_category_id(db.clone(), category_id, true)
+                .await
+                .expect("Failed to get articles by category_id");
+        let articles_unpublished =
+            crate::articles::services::articles_by_category_id(db.clone(), category_id, false)
+                .await
+                .expect("Failed to get articles by category_id");
+        if articles_unpublished.len() > 0 || articles_published.len() > 0 {
+            return Err(Error::new("Category has articles")
+                .extend_with(|err, eev| eev.set("details", err.message.as_str())));
+        }
+
+        coll.delete_one(doc! {"_id": category_id}, None)
+            .await
+            .expect("Failed to delete a MongoDB collection!");
+
+        let coll_categories_users = db.collection::<Document>("categories_users");
+        coll_categories_users
+            .delete_many(doc! {"category_id": category_id}, None)
+            .await
+            .expect("Failed to delete a MongoDB collection!");
+
+        Ok(category)
+    } else {
+        Err(Error::new("No token").extend_with(|err, eev| eev.set("details", err.message.as_str())))
+    }
+}
+
+pub async fn category_update(
+    db: Database,
+    category_id: ObjectId,
+    category_new: CategoryNew,
+    token: &str,
+) -> GqlResult<Category> {
+    let token_data = token_data(token).await;
+    if token_data.is_ok() {
+        let coll = db.collection::<Document>("categories");
+
+        let category_document = coll
+            .find_one(doc! {"_id": category_id}, None)
+            .await
+            .expect("Document not found")
+            .unwrap();
+
+        let mut category: Category = from_document(category_document)?;
+
+        let slug = slugify(&category_new.name).await;
+        let uri = format!("/category/{}", &slug);
+
+        category.name = category_new.name;
+        category.description = category_new.description;
+        category.slug = slug;
+        category.uri = uri;
+        category.updated_at = DateTime::now();
+
+        let category_document = to_document(&category)?;
+        coll.update_one(doc! {"_id": category_id}, doc! {"$set": category_document} , None)
+            .await
+            .expect("Failed to update a MongoDB collection!");
+
+        Ok(category)
+    } else {
+        Err(Error::new("No token").extend_with(|err, eev| eev.set("details", err.message.as_str())))
+    }
 }
 
 // get all categories

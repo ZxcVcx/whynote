@@ -4,7 +4,7 @@ use yew_hooks::prelude::*;
 // use yew_router::prelude::*;
 
 use crate::components::manage_container::editor::Editor;
-use crate::components::top_container::TopContainer;
+use crate::components::top_container::manage_top_container::ManageTopContainer;
 // use crate::components::top_container::header::Header;
 use crate::services::article::fetch_article_data_by_id;
 
@@ -50,7 +50,7 @@ pub fn EditorPage(props: &EditorPageProps) -> Html {
                     let article = article_data["articleById"].clone();
                     html! {
                         <>
-                        <TopContainer />
+                        <ManageTopContainer />
                         <Editor {article} />
                         </>
 

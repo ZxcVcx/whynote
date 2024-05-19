@@ -11,7 +11,7 @@ use yew_router::hooks::use_navigator;
 /// Home page
 #[function_component(Home)]
 pub fn home() -> Html {
-    let home_state = use_async(async { fetch_home_data().await });
+    let home_state = use_async(async move { fetch_home_data().await });
 
     let effect_home_state = home_state.clone();
     let navigator = use_navigator().unwrap();

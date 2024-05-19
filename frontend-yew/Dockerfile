@@ -16,5 +16,5 @@ RUN trunk build --release
 # 使用轻量级的 nginx 镜像来服务站点
 FROM nginx:alpine
 COPY --from=builder /frontend-yew/dist /usr/share/nginx/html
-EXPOSE 8001
+EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

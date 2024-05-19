@@ -1,5 +1,8 @@
-use crate::app::{MainRoute, ManageRoute};
-use crate::utils;
+use crate::{
+    app::{MainRoute, ManageRoute},
+    services::user::fetch_default_user_data,
+};
+use wasm_bindgen_futures::spawn_local;
 use yew::prelude::*;
 use yew_router::prelude::*;
 
@@ -13,7 +16,46 @@ pub struct HeaderProps {
 #[function_component]
 pub fn Header(props: &HeaderProps) -> Html {
     let login_state = props.login_state.clone();
-    let title = utils::constants::CFG.get("SITE_TITLE").unwrap().to_string();
+    // let title = utils::constants::CFG.get("SITE_TITLE").unwrap().to_string();
+    // let title = use_async(async move { fetch_default_user_data().await });
+    let title = use_state_eq(|| "Blog Title".to_string());
+
+    let effect_title = title.clone();
+    let effect_login_state = login_state.clone();
+    use_effect_with(effect_login_state.clone(), move |_| {
+        spawn_local(async move {
+            // let data = fetch_default_user_data().await;
+            let title = match  fetch_default_user_data().await {
+                Ok(user) => user["defaultUser"]["blogName"].as_str().unwrap().to_string(),
+                Err(_) => "Blog Title".to_string(),
+            };
+
+            effect_title.set(title.clone());
+            // let data = fetch_categories_list()
+            //     .await
+            //     .unwrap()
+            //     .get("categories")
+            //     .unwrap()
+            //     .as_array()
+            //     .unwrap()
+            //     .to_vec();
+            // categories.set(data.clone());
+        });
+        || ()
+        // async move {
+        //     let data = fetch_default_user_data().await;
+        //     match data {
+        //         Ok(_) => {
+        //             login_state.set(true);
+        //         }
+        //         Err(_) => {
+        //             login_state.set(false);
+        //         }
+        //     }
+        //     title.set("Blog Title".to_string());
+        // }
+    });
+
     let navigator = use_navigator().expect("Navigator should be available");
 
     let on_sign_in_click = {
@@ -33,7 +75,10 @@ pub fn Header(props: &HeaderProps) -> Html {
         //   <a class="link-secondary" href="#">{"Subscribe"}</a>
         // </div>
         <div class="col-4 text-center">
-          <Link<MainRoute> to={MainRoute::Home} classes="blog-header-logo text-body-emphasis text-decoration-none">{title}</Link<MainRoute>>
+          <Link<MainRoute> to={MainRoute::Home} classes="blog-header-logo text-body-emphasis text-decoration-none">
+            // <p>{"test"}</p>
+            <p>{title.to_string()}</p>
+          </Link<MainRoute>>
         </div>
         <div class="col-4 d-flex justify-content-end align-items-center">
           // <a class="link-secondary" href="#" aria-label="Search">

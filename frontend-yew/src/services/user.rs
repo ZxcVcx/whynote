@@ -41,6 +41,21 @@ pub async fn fetch_user_data_by_email(email: String) -> Result<Value, FetchError
 #[derive(GraphQLQuery)]
 #[graphql(
     schema_path = "./graphql/schema.graphql",
+    query_path = "./graphql/user.graphql",
+    response_derives = "Debug, Clone"
+)]
+pub struct DefaultUser;
+
+pub async fn fetch_default_user_data() -> Result<Value, FetchError> {
+    let query_body = DefaultUser::build_query(default_user::Variables {});
+    let query = json!(query_body);
+    let data = super::use_query::fetch_gql_data(query).await?;
+    Ok(data)
+}
+
+#[derive(GraphQLQuery)]
+#[graphql(
+    schema_path = "./graphql/schema.graphql",
     query_path = "./graphql/mutation/user.graphql",
     response_derives = "Debug, Clone"
 )]
