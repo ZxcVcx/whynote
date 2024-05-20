@@ -19,6 +19,7 @@ use crate::pages::manage::new_editor::NewEditorPage;
 use crate::pages::manage::profile::ProfilePage;
 use crate::pages::manage::signin::SignIn;
 use crate::pages::manage::categories::CategoryManagePage;
+use crate::pages::manage::topics::TopicManagePage;
 use crate::pages::common::search::SearchPage;
 
 /// App routes
@@ -100,7 +101,7 @@ fn switch_settings(routes: ManageRoute) -> Html {
         ManageRoute::Editor { id } => html! { <EditorPage {id} /> },
         ManageRoute::NewEditor => html! { <NewEditorPage />},
         ManageRoute::Categories => html! { <CategoryManagePage /> },
-        ManageRoute::Topics => html! { <h1>{"Topics"}</h1> },
+        ManageRoute::Topics => html! { <TopicManagePage /> },
     }
 }
 

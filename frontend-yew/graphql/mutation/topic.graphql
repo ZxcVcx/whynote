@@ -1,0 +1,54 @@
+mutation TopicUpdate (
+  $topicId: String!,
+  $name: String!,
+  $token: String!,
+) {
+  topicUpdate(
+    topicId: $topicId,
+    topicNew: {
+      name: $name,
+    },
+    token: $token,
+  ) {
+    id
+    name
+    slug
+    updatedAt
+    articles {
+      slug
+      subject
+    }
+  }
+}
+
+mutation TopicNewByToken (
+  $name: String!,
+  $token: String!,
+) {
+  topicNewByToken(
+    topicNew: {
+      name: $name,
+    },
+    token: $token,
+  ) {
+    id
+    name
+    slug
+    createdAt
+    updatedAt
+  }
+}
+
+mutation TopicDelete (
+  $topicId: String!,
+  $token: String!
+) {
+  topicDelete (
+    topicId: $topicId,
+    token: $token,
+  ) {
+    id
+    name
+    slug
+  }
+}

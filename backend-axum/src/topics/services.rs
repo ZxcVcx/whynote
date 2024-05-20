@@ -1,3 +1,4 @@
+use async_graphql::{Error, ErrorExtensions};
 use futures::stream::StreamExt;
 use mongodb::{
     bson::{doc, from_document, oid::ObjectId, to_document, DateTime, Document},
@@ -5,10 +6,103 @@ use mongodb::{
     Database,
 };
 
-use crate::users;
 use crate::utils::{common::slugify, constants::GqlResult};
+use crate::{users, utils::cred::token_data};
 
 use super::models::{Topic, TopicArticle, TopicArticleNew, TopicNew};
+
+pub async fn topic_new_by_token(
+    db: Database,
+    topic_new: TopicNew,
+    token: &str,
+) -> GqlResult<Topic> {
+    // let user = users::services::user_by_token(db.clone(), token).await?;
+    let token_data = token_data(token).await;
+    if token_data.is_ok() {
+        // let token_email = token_data.unwrap().claims.email;
+        // let user = users::services::user_by_email(db.clone(), &token_email).await?;
+        // let user_id = user.id;
+        let topic = self::topic_new(db.clone(), topic_new).await?;
+
+        // let topic_article_new = TopicArticleNew {
+        //     user_id,
+        //     article_id: ObjectId::default(),
+        //     topic_id: topic.id,
+        // };
+        // self::topic_article_new(db.clone(), topic_article_new).await?;
+        Ok(topic)
+    } else {
+        Err(Error::new("No token").extend_with(|err, eev| eev.set("details", err.message.as_str())))
+    }
+}
+
+pub async fn topic_delete(db: Database, topic_id: ObjectId, token: &str) -> GqlResult<Topic> {
+    let token_data = token_data(token).await;
+    if token_data.is_ok() {
+        let coll = db.collection::<Document>("topics");
+
+        let topic_document = coll
+            .find_one(doc! {"_id": topic_id}, None)
+            .await
+            .expect("Document not found")
+            .expect(format!("Document not found: {}", topic_id).as_str());
+
+        let articles_published = crate::articles::services::articles_by_topic_id(db.clone(), topic_id, true).await?;
+        let articles_draft = crate::articles::services::articles_by_topic_id(db.clone(), topic_id, false).await?;
+        if articles_published.len() > 0 || articles_draft.len() > 0 {
+            return Err(Error::new("Topic has articles").extend_with(|err, eev| eev.set("details", err.message.as_str())));
+        }
+
+        let topic: Topic = from_document(topic_document)?;
+        coll.delete_one(doc! {"_id": topic_id}, None)
+            .await
+            .expect("Failed to delete a MongoDB collection!");
+        Ok(topic)
+    } else {
+        Err(Error::new("No token").extend_with(|err, eev| eev.set("details", err.message.as_str())))
+    }
+}
+
+pub async fn topic_update(
+    db: Database,
+    topic_id: ObjectId,
+    topic_new: TopicNew,
+    token: &str,
+) -> GqlResult<Topic> {
+    let token_data = token_data(token).await;
+    if token_data.is_ok() {
+        let coll = db.collection::<Document>("topics");
+
+        let topic_document = coll
+            .find_one(doc! {"_id": topic_id}, None)
+            .await
+            .expect("Document not found")
+            .unwrap();
+
+        let mut topic: Topic = from_document(topic_document)?;
+        let slug = slugify(&topic_new.name).await;
+        let uri = format!("/topic/{}", &slug);
+
+        topic.name = topic_new.name;
+        topic.slug = slug;
+        topic.uri = uri;
+        topic.updated_at = DateTime::now();
+        // let mut topic_new_document = to_document(&topic_new)?;
+        // topic_new_document.insert("updated_at", now);
+        let topic_new_document = to_document(&topic)?;
+        coll.update_one(
+            doc! {"_id": topic_id},
+            doc! {"$set": topic_new_document},
+            None,
+        )
+        .await
+        .expect("Failed to update a MongoDB collection!");
+
+        Ok(topic)
+    } else {
+        Err(Error::new("No token").extend_with(|err, eev| eev.set("details", err.message.as_str())))
+    }
+}
 
 // Create new topics
 pub async fn topics_new(db: Database, topic_names: &str) -> GqlResult<Vec<Topic>> {

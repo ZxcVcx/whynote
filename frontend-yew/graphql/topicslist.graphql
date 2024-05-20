@@ -1,0 +1,13 @@
+query TopicsList {
+	topics {
+    id
+  	name
+    slug
+    createdAt
+    updatedAt
+    articles {
+      slug
+      subject
+    }
+  }
+}

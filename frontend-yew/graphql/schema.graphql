@@ -93,6 +93,9 @@ type MutationRoot {
   topicsNew(topicNames: String!): [Topic!]!
   topicNew(topicNew: TopicNew!): Topic!
   topicArticleNew(topicArticleNew: TopicArticleNew!): TopicArticle!
+  topicNewByToken(topicNew: TopicNew!, token: String!): Topic!
+  topicDelete(topicId: String!, token: String!): Topic!
+  topicUpdate(topicId: String!, topicNew: TopicNew!, token: String!): Topic!
 }
 
 scalar ObjectId

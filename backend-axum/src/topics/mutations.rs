@@ -1,4 +1,5 @@
 use async_graphql::Context;
+use bson::oid::ObjectId;
 // use bson::oid::ObjectId;
 
 use crate::{
@@ -35,5 +36,36 @@ impl TopicMutation {
     ) -> GqlResult<TopicArticle> {
         let db = ctx.data_unchecked::<DataSource>().db.clone();
         topics::services::topic_article_new(db, topic_article_new).await
+    }
+
+    async fn topic_new_by_token(
+        &self,
+        ctx: &Context<'_>,
+        topic_new: TopicNew,
+        token: String,
+    ) -> GqlResult<Topic> {
+        let db = ctx.data_unchecked::<DataSource>().db.clone();
+        topics::services::topic_new_by_token(db, topic_new, &token).await
+    }
+
+    async fn topic_delete(
+        &self,
+        ctx: &Context<'_>,
+        topic_id: ObjectId,
+        token: String,
+    ) -> GqlResult<Topic> {
+        let db = ctx.data_unchecked::<DataSource>().db.clone();
+        topics::services::topic_delete(db, topic_id, &token).await
+    }
+
+    async fn topic_update(
+        &self,
+        ctx: &Context<'_>,
+        topic_id: ObjectId,
+        topic_new: TopicNew,
+        token: String,
+    ) -> GqlResult<Topic> {
+        let db = ctx.data_unchecked::<DataSource>().db.clone();
+        topics::services::topic_update(db, topic_id, topic_new, &token).await
     }
 }

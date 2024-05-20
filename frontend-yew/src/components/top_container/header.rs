@@ -74,7 +74,7 @@ pub fn Header(props: &HeaderProps) -> Html {
         // <div class="col-4 pt-1">
         //   <a class="link-secondary" href="#">{"Subscribe"}</a>
         // </div>
-        <div class="col-4 text-center">
+        <div class="col-4">
           <Link<MainRoute> to={MainRoute::Home} classes="blog-header-logo text-body-emphasis text-decoration-none">
             // <p>{"test"}</p>
             <p>{title.to_string()}</p>

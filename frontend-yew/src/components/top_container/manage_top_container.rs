@@ -44,7 +44,7 @@ pub fn ManageHeader(props: &HeaderProps) -> Html {
   html! {
   <header class="border-bottom lh-1 py-3">
     <div class="row flex-nowrap justify-content-between align-items-center">
-      <div class="col-4 text-center">
+      <div class="col-4">
         <Link<MainRoute> to={MainRoute::Home} classes="blog-header-logo text-body-emphasis text-decoration-none">
           <p>{title.to_string()}</p>
         </Link<MainRoute>>
