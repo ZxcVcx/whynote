@@ -39,8 +39,9 @@ pub fn ManageHeader(props: &HeaderProps) -> Html {
 
   let on_sign_in_click = {
       let navigator = navigator.clone();
-      Callback::from(move |_| navigator.push(&ManageRoute::SignIn))
+      Callback::from(move |_| navigator.push(&MainRoute::SignIn))
   };
+  
   html! {
   <header class="border-bottom lh-1 py-3">
     <div class="row flex-nowrap justify-content-between align-items-center">

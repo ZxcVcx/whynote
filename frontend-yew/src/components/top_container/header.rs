@@ -1,5 +1,5 @@
 use crate::{
-    app::{MainRoute, ManageRoute},
+    app::MainRoute,
     services::user::fetch_default_user_data,
 };
 use wasm_bindgen_futures::spawn_local;
@@ -60,7 +60,7 @@ pub fn Header(props: &HeaderProps) -> Html {
 
     let on_sign_in_click = {
         let navigator = navigator.clone();
-        Callback::from(move |_| navigator.push(&ManageRoute::SignIn))
+        Callback::from(move |_| navigator.push(&MainRoute::SignIn))
     };
 
     // let on_init_click = {

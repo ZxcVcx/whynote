@@ -21,6 +21,22 @@ use crate::pages::manage::signin::SignIn;
 use crate::pages::manage::categories::CategoryManagePage;
 use crate::pages::manage::topics::TopicManagePage;
 use crate::pages::common::search::SearchPage;
+use crate::utils::common::is_logged_in;
+
+#[derive(Properties, PartialEq)]
+pub struct RouteGuardProps {
+    #[prop_or_default]
+    pub children: Children,
+}
+
+#[function_component(RouteGuard)]
+fn route_guard(props: &RouteGuardProps) -> Html {
+    if is_logged_in() {
+        html! { for props.children.iter() }
+    } else {
+        html! { <Redirect<MainRoute> to={MainRoute::Home} /> }
+    }
+}
 
 /// App routes
 #[derive(Routable, Debug, Clone, PartialEq, Eq)]
@@ -44,6 +60,8 @@ pub enum MainRoute {
     ArticlePage { slug: String },
     #[at("/search")]
     SearchPage,
+    #[at("/signin")]
+    SignIn,
 }
 
 #[derive(Routable, Debug, Clone, PartialEq, Eq)]
@@ -54,8 +72,8 @@ pub enum ManageRoute {
     Profile,
     #[at("/manage/init")]
     Init,
-    #[at("/manage/signin")]
-    SignIn,
+    // #[at("/manage/signin")]
+    // SignIn,
     #[not_found]
     #[at("/manage/404")]
     NotFound,
@@ -78,7 +96,12 @@ pub fn switch_main(routes: MainRoute) -> Html {
         // MainRoute::About => html! { <About /> },
         // MainRoute::ManageRoot => html! { <Redirect<ManageRoute> to={ManageRoute::Profile} /> },
         MainRoute::ManageRoot | MainRoute::Manage => {
-            html! { <Switch<ManageRoute> render={switch_settings} /> }
+            // html! { <Switch<ManageRoute> render={switch_settings} /> }
+            html! {
+                <RouteGuard>
+                    <Switch<ManageRoute> render={switch_settings} />
+                </RouteGuard>
+            }
         }
         MainRoute::PageNotFound => html! { "Page not found" },
         // MainRoute::CategoryPage { slug } => html! { format!("Category: {}", slug) },
@@ -87,6 +110,7 @@ pub fn switch_main(routes: MainRoute) -> Html {
         MainRoute::ArticlePage { slug } => html! { <ArticlePage {slug} /> },
         MainRoute::Test => html! { <Test /> },
         MainRoute::SearchPage => html! { <SearchPage /> },
+        MainRoute::SignIn => html! { <SignIn /> },
     }
 }
 
@@ -95,7 +119,7 @@ fn switch_settings(routes: ManageRoute) -> Html {
         ManageRoute::Manage => html! {<h1>{"Manage"}</h1>},
         ManageRoute::Profile => html! { <ProfilePage /> },
         ManageRoute::Init => html! { <InitPage /> },
-        ManageRoute::SignIn => html! { <SignIn /> },
+        // ManageRoute::SignIn => html! { <SignIn /> },
         ManageRoute::NotFound => html! {<Redirect<MainRoute> to={MainRoute::PageNotFound}/>},
         ManageRoute::Content => html! {<h1>{"Content"}</h1>},
         ManageRoute::Editor { id } => html! { <EditorPage {id} /> },
