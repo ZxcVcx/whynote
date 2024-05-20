@@ -88,11 +88,11 @@ pub fn ManageNav() -> Html {
     // });
 
     let nav_list = [
-        ("Manage", ManageRoute::Manage),
+        // ("Manage", ManageRoute::Manage),
         ("Profile", ManageRoute::Profile),
         ("Categories", ManageRoute::Categories),
         ("Topics", ManageRoute::Topics),
-        ("Content", ManageRoute::Content),
+        // ("Content", ManageRoute::Content),
     ];
 
     html! {
