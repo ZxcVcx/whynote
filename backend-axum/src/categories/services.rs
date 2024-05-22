@@ -6,10 +6,12 @@ use mongodb::{
     Database,
 };
 
-use crate::{users, utils::{common::slugify, constants::GqlResult, cred::token_data}};
+use crate::{
+    users,
+    utils::{common::slugify, constants::GqlResult, cred::token_data},
+};
 
 use super::models::{Category, CategoryNew, CategoryUser, CategoryUserNew};
-
 
 pub async fn category_new_by_token(
     db: Database,
@@ -180,9 +182,13 @@ pub async fn category_update(
         category.updated_at = DateTime::now();
 
         let category_document = to_document(&category)?;
-        coll.update_one(doc! {"_id": category_id}, doc! {"$set": category_document} , None)
-            .await
-            .expect("Failed to update a MongoDB collection!");
+        coll.update_one(
+            doc! {"_id": category_id},
+            doc! {"$set": category_document},
+            None,
+        )
+        .await
+        .expect("Failed to update a MongoDB collection!");
 
         Ok(category)
     } else {

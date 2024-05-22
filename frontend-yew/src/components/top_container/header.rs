@@ -1,7 +1,4 @@
-use crate::{
-    app::MainRoute,
-    services::user::fetch_default_user_data,
-};
+use crate::{app::MainRoute, services::user::fetch_default_user_data};
 use wasm_bindgen_futures::spawn_local;
 use yew::prelude::*;
 use yew_router::prelude::*;
@@ -25,8 +22,11 @@ pub fn Header(props: &HeaderProps) -> Html {
     use_effect_with(effect_login_state.clone(), move |_| {
         spawn_local(async move {
             // let data = fetch_default_user_data().await;
-            let title = match  fetch_default_user_data().await {
-                Ok(user) => user["defaultUser"]["blogName"].as_str().unwrap().to_string(),
+            let title = match fetch_default_user_data().await {
+                Ok(user) => user["defaultUser"]["blogName"]
+                    .as_str()
+                    .unwrap()
+                    .to_string(),
                 Err(_) => "Blog Title".to_string(),
             };
 

@@ -1,4 +1,3 @@
-
 #[derive(Clone)]
 pub struct ArticleNewType {
     pub user_id: String,

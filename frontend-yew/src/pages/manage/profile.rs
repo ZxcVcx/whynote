@@ -9,9 +9,9 @@ use crate::services::user::fetch_user_data_by_email;
 
 use crate::components::manage_container::contents_list::ContentsList;
 use crate::components::manage_container::profile::Profile;
+use crate::components::top_container::manage_top_container::ManageTopContainer;
 use crate::utils::common::log_out;
 use crate::utils::storage::get_pair_value;
-use crate::components::top_container::manage_top_container::ManageTopContainer;
 
 #[derive(PartialEq, Properties)]
 pub struct ProfilePageProps {}

@@ -1,5 +1,6 @@
 // use std::result;
 
+use async_graphql::{Error, ErrorExtensions};
 use futures::stream::StreamExt;
 use mongodb::{
     bson::{doc, from_document, oid::ObjectId, to_document, DateTime, Document},
@@ -254,16 +255,12 @@ pub async fn articles_by_user_id(
     user_id: ObjectId,
     published: bool,
 ) -> GqlResult<Vec<Article>> {
+    let coll = db.collection::<Document>("articles");
+
     let mut find_doc = doc! {"user_id": user_id};
-    // if published > 0 {
-    //     find_doc.insert("published", true);
-    // } else if published < 0 {
-    //     find_doc.insert("published", false);
-    // }
     find_doc.insert("published", published);
     let find_options = FindOptions::builder().sort(doc! {"updated_at": -1}).build();
 
-    let coll = db.collection::<Document>("articles");
     let mut cursor = coll.find(find_doc, find_options).await?;
 
     let mut articles: Vec<Article> = vec![];
@@ -316,9 +313,10 @@ pub async fn articles_by_category_id(
                 let article = from_document(document)?;
                 articles.push(article);
             }
-            Err(error) => {
-                println!("Error to find doc: {}", error);
-            }
+            Err(error) => Err(Error::new("2-articles-by-articles-id").extend_with(|_, e| {
+                e.set("details", format!("Error to find articles: {}", error))
+            }))
+            .unwrap(),
         }
     }
 
@@ -359,9 +357,10 @@ pub async fn articles_by_topic_id(
                 let article = from_document(document)?;
                 articles.push(article);
             }
-            Err(error) => {
-                println!("Error to find doc: {}", error);
-            }
+            Err(error) => Err(Error::new("2-articles-by-topic-id").extend_with(|_, e| {
+                e.set("details", format!("Error to find articles: {}", error))
+            }))
+            .unwrap(),
         }
     }
 

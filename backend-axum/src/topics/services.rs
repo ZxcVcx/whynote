@@ -47,10 +47,13 @@ pub async fn topic_delete(db: Database, topic_id: ObjectId, token: &str) -> GqlR
             .expect("Document not found")
             .expect(format!("Document not found: {}", topic_id).as_str());
 
-        let articles_published = crate::articles::services::articles_by_topic_id(db.clone(), topic_id, true).await?;
-        let articles_draft = crate::articles::services::articles_by_topic_id(db.clone(), topic_id, false).await?;
+        let articles_published =
+            crate::articles::services::articles_by_topic_id(db.clone(), topic_id, true).await?;
+        let articles_draft =
+            crate::articles::services::articles_by_topic_id(db.clone(), topic_id, false).await?;
         if articles_published.len() > 0 || articles_draft.len() > 0 {
-            return Err(Error::new("Topic has articles").extend_with(|err, eev| eev.set("details", err.message.as_str())));
+            return Err(Error::new("Topic has articles")
+                .extend_with(|err, eev| eev.set("details", err.message.as_str())));
         }
 
         let topic: Topic = from_document(topic_document)?;

@@ -112,6 +112,7 @@ pub fn Editor(props: &EditorProps) -> Html {
                     .unwrap()
                     .to_vec();
                 categories.set(data.clone());
+                // categories.set(data.to_vec().clone());
             });
             || ()
         }

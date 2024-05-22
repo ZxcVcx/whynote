@@ -11,16 +11,16 @@ use crate::components::bottom_container::footer::Footer;
 use crate::components::theme_toggle::ThemeToggle;
 use crate::pages::common::article::ArticlePage;
 use crate::pages::common::category::CategoryPage;
+use crate::pages::common::search::SearchPage;
 use crate::pages::common::test::Test;
 use crate::pages::common::user::UserPage;
+use crate::pages::manage::categories::CategoryManagePage;
 use crate::pages::manage::editor::EditorPage;
 use crate::pages::manage::init::InitPage;
 use crate::pages::manage::new_editor::NewEditorPage;
 use crate::pages::manage::profile::ProfilePage;
 use crate::pages::manage::signin::SignIn;
-use crate::pages::manage::categories::CategoryManagePage;
 use crate::pages::manage::topics::TopicManagePage;
-use crate::pages::common::search::SearchPage;
 use crate::utils::common::is_logged_in;
 
 #[derive(Properties, PartialEq)]

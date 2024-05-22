@@ -107,4 +107,3 @@ pub async fn create_category_by_token(
     let data = super::use_query::fetch_gql_data(query).await?;
     Ok(data)
 }
-

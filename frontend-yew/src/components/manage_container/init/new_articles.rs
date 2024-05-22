@@ -29,7 +29,7 @@ struct Article {
 
 type FileMap = HashMap<Category, Vec<Article>>;
 
-fn collect_next(zip: &mut ZipArchive<Cursor<Vec<u8>>>) -> FileMap {
+fn collect(zip: &mut ZipArchive<Cursor<Vec<u8>>>) -> FileMap {
     let mut files_map = FileMap::new();
 
     for i in 0..zip.len() {
@@ -162,7 +162,7 @@ pub fn NewArticlesComponent(props: &NewArticlesComponentProps) -> Html {
                         }
 
                         // let files = collect_files(&mut zip);
-                        let files = collect_next(&mut zip);
+                        let files = collect(&mut zip);
 
                         file_map.set(files);
                     }) as Box<dyn FnMut(_)>);

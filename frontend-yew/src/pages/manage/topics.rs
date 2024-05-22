@@ -259,8 +259,7 @@ pub fn TopicManagePage(props: &TopicManagePageProps) -> Html {
                     Ok(data) => {
                         let data = data.get("topicUpdate").unwrap();
                         let mut updated_topics = (*topics).clone();
-                        if let Some(topic) =
-                            updated_topics.iter_mut().find(|c| c.id == id.clone())
+                        if let Some(topic) = updated_topics.iter_mut().find(|c| c.id == id.clone())
                         {
                             topic.name = name.clone();
                             topic.updated_at = data["updatedAt"].as_str().unwrap().to_string();
@@ -326,4 +325,3 @@ pub fn TopicManagePage(props: &TopicManagePageProps) -> Html {
 
     }
 }
-

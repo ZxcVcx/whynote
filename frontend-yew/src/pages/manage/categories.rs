@@ -363,4 +363,3 @@ pub fn CategoryManagePage(props: &CategoryManagePageProps) -> Html {
 
     }
 }
-

@@ -32,6 +32,27 @@ pub async fn fetch_articles_data() -> Result<Value, FetchError> {
 #[derive(GraphQLQuery)]
 #[graphql(
     schema_path = "./graphql/schema.graphql",
+    query_path = "./graphql/articles.graphql",
+    response_derives = "Debug, Clone"
+)]
+struct CraftsData;
+
+async fn crafts_query() -> Value {
+    let veriables = crafts_data::Variables {};
+    let query_body = CraftsData::build_query(veriables);
+    let query = json!(query_body);
+    query
+}
+
+pub async fn fetch_crafts_data() -> Result<Value, FetchError> {
+    let query = crafts_query().await;
+    let data = super::use_query::fetch_gql_data(query).await;
+    data
+}
+
+#[derive(GraphQLQuery)]
+#[graphql(
+    schema_path = "./graphql/schema.graphql",
     query_path = "./graphql/home.graphql",
     response_derives = "Debug, Clone"
 )]

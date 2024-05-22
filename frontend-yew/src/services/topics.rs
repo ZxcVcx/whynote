@@ -31,10 +31,7 @@ pub async fn fetch_topics_list() -> Result<Value, FetchError> {
 )]
 pub struct TopicUpdate;
 
-pub async fn update_topic_data(
-    topic_id: ObjectId,
-    name: ObjectId,
-) -> Result<Value, FetchError> {
+pub async fn update_topic_data(topic_id: ObjectId, name: ObjectId) -> Result<Value, FetchError> {
     let veriables = topic_update::Variables {
         topic_id,
         name,
@@ -73,9 +70,7 @@ pub async fn delete_topic_data(topic_id: ObjectId) -> Result<Value, FetchError> 
     response_derives = "Debug, Clone"
 )]
 pub struct TopicNewByToken;
-pub async fn create_topic_by_token(
-    name: String,
-) -> Result<Value, FetchError> {
+pub async fn create_topic_by_token(name: String) -> Result<Value, FetchError> {
     let veriables = topic_new_by_token::Variables {
         name,
         token: utils::storage::get_pair_value("jwt").unwrap(),
@@ -85,4 +80,3 @@ pub async fn create_topic_by_token(
     let data = super::use_query::fetch_gql_data(query).await?;
     Ok(data)
 }
-

@@ -43,7 +43,8 @@ js-sys = "0.3.69"
   "Response",
   "Headers",
   "HtmlSelectElement",
-  "HtmlDivElement"
+  "HtmlDivElement",
+  "HtmlAnchorElement"
 ]
 
 [dev-dependencies]

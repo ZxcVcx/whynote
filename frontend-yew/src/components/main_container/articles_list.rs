@@ -2,7 +2,10 @@ use serde_json::Value;
 use yew::prelude::*;
 use yew_router::prelude::*;
 
-use crate::{app::{MainRoute, ManageRoute}, utils::common::{format_date, is_logged_in}};
+use crate::{
+    app::{MainRoute, ManageRoute},
+    utils::common::{format_date, is_logged_in},
+};
 
 #[derive(PartialEq, Properties)]
 pub struct ArticlesListProps {

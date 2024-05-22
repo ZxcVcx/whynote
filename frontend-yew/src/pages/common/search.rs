@@ -16,17 +16,17 @@ pub fn SearchPage(props: &SearchPageProps) -> Html {
     let articles = use_state(|| vec![]);
     let search_query = use_state(|| "".to_string());
 
-        let articles_clone = articles.clone();
-        use_effect_with((), move |_| {
-            let articles = articles_clone.clone();
-            spawn_local(async move {
-                let fetched_articles = fetch_articles_data_as_vec()
-                    .await
-                    .expect("Failed to fetch articles");
-                articles.set(fetched_articles);
-            });
-            || ()
+    let articles_clone = articles.clone();
+    use_effect_with((), move |_| {
+        let articles = articles_clone.clone();
+        spawn_local(async move {
+            let fetched_articles = fetch_articles_data_as_vec()
+                .await
+                .expect("Failed to fetch articles");
+            articles.set(fetched_articles);
         });
+        || ()
+    });
 
     let on_search_input = {
         let search_query = search_query.clone();

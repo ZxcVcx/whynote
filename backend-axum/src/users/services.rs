@@ -129,13 +129,7 @@ pub async fn user_by_email(db: Database, email: &str) -> GqlResult<User> {
 pub async fn user_sign_in(db: Database, signature: &str, password: &str) -> GqlResult<SignInfo> {
     let signature = &signature.to_ascii_lowercase();
 
-    // let user_res;
     let is_email = Regex::new(r"(@)")?.is_match(signature);
-    // if is_email {
-    //     user_res = self::user_by_email(db.clone(), signature).await;
-    // } else {
-    //     user_res = self::user_by_username(db.clone(), signature).await;
-    // }
 
     let user_res = match is_email {
         true => user_by_email(db.clone(), signature).await,
@@ -150,12 +144,6 @@ pub async fn user_sign_in(db: Database, signature: &str, password: &str) -> GqlR
             header.alg = jsonwebtoken::Algorithm::HS512;
 
             let jwt_secret = CFG.get("JWT_SECRET").unwrap().as_bytes();
-            // let claim_exp = CFG.get("CLAIM_EXP").unwrap().parse::<usize>().unwrap();
-            // let claims = new Claims {
-            //     email: user.email.to_owned(),
-            //     username: user.username.to_owned(),
-            //     exp: claim_exp,
-            // };
             let claims = Claims::new(user.email.to_owned(), user.username.to_owned());
 
             let token =

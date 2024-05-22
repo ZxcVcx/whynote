@@ -25,3 +25,31 @@ query ArticlesData {
     }
   }
 }
+
+query CraftsData {
+  articles(
+    published: false
+  ) {
+    id
+    subject
+    summary
+    content
+    slug
+    updatedAt
+    
+    user {
+      username
+      nickname
+      blogName
+    }
+    category {
+      name
+      uri
+    }
+
+    topics {
+      name
+      uri
+    }
+  }
+}
