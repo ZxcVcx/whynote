@@ -1,6 +1,5 @@
 target
 .VSCodeCounter
-backend/.env
 backend-axum/.env
-frontend/.env
-frontend/dist
+frontend-yew/.env
+frontend-yew/dist
