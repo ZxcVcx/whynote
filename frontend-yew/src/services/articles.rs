@@ -25,8 +25,7 @@ async fn articles_query() -> Value {
 
 pub async fn fetch_articles_data() -> Result<Value, FetchError> {
     let query = articles_query().await;
-    let data = super::use_query::fetch_gql_data(query).await;
-    data
+    super::use_query::fetch_gql_data(query).await
 }
 
 #[derive(GraphQLQuery)]
@@ -46,8 +45,7 @@ async fn crafts_query() -> Value {
 
 pub async fn fetch_crafts_data() -> Result<Value, FetchError> {
     let query = crafts_query().await;
-    let data = super::use_query::fetch_gql_data(query).await;
-    data
+    super::use_query::fetch_gql_data(query).await
 }
 
 #[derive(GraphQLQuery)]
@@ -61,13 +59,10 @@ struct HomeData;
 async fn home_query() -> Value {
     let veriables = home_data::Variables {};
     let query_body = HomeData::build_query(veriables);
-    let query = json!(query_body);
-
-    query
+    json!(query_body)
 }
 
 pub async fn fetch_home_data() -> Result<Value, FetchError> {
     let query = home_query().await;
-    let data = super::use_query::fetch_gql_data(query).await;
-    data
+    super::use_query::fetch_gql_data(query).await
 }

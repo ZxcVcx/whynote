@@ -62,7 +62,8 @@ fn collect(zip: &mut ZipArchive<Cursor<Vec<u8>>>) -> FileMap {
             };
             files_map
                 .entry(category)
-                .or_insert_with(Vec::new)
+                // .or_insert_with(Vec::new)
+                .or_default()
                 .push(article)
         }
 
@@ -79,7 +80,8 @@ fn collect(zip: &mut ZipArchive<Cursor<Vec<u8>>>) -> FileMap {
                 name: dir_name.clone(),
                 description: dir_name.clone(),
             };
-            files_map.entry(category).or_insert_with(Vec::new);
+            // files_map.entry(category).or_insert_with(Vec::new);
+            files_map.entry(category).or_default();
         }
     }
     files_map

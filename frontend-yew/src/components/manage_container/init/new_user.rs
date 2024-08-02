@@ -99,7 +99,7 @@ pub fn NewUserComponent(props: &NewUserComponentProps) -> Html {
                 ..(*user).clone()
             });
             // if the length of user's email > 0, show continue button
-            if input.value().len() > 0 {
+            if !input.value().is_empty() {
                 continue_show_state.set(ContinueShows {
                     email: true,
                     ..ContinueShows::all_hide()
@@ -137,7 +137,7 @@ pub fn NewUserComponent(props: &NewUserComponentProps) -> Html {
                 password: input.value(),
                 ..(*user).clone()
             });
-            if input.value().len() > 0 {
+            if !input.value().is_empty() {
                 continue_show_state.set(ContinueShows {
                     password: true,
                     ..ContinueShows::all_hide()
@@ -175,7 +175,7 @@ pub fn NewUserComponent(props: &NewUserComponentProps) -> Html {
                 username: input.value(),
                 ..(*user).clone()
             });
-            if input.value().len() > 0 {
+            if !input.value().is_empty() {
                 continue_show_state.set(ContinueShows {
                     username: true,
                     ..ContinueShows::all_hide()
@@ -213,7 +213,7 @@ pub fn NewUserComponent(props: &NewUserComponentProps) -> Html {
                 nickname: input.value(),
                 ..(*user).clone()
             });
-            if input.value().len() > 0 {
+            if !input.value().is_empty() {
                 continue_show_state.set(ContinueShows {
                     nickname: true,
                     ..ContinueShows::all_hide()
@@ -251,7 +251,7 @@ pub fn NewUserComponent(props: &NewUserComponentProps) -> Html {
                 blog_name: input.value(),
                 ..(*user).clone()
             });
-            if input.value().len() > 0 {
+            if !input.value().is_empty() {
                 continue_show_state.set(ContinueShows {
                     blog_name: true,
                     ..ContinueShows::all_hide()
@@ -289,7 +289,7 @@ pub fn NewUserComponent(props: &NewUserComponentProps) -> Html {
                 blog_description: input.value(),
                 ..(*user).clone()
             });
-            if input.value().len() > 0 {
+            if !input.value().is_empty() {
                 continue_show_state.set(ContinueShows {
                     blog_description: true,
                     ..ContinueShows::all_hide()
@@ -327,7 +327,7 @@ pub fn NewUserComponent(props: &NewUserComponentProps) -> Html {
                 elsewhere: input.value(),
                 ..(*user).clone()
             });
-            if input.value().len() > 0 {
+            if !input.value().is_empty() {
                 continue_show_state.set(ContinueShows {
                     elsewhere: true,
                     ..ContinueShows::all_hide()
@@ -404,92 +404,92 @@ pub fn NewUserComponent(props: &NewUserComponentProps) -> Html {
                 // <img class="mb-4" src="../assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
                  <h1 class="h3 mb-3 fw-normal">{"Please Set Some Info First"}</h1>
 
-                <div class={match (*inputs_show_state).email.clone() { true => {input_show.clone()}, false => {input_hidden.clone()} }}>
+                <div class={match inputs_show_state.email { true => {input_show.clone()}, false => {input_hidden.clone()} }}>
                     <div class="form-floating">
                         <input type="email" class="form-control" id="floatingEmail" placeholder="example@example.com"
-                            value={(*user_state).email.clone()}
+                            value={user_state.email.clone()}
                             oninput={on_email_change}
                             // onfocus={on_email_focus}
                             required=true
                         />
                         <label for="floatingEmail">{"Email address"}</label>
                     </div>
-                    <button class={ match (*continue_show_state).email.clone() {true => {continue_show.clone()}, false => {continue_hidden.clone()}}} onclick={on_email_continue} type="button">{"Continue"}</button>
+                    <button class={ match continue_show_state.email {true => {continue_show.clone()}, false => {continue_hidden.clone()}}} onclick={on_email_continue} type="button">{"Continue"}</button>
                 </div>
 
 
-                <div class={match (*inputs_show_state).password.clone() { true => {input_show.clone()}, false => {input_hidden.clone()} }}>
+                <div class={match inputs_show_state.password { true => {input_show.clone()}, false => {input_hidden.clone()} }}>
                     <div class="form-floating">
                         <input type="password" class="form-control" id="floatingPassword" placeholder="Password"
-                            value={(*user_state).password.clone()}
+                            value={user_state.password.clone()}
                             oninput={on_password_change}
                             required=true
                         />
                         <label for="floatingPassword">{"Password"}</label>
                     </div>
-                    <button class={ match (*continue_show_state).password.clone() {true => {continue_show.clone()}, false => {continue_hidden.clone()}}} onclick={on_password_continue} type="button">{"Continue"}</button>
+                    <button class={ match continue_show_state.password {true => {continue_show.clone()}, false => {continue_hidden.clone()}}} onclick={on_password_continue} type="button">{"Continue"}</button>
                 </div>
-                <div class={match (*inputs_show_state).username.clone() { true => {input_show.clone()}, false => {input_hidden.clone()} }}>
+                <div class={match inputs_show_state.username { true => {input_show.clone()}, false => {input_hidden.clone()} }}>
                     <div class="form-floating">
                         <input type="text" class="form-control" id="floatingUsername" placeholder="nickname"
-                            value={(*user_state).username.clone()}
+                            value={user_state.username.clone()}
                             oninput={on_username_change}
                             required=true
                         />
                         <label for="floatingNickname">{"Username"}</label>
                     </div>
-                    <button class={ match (*continue_show_state).username.clone()  {true => {continue_show.clone()}, false => {continue_hidden.clone()}}} onclick={on_username_continue} type="button">{"Continue"}</button>
+                    <button class={ match continue_show_state.username  {true => {continue_show.clone()}, false => {continue_hidden.clone()}}} onclick={on_username_continue} type="button">{"Continue"}</button>
                 </div>
 
-                <div class={match (*inputs_show_state).nickname.clone() { true => {input_show.clone()}, false => {input_hidden.clone()} }}>
+                <div class={match inputs_show_state.nickname { true => {input_show.clone()}, false => {input_hidden.clone()} }}>
                     <div class="form-floating">
                         <input type="text" class="form-control" id="floatingNickname" placeholder="nickname"
-                            value={(*user_state).nickname.clone()}
+                            value={user_state.nickname.clone()}
                             oninput={on_nickname_change}
                             required=true
                         />
                         <label for="floatingNickname">{"Nickname"}</label>
                     </div>
-                    <button class={match (*continue_show_state).nickname.clone() {true => {continue_show.clone()}, false => {continue_hidden.clone()}}} onclick={on_nickname_continue} type="button">{"Continue"}</button>
+                    <button class={match continue_show_state.nickname {true => {continue_show.clone()}, false => {continue_hidden.clone()}}} onclick={on_nickname_continue} type="button">{"Continue"}</button>
                 </div>
 
-                <div class={match (*inputs_show_state).blog_name.clone() { true => {input_show.clone()}, false => {input_hidden.clone()} }}>
+                <div class={match inputs_show_state.blog_name { true => {input_show.clone()}, false => {input_hidden.clone()} }}>
                     <div class="form-floating">
                         <input type="text" class="form-control" id="floatingBlogName" placeholder="blog name"
-                            value={(*user_state).blog_name.clone()}
+                            value={user_state.blog_name.clone()}
                             oninput={on_blog_name_change}
                             required=true
                         />
                         <label for="floatingBlogName">{"Blog Name"}</label>
                     </div>
-                    <button class={match (*continue_show_state).blog_name.clone() {true => {continue_show.clone()}, false => {continue_hidden.clone()}}} onclick={on_blog_name_continue} type="button">{"Continue"}</button>
+                    <button class={match continue_show_state.blog_name {true => {continue_show.clone()}, false => {continue_hidden.clone()}}} onclick={on_blog_name_continue} type="button">{"Continue"}</button>
                 </div>
 
-                <div class={match (*inputs_show_state).blog_description.clone() { true => {input_show.clone()}, false => {input_hidden.clone()} }}>
+                <div class={match inputs_show_state.blog_description { true => {input_show.clone()}, false => {input_hidden.clone()} }}>
                     // <span class="input-group-text">{"Description"}</span>
                     <textarea rows="4" class="form-control" id="floatingBlogDescription" placeholder="blog description"
-                        value={(*user_state).blog_description.clone()}
+                        value={user_state.blog_description.clone()}
                         oninput={on_blog_description_change}
                         required=true
                     />
-                    <button class={match (*continue_show_state).blog_description.clone() {true => {continue_show.clone()}, false => {continue_hidden.clone()}}} onclick={on_blog_description_continue} type="button">{"Continue"}</button>
+                    <button class={match continue_show_state.blog_description {true => {continue_show.clone()}, false => {continue_hidden.clone()}}} onclick={on_blog_description_continue} type="button">{"Continue"}</button>
                     // <label for="floatingBlogDescription">{"Blog Description"}</label>
                 </div>
 
-                <div class={match (*inputs_show_state).elsewhere.clone() { true => {input_show.clone()}, false => {input_hidden.clone()} }}>
+                <div class={match inputs_show_state.elsewhere { true => {input_show.clone()}, false => {input_hidden.clone()} }}>
                     <div class="form-floating">
                         <input type="text" class="form-control" id="floatingElsewhere" placeholder="elsewhere"
-                            value={(*user_state).elsewhere.clone()}
+                            value={user_state.elsewhere.clone()}
                             oninput={on_elsewhere_change}
                         />
                         <label for="floatingElsewhere">{"Elsewhere (Optional)"}</label>
                     </div>
-                    <button class={match (*continue_show_state).elsewhere.clone() {true => {continue_show.clone()}, false => {continue_hidden.clone()}}} onclick={on_elsewhere_continue} type="button">{"Continue"}</button>
+                    <button class={match continue_show_state.elsewhere {true => {continue_show.clone()}, false => {continue_hidden.clone()}}} onclick={on_elsewhere_continue} type="button">{"Continue"}</button>
                     // <label for="floatingBlogDescription">{"Blog Description"}</label>
                 </div>
 
                 // <button class="btn btn-primary w-100 py-2" type="submit">{"Next Step"}</button>
-                <button class={match (*continue_show_state).submit.clone() {true => {classes!("w-100", "py-2", continue_show.clone())}, false => {continue_hidden.clone()}}} type="submit">{"Next Step"}</button>
+                <button class={match continue_show_state.submit {true => {classes!("w-100", "py-2", continue_show.clone())}, false => {continue_hidden.clone()}}} type="submit">{"Next Step"}</button>
                 // <p class="mt-5 mb-3 text-body-secondary">&copy; 2017–2024</p>
             </form>
         </main>

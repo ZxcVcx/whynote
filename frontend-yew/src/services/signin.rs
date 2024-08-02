@@ -25,6 +25,5 @@ async fn sign_in_query(signature: String, password: String) -> Value {
 
 pub async fn fetch_sign_in_data(signature: String, password: String) -> Result<Value, FetchError> {
     let query = sign_in_query(signature, password).await;
-    let data = super::use_query::fetch_gql_data(query).await;
-    data
+    super::use_query::fetch_gql_data(query).await
 }

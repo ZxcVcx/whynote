@@ -51,8 +51,8 @@ pub fn Nav() -> Html {
                 {
                     if let Some(data) = &nav_list.data {
                         let nav_vec = data.get("categories").unwrap().as_array().unwrap();
-                        nav_vec.into_iter().map(|category| {
-                            if category.get("articles").unwrap().as_array().unwrap().len() > 0 {
+                        nav_vec.iter().map(|category| {
+                            if !category.get("articles").unwrap().as_array().unwrap().is_empty() {
                                 html! {
                                     <Link<MainRoute> classes="nav-item nav-link link-body-emphasis" to={MainRoute::CategoryPage {slug: category["slug"].as_str().unwrap().to_string() }}>
                                         { category["name"].as_str() }

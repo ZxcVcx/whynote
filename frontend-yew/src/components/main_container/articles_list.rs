@@ -26,7 +26,7 @@ pub fn ArticlesList(props: &ArticlesListProps) -> Html {
                 { description.as_str().unwrap() }
             </h3>
             {
-                articles_list.into_iter().map(|article_card| {
+                articles_list.iter().map(|article_card| {
                     let subject = article_card.get("subject").unwrap().as_str().unwrap();
                     let summary = article_card.get("summary").unwrap().as_str().unwrap();
                     let updated_at = format_date(article_card.get("updatedAt").unwrap(), "%b %d, %Y").unwrap();

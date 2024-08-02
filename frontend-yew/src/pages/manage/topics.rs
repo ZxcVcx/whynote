@@ -184,7 +184,7 @@ pub struct TopicManagePageProps {}
 #[function_component]
 pub fn TopicManagePage(props: &TopicManagePageProps) -> Html {
     let TopicManagePageProps {} = props;
-    let topics = use_state(|| vec![]);
+    let topics = use_state(|| Vec::new());
     let error = use_state(|| None);
 
     {

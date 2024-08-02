@@ -10,7 +10,8 @@ pub fn store_pair(key: &str, value: &str, remember: bool) {
 
         local_storage
             .set_item(key, value)
-            .expect(format! {"failed to set {}", key}.as_str());
+            .unwrap_or_else(|_| panic!("failed to set {}", key));
+        // .expect(format! {"failed to set {}", key}.as_str());
     } else {
         let session_storage = window
             .session_storage()
@@ -19,7 +20,8 @@ pub fn store_pair(key: &str, value: &str, remember: bool) {
 
         session_storage
             .set_item(key, value)
-            .expect(format! {"failed to set {}", key}.as_str());
+            .unwrap_or_else(|_| panic!("failed to set {}", key));
+        // .expect(format! {"failed to set {}", key}.as_str());
     }
 }
 

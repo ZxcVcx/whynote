@@ -218,7 +218,7 @@ pub struct CategoryManagePageProps {}
 #[function_component]
 pub fn CategoryManagePage(props: &CategoryManagePageProps) -> Html {
     let CategoryManagePageProps {} = props;
-    let categories = use_state(|| vec![]);
+    let categories = use_state(|| Vec::new());
     let error = use_state(|| None);
 
     {

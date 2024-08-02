@@ -42,7 +42,7 @@ pub fn Editor(props: &EditorProps) -> Html {
     let html = use_state(|| markdown_to_html(init_content));
     let subject = use_state(|| init_subject.to_string());
     let summary = use_state(|| init_summary.to_string());
-    let categories: UseStateHandle<Vec<Value>> = use_state(|| vec![]);
+    let categories: UseStateHandle<Vec<Value>> = use_state(|| Vec::new());
     // let categories = use_state(|| Vec::<Value>::new());
     let category_id = use_state(|| init_category_id.clone());
     let published = use_state(|| init_published);
@@ -473,8 +473,7 @@ pub fn Editor(props: &EditorProps) -> Html {
                                 {
                                     let content_html_section = gloo_utils::document().create_element("section").unwrap();
                                     content_html_section.set_inner_html((*html).as_str());
-                                    let content_html_node = Html::VRef(content_html_section.into());
-                                    content_html_node
+                                    Html::VRef(content_html_section.into())
                                 }
                             }
                         </div>

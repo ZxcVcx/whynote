@@ -28,7 +28,7 @@ pub fn Sticky(props: &StickyProps) -> Html {
                     <h3 class="fst-italic">{"Recent posts"}</h3>
                     <ul class="list-unstyled">
                         {
-                            recent.into_iter().map(|article| {
+                            recent.iter().map(|article| {
                                 let title = article.get("subject").unwrap().as_str().unwrap();
                                 // let updated_at = article.get("updatedAt").unwrap().as_str().unwrap();
                                 let updated_at = format_date(article.get("updatedAt").unwrap(), "%b %d, %Y").unwrap();

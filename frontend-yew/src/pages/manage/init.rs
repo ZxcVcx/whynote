@@ -26,11 +26,14 @@ pub fn InitPage(props: &InitPageProps) -> Html {
         spawn_local(async move {
             let navigator = navigator.clone();
             let data = fetch_home_data().await;
-            match data {
-                Ok(_) => {
-                    navigator.clone().push(&MainRoute::Home);
-                }
-                Err(_) => {}
+            // match data {
+            //     Ok(_) => {
+            //         navigator.clone().push(&MainRoute::Home);
+            //     }
+            //     Err(_) => {}
+            // }
+            if data.is_ok() {
+                navigator.clone().push(&MainRoute::Home);
             }
         });
         || ()
@@ -38,8 +41,8 @@ pub fn InitPage(props: &InitPageProps) -> Html {
 
     let user_new_token_state = use_state(|| UserNewToken::empty());
     let cetegories_data_state: yew::prelude::UseStateHandle<Vec<CategoryNewType>> =
-        use_state(|| vec![]);
-    let articles_data_state: yew::prelude::UseStateHandle<Vec<ArticleType>> = use_state(|| vec![]);
+        use_state(|| Vec::new());
+    let articles_data_state: yew::prelude::UseStateHandle<Vec<ArticleType>> = use_state(|| Vec::new());
     let token_setter = user_new_token_state.setter();
     let articles_setter = articles_data_state.setter();
     let categories_setter = cetegories_data_state.setter();

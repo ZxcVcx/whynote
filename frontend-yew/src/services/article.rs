@@ -28,8 +28,7 @@ pub async fn fetch_article_data_by_username_and_slug(
     slug: String,
 ) -> Result<Value, FetchError> {
     let query = query(username, slug).await;
-    let data = super::use_query::fetch_gql_data(query).await;
-    data
+    super::use_query::fetch_gql_data(query).await
 }
 
 #[derive(GraphQLQuery)]
@@ -44,9 +43,7 @@ pub async fn fetch_article_data_by_slug(slug: String) -> Result<Value, FetchErro
     let veriables = article_data_by_slug::Variables { slug };
     let query_body = ArticleDataBySlug::build_query(veriables);
     let query = json!(query_body);
-    let data = super::use_query::fetch_gql_data(query).await?;
-
-    Ok(data)
+    super::use_query::fetch_gql_data(query).await
 }
 
 #[derive(GraphQLQuery)]
@@ -61,9 +58,7 @@ pub async fn fetch_article_data_by_id(id: String) -> Result<Value, FetchError> {
     let veriables = article_data_by_id::Variables { id };
     let query_body = ArticleDataById::build_query(veriables);
     let query = json!(query_body);
-    let data = super::use_query::fetch_gql_data(query).await?;
-
-    Ok(data)
+    super::use_query::fetch_gql_data(query).await
 }
 
 type ObjectId = String;

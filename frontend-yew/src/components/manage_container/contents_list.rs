@@ -87,7 +87,7 @@ pub fn ContentsList(props: &ContentsListProps) -> Html {
                      data: Vec<Value>,
                      folder_name: &str| {
                         let mut category_map = HashMap::new();
-                        let options = options.clone();
+                        // let options = options.clone();
                         for item in data {
                             if let Some(category) = item["category"]["name"].as_str() {
                                 category_map

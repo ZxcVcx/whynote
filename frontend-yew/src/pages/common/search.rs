@@ -36,10 +36,28 @@ pub fn SearchPage(props: &SearchPageProps) -> Html {
         })
     };
 
+    // let filtered_articles: Vec<SearchData> = articles
+    //     .iter()
+    //     .cloned()
+    //     .filter(|article| {
+    //         article
+    //             .subject
+    //             .to_lowercase()
+    //             .contains(&search_query.to_lowercase())
+    //             || article
+    //                 .content
+    //                 .to_lowercase()
+    //                 .contains(&search_query.to_lowercase())
+    //             || article
+    //                 .slug
+    //                 .to_lowercase()
+    //                 .contains(&search_query.to_lowercase())
+    //     })
+    //     .collect();
+
     let filtered_articles: Vec<SearchData> = articles
         .iter()
-        .cloned()
-        .filter(|article| {
+        .filter(|&article| {
             article
                 .subject
                 .to_lowercase()
@@ -53,6 +71,7 @@ pub fn SearchPage(props: &SearchPageProps) -> Html {
                     .to_lowercase()
                     .contains(&search_query.to_lowercase())
         })
+        .cloned()
         .collect();
 
     html! {

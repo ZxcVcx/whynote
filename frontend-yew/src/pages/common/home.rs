@@ -25,7 +25,7 @@ pub fn HomePage(props: &HomePageProps) -> Html {
         <TopContainer />
         <main class="container">
             {
-                if props.top.len() < 1 {
+                if props.top.is_empty() {
                     html! {
                         <MainContainer
                             recommended={props.recommended.clone()}
