@@ -39,10 +39,10 @@ pub fn InitPage(props: &InitPageProps) -> Html {
         || ()
     });
 
-    let user_new_token_state = use_state(|| UserNewToken::empty());
+    let user_new_token_state = use_state(UserNewToken::empty);
     let cetegories_data_state: yew::prelude::UseStateHandle<Vec<CategoryNewType>> =
-        use_state(|| Vec::new());
-    let articles_data_state: yew::prelude::UseStateHandle<Vec<ArticleType>> = use_state(|| Vec::new());
+        use_state(Vec::new);
+    let articles_data_state: yew::prelude::UseStateHandle<Vec<ArticleType>> = use_state(Vec::new);
     let token_setter = user_new_token_state.setter();
     let articles_setter = articles_data_state.setter();
     let categories_setter = cetegories_data_state.setter();

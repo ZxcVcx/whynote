@@ -111,7 +111,7 @@ fn check_file_structure(zip: &mut ZipArchive<Cursor<Vec<u8>>>) -> bool {
 #[function_component]
 pub fn Test() -> Html {
     // let file_map = use_state(HashMap::<String, Vec<String>>::new);
-    let file_map = use_state(|| FileMap::new());
+    let file_map = use_state(FileMap::new);
 
     let on_file_change = {
         let file_map = file_map.clone();

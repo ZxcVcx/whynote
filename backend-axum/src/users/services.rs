@@ -42,7 +42,7 @@ pub async fn users(db: Database, token: &str) -> GqlResult<Vec<User>> {
         let mut users: Vec<User> = vec![];
 
         // Query all documents in the collection.
-        let mut cursor = coll.find(None, None).await.unwrap();
+        let mut cursor = coll.find(bson::Document::new()).await.unwrap();
 
         // Iterate over the results of the cursor.
         while let Some(result) = cursor.next().await {
@@ -53,8 +53,7 @@ pub async fn users(db: Database, token: &str) -> GqlResult<Vec<User>> {
                 }
                 Err(error) => Err(Error::new("6-all-users").extend_with(|_, e| {
                     e.set("details", format!("Error to find user: {}", error))
-                }))
-                .unwrap(),
+                }))?
             }
         }
         Ok(users)
@@ -67,10 +66,7 @@ pub async fn user_by_id(db: Database, id: ObjectId) -> GqlResult<User> {
     let coll = db.collection::<Document>("users");
 
     let filter = doc! { "_id": id };
-    let user_document = coll
-        .find_one(filter, None)
-        .await
-        .expect("Document not found");
+    let user_document = coll.find_one(filter).await.expect("Document not found");
 
     match user_document {
         Some(user_document) => {
@@ -86,7 +82,7 @@ pub async fn user_by_id(db: Database, id: ObjectId) -> GqlResult<User> {
 pub async fn user_by_username(db: Database, username: &str) -> GqlResult<User> {
     let coll = db.collection::<Document>("users");
 
-    let exist_document = coll.find_one(doc! {"username": username}, None).await;
+    let exist_document = coll.find_one(doc! {"username": username}).await;
 
     if let Ok(user_document_exist) = exist_document {
         if let Some(user_document) = user_document_exist {
@@ -107,7 +103,7 @@ pub async fn user_by_email(db: Database, email: &str) -> GqlResult<User> {
     let coll = db.collection("users");
 
     let filter = bson::doc! { "email": email };
-    let exist_document = coll.find_one(filter, None).await;
+    let exist_document = coll.find_one(filter).await;
 
     match exist_document {
         Ok(user_document_exist) => {
@@ -139,9 +135,10 @@ pub async fn user_sign_in(db: Database, signature: &str, password: &str) -> GqlR
     if let Ok(user) = user_res {
         let is_verified = cred_verify(&user.username, password, &user.cred).await;
         if is_verified {
-            let mut header = jsonwebtoken::Header::default();
+            // let mut header = jsonwebtoken::Header::default();
+            let header = jsonwebtoken::Header::new(jsonwebtoken::Algorithm::HS512);
             // header.kid = Some("signing_key".to_owned());
-            header.alg = jsonwebtoken::Algorithm::HS512;
+            // header.alg = jsonwebtoken::Algorithm::HS512;
 
             let jwt_secret = CFG.get("JWT_SECRET").unwrap().as_bytes();
             let claims = Claims::new(user.email.to_owned(), user.username.to_owned());
@@ -157,7 +154,7 @@ pub async fn user_sign_in(db: Database, signature: &str, password: &str) -> GqlR
             let sign_info = SignInfo {
                 email: user.email,
                 username: user.username,
-                token: token,
+                token,
             };
             Ok(sign_info)
         } else {
@@ -200,7 +197,7 @@ pub async fn user_register(db: Database, user_new: UserNew) -> GqlResult<User> {
         user_new_document.insert("created_at", now);
         user_new_document.insert("updated_at", now);
 
-        coll.insert_one(user_new_document.clone(), None)
+        coll.insert_one(user_new_document.clone())
             .await
             .expect("Error inserting user");
 
@@ -225,7 +222,7 @@ pub async fn user_change_password(
                 let coll = db.collection::<Document>("users");
                 let filter = doc! { "_id": &user.id };
                 let update = doc! { "$set": { "cred": &user.cred } };
-                coll.update_one(filter, update, None)
+                coll.update_one(filter, update)
                     .await
                     .expect("Error updating user password");
                 self::user_by_email(db.clone(), &user.email).await
@@ -243,7 +240,7 @@ pub async fn user_change_password(
 }
 
 pub async fn user_update_profile(db: Database, user_new: UserNew, token: &str) -> GqlResult<User> {
-    let token_data = token_data(&token).await;
+    let token_data = token_data(token).await;
     if let Ok(data) = token_data {
         let email = data.claims.email;
         let user_res = self::user_by_email(db.clone(), &email).await;
@@ -259,7 +256,7 @@ pub async fn user_update_profile(db: Database, user_new: UserNew, token: &str) -
             user.bio = user_new.bio;
 
             let user_document = to_document(&user)?;
-            coll.find_one_and_replace(filter, user_document, None)
+            coll.find_one_and_replace(filter, user_document)
                 .await
                 .expect("Failed to replae a MongoDB collection!");
 
@@ -277,12 +274,14 @@ pub async fn default_user(db: Database) -> GqlResult<User> {
     let coll = db.collection::<Document>("users");
 
     // sort users by created_at
-    let find_options = mongodb::options::FindOneOptions::builder()
-        .sort(doc! { "created_at": -1 })
-        .build();
+    // let find_options = mongodb::options::FindOneOptions::builder()
+    //     .sort(doc! { "created_at": -1 })
+    //     .build();
 
     let user_document = coll
-        .find_one(None, find_options)
+        .find_one(bson::Document::new())
+        .sort(doc! {"created_at": -1 })
+        //.find_one(None, find_options)
         .await
         .expect("Document not found");
 

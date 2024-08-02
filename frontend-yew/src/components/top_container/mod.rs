@@ -12,7 +12,7 @@ use crate::utils::common::is_logged_in;
 /// Nav component
 #[function_component(TopContainer)]
 pub fn top_container() -> Html {
-    let login_state = use_state(|| is_logged_in());
+    let login_state = use_state(is_logged_in);
     html! {
         <div class="container py-4">
             <Header {login_state}/>

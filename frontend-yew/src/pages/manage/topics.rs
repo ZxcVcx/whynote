@@ -36,7 +36,7 @@ pub struct TopicTableProps {
 pub fn TopicTable(props: &TopicTableProps) -> Html {
     let topics = props.topics.clone();
     let editing = use_state(|| None::<String>); // Track which topic is being edited
-    let name = use_state(|| String::new());
+    let name = use_state(String::new);
 
     html! {
         <table class="table">
@@ -184,7 +184,7 @@ pub struct TopicManagePageProps {}
 #[function_component]
 pub fn TopicManagePage(props: &TopicManagePageProps) -> Html {
     let TopicManagePageProps {} = props;
-    let topics = use_state(|| Vec::new());
+    let topics = use_state(Vec::new);
     let error = use_state(|| None);
 
     {

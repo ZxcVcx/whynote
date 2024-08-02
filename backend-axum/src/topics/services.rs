@@ -2,7 +2,6 @@ use async_graphql::{Error, ErrorExtensions};
 use futures::stream::StreamExt;
 use mongodb::{
     bson::{doc, from_document, oid::ObjectId, to_document, DateTime, Document},
-    options::FindOptions,
     Database,
 };
 
@@ -42,22 +41,23 @@ pub async fn topic_delete(db: Database, topic_id: ObjectId, token: &str) -> GqlR
         let coll = db.collection::<Document>("topics");
 
         let topic_document = coll
-            .find_one(doc! {"_id": topic_id}, None)
+            .find_one(doc! {"_id": topic_id})
             .await
             .expect("Document not found")
-            .expect(format!("Document not found: {}", topic_id).as_str());
+            // .expect(format!("Document not found: {}", topic_id).as_str());
+            .unwrap_or_else(|| panic!("Document not found: {}", topic_id));
 
         let articles_published =
             crate::articles::services::articles_by_topic_id(db.clone(), topic_id, true).await?;
         let articles_draft =
             crate::articles::services::articles_by_topic_id(db.clone(), topic_id, false).await?;
-        if articles_published.len() > 0 || articles_draft.len() > 0 {
+        if !articles_published.is_empty() || !articles_draft.is_empty() {
             return Err(Error::new("Topic has articles")
                 .extend_with(|err, eev| eev.set("details", err.message.as_str())));
         }
 
         let topic: Topic = from_document(topic_document)?;
-        coll.delete_one(doc! {"_id": topic_id}, None)
+        coll.delete_one(doc! {"_id": topic_id})
             .await
             .expect("Failed to delete a MongoDB collection!");
         Ok(topic)
@@ -77,7 +77,7 @@ pub async fn topic_update(
         let coll = db.collection::<Document>("topics");
 
         let topic_document = coll
-            .find_one(doc! {"_id": topic_id}, None)
+            .find_one(doc! {"_id": topic_id})
             .await
             .expect("Document not found")
             .unwrap();
@@ -93,13 +93,9 @@ pub async fn topic_update(
         // let mut topic_new_document = to_document(&topic_new)?;
         // topic_new_document.insert("updated_at", now);
         let topic_new_document = to_document(&topic)?;
-        coll.update_one(
-            doc! {"_id": topic_id},
-            doc! {"$set": topic_new_document},
-            None,
-        )
-        .await
-        .expect("Failed to update a MongoDB collection!");
+        coll.update_one(doc! {"_id": topic_id}, doc! {"$set": topic_new_document})
+            .await
+            .expect("Failed to update a MongoDB collection!");
 
         Ok(topic)
     } else {
@@ -133,13 +129,12 @@ pub async fn topic_new(db: Database, mut topic_new: TopicNew) -> GqlResult<Topic
 
     topic_new.name = topic_new.name.to_lowercase();
 
-    let exist_document = coll.find_one(doc! {"name": &topic_new.name}, None).await?;
+    let exist_document = coll.find_one(doc! {"name": &topic_new.name}).await?;
     if let Some(document) = exist_document {
         let topic: Topic = from_document(document)?;
         coll.update_one(
             doc! {"_id": &topic.id},
             doc! {"$set": {"quotes": &topic.quotes + 1}},
-            None,
         )
         .await
         .expect("Failed to update a MongoDB collection!");
@@ -156,13 +151,13 @@ pub async fn topic_new(db: Database, mut topic_new: TopicNew) -> GqlResult<Topic
         topic_new_document.insert("updated_at", now);
 
         // Insert into a MongoDB collection
-        coll.insert_one(topic_new_document, None)
+        coll.insert_one(topic_new_document)
             .await
             .expect("Failed to insert into a MongoDB collection!");
     }
 
     let topic_document = coll
-        .find_one(doc! {"name": &topic_new.name}, None)
+        .find_one(doc! {"name": &topic_new.name})
         .await
         .expect("Document not found")
         .unwrap();
@@ -179,7 +174,7 @@ pub async fn topic_article_new(
     let coll = db.collection::<Document>("topics_articles");
 
     let exist_document = coll
-        .find_one(doc! {"topic_id": &topic_article_new.topic_id, "article_id": &topic_article_new.article_id}, None)
+        .find_one(doc! {"topic_id": &topic_article_new.topic_id, "article_id": &topic_article_new.article_id})
         .await
         .unwrap();
     if let Some(_document) = exist_document {
@@ -187,13 +182,13 @@ pub async fn topic_article_new(
     } else {
         let topic_article_new_document = to_document(&topic_article_new)?;
         // Insert into a MongoDB collection
-        coll.insert_one(topic_article_new_document, None)
+        coll.insert_one(topic_article_new_document)
             .await
             .expect("Failed to insert into a MongoDB collection!");
     }
 
     let topic_article_document = coll
-        .find_one(doc! {"topic_id": &topic_article_new.topic_id, "article_id": &topic_article_new.article_id}, None)
+        .find_one(doc! {"topic_id": &topic_article_new.topic_id, "article_id": &topic_article_new.article_id})
         .await
         .expect("Document not found")
         .unwrap();
@@ -206,9 +201,9 @@ pub async fn topic_article_new(
 pub async fn topics(db: Database) -> GqlResult<Vec<Topic>> {
     let coll = db.collection::<Document>("topics");
 
-    let find_options = FindOptions::builder().sort(doc! {"quotes": -1}).build();
-    let mut cursor = coll.find(None, find_options).await.unwrap();
-
+    // let find_options = FindOptions::builder().sort(doc! {"quotes": -1}).build();
+    // let mut cursor = coll.find(None, find_options).await.unwrap();
+    let mut cursor = coll.find(doc! {}).sort(doc! {"quotes": -1}).await.unwrap();
     let mut topics: Vec<Topic> = vec![];
     while let Some(result) = cursor.next().await {
         match result {
@@ -230,7 +225,7 @@ pub async fn topic_by_id(db: Database, id: ObjectId) -> GqlResult<Topic> {
     let coll = db.collection::<Document>("topics");
 
     let topic_document = coll
-        .find_one(doc! {"_id": id}, None)
+        .find_one(doc! {"_id": id})
         .await
         .expect("Document not found")
         .unwrap();
@@ -244,7 +239,7 @@ pub async fn topic_by_slug(db: Database, slug: &str) -> GqlResult<Topic> {
     let coll = db.collection::<Document>("topics");
 
     let topic_document = coll
-        .find_one(doc! {"slug": slug.to_lowercase()}, None)
+        .find_one(doc! {"slug": slug.to_lowercase()})
         .await
         .expect("Document not found")
         .unwrap();
@@ -263,7 +258,7 @@ pub async fn topics_by_article_id(db: Database, article_id: ObjectId) -> GqlResu
     }
 
     let coll = db.collection::<Document>("topics");
-    let mut cursor = coll.find(doc! {"_id": {"$in": topic_ids}}, None).await?;
+    let mut cursor = coll.find(doc! {"_id": {"$in": topic_ids}}).await?;
 
     let mut topics: Vec<Topic> = vec![];
     while let Some(result) = cursor.next().await {
@@ -297,7 +292,7 @@ pub async fn topics_by_user_id(db: Database, user_id: ObjectId) -> GqlResult<Vec
 
     let mut topics: Vec<Topic> = vec![];
     let coll = db.collection::<Document>("topics");
-    let mut cursor = coll.find(doc! {"_id": {"$in": topic_ids}}, None).await?;
+    let mut cursor = coll.find(doc! {"_id": {"$in": topic_ids}}).await?;
 
     while let Some(result) = cursor.next().await {
         match result {
@@ -340,7 +335,7 @@ pub async fn topics_by_category_id(
     let mut topic_ids_dup = vec![];
     let coll_topics_articles = db.collection::<Document>("topics_articles");
     let mut cursor_topics_articles = coll_topics_articles
-        .find(doc! {"article_id": {"$in": article_ids}}, None)
+        .find(doc! {"article_id": {"$in": article_ids}})
         .await?;
 
     while let Some(result) = cursor_topics_articles.next().await {
@@ -361,9 +356,7 @@ pub async fn topics_by_category_id(
 
     let mut topics: Vec<Topic> = vec![];
     let coll_topics = db.collection::<Document>("topics");
-    let mut cursor_topics = coll_topics
-        .find(doc! {"_id": {"$in": topic_ids}}, None)
-        .await?;
+    let mut cursor_topics = coll_topics.find(doc! {"_id": {"$in": topic_ids}}).await?;
 
     while let Some(result) = cursor_topics.next().await {
         match result {
@@ -386,7 +379,7 @@ pub async fn topics_by_category_id(
 async fn topics_articles_by_user_id(db: Database, user_id: ObjectId) -> Vec<TopicArticle> {
     let coll_topics_articles = db.collection::<Document>("topics_articles");
     let mut cursor_topics_articles = coll_topics_articles
-        .find(doc! {"user_id": user_id}, None)
+        .find(doc! {"user_id": user_id})
         .await
         .unwrap();
 
@@ -411,7 +404,7 @@ async fn topics_articles_by_user_id(db: Database, user_id: ObjectId) -> Vec<Topi
 async fn topics_articles_by_article_id(db: Database, article_id: ObjectId) -> Vec<TopicArticle> {
     let coll_topics_articles = db.collection::<Document>("topics_articles");
     let mut cursor_topics_articles = coll_topics_articles
-        .find(doc! {"article_id": article_id}, None)
+        .find(doc! {"article_id": article_id})
         .await
         .unwrap();
 

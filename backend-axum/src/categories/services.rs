@@ -2,7 +2,6 @@ use async_graphql::{Error, ErrorExtensions};
 use futures::stream::StreamExt;
 use mongodb::{
     bson::{doc, from_document, oid::ObjectId, to_document, DateTime, Document},
-    options::FindOptions,
     Database,
 };
 
@@ -40,7 +39,7 @@ pub async fn category_new(db: Database, mut category_new: CategoryNew) -> GqlRes
     let coll = db.collection::<Document>("categories");
 
     let exist_document = coll
-        .find_one(doc! {"name": &category_new.name.to_lowercase()}, None)
+        .find_one(doc! {"name": &category_new.name.to_lowercase()})
         .await?;
     if let Some(_document) = exist_document {
         println!("MongoDB document is exist!");
@@ -57,13 +56,13 @@ pub async fn category_new(db: Database, mut category_new: CategoryNew) -> GqlRes
         category_new_document.insert("updated_at", now);
 
         // Insert into a MongoDB collection
-        coll.insert_one(category_new_document, None)
+        coll.insert_one(category_new_document)
             .await
             .expect("Failed to insert into a MongoDB collection!");
     }
 
     let category_document = coll
-        .find_one(doc! {"name": &category_new.name}, None)
+        .find_one(doc! {"name": &category_new.name})
         .await
         .expect("Document not found")
         .unwrap();
@@ -80,7 +79,7 @@ pub async fn category_user_new(
     let coll = db.collection::<Document>("categories_users");
 
     let exist_document = coll
-        .find_one(doc! {"user_id": &category_user_new.user_id, "category_id": &category_user_new.category_id}, None)
+        .find_one(doc! {"user_id": &category_user_new.user_id, "category_id": &category_user_new.category_id})
         .await
         .unwrap();
     if let Some(_document) = exist_document {
@@ -93,13 +92,13 @@ pub async fn category_user_new(
     } else {
         let category_user_new_document = to_document(&category_user_new)?;
         // Insert into a MongoDB collection
-        coll.insert_one(category_user_new_document, None)
+        coll.insert_one(category_user_new_document)
             .await
             .expect("Failed to insert into a MongoDB collection!");
     }
 
     let category_user_document = coll
-        .find_one(doc! {"user_id": &category_user_new.user_id, "category_id": &category_user_new.category_id}, None)
+        .find_one(doc! {"user_id": &category_user_new.user_id, "category_id": &category_user_new.category_id})
         .await
         .expect("Document not found")
         .unwrap();
@@ -118,7 +117,7 @@ pub async fn category_delete(
         let coll = db.collection::<Document>("categories");
 
         let category_document = coll
-            .find_one(doc! {"_id": category_id}, None)
+            .find_one(doc! {"_id": category_id})
             .await
             .expect("Document not found")
             .unwrap();
@@ -133,18 +132,18 @@ pub async fn category_delete(
             crate::articles::services::articles_by_category_id(db.clone(), category_id, false)
                 .await
                 .expect("Failed to get articles by category_id");
-        if articles_unpublished.len() > 0 || articles_published.len() > 0 {
+        if !articles_unpublished.is_empty() || !articles_published.is_empty() {
             return Err(Error::new("Category has articles")
                 .extend_with(|err, eev| eev.set("details", err.message.as_str())));
         }
 
-        coll.delete_one(doc! {"_id": category_id}, None)
+        coll.delete_one(doc! {"_id": category_id})
             .await
             .expect("Failed to delete a MongoDB collection!");
 
         let coll_categories_users = db.collection::<Document>("categories_users");
         coll_categories_users
-            .delete_many(doc! {"category_id": category_id}, None)
+            .delete_many(doc! {"category_id": category_id})
             .await
             .expect("Failed to delete a MongoDB collection!");
 
@@ -165,7 +164,7 @@ pub async fn category_update(
         let coll = db.collection::<Document>("categories");
 
         let category_document = coll
-            .find_one(doc! {"_id": category_id}, None)
+            .find_one(doc! {"_id": category_id})
             .await
             .expect("Document not found")
             .unwrap();
@@ -182,13 +181,9 @@ pub async fn category_update(
         category.updated_at = DateTime::now();
 
         let category_document = to_document(&category)?;
-        coll.update_one(
-            doc! {"_id": category_id},
-            doc! {"$set": category_document},
-            None,
-        )
-        .await
-        .expect("Failed to update a MongoDB collection!");
+        coll.update_one(doc! {"_id": category_id}, doc! {"$set": category_document})
+            .await
+            .expect("Failed to update a MongoDB collection!");
 
         Ok(category)
     } else {
@@ -201,8 +196,9 @@ pub async fn categories(db: Database) -> GqlResult<Vec<Category>> {
     let coll = db.collection::<Document>("categories");
 
     // Query all documents in the collection.
-    let find_options = FindOptions::builder().sort(doc! {"quotes": -1}).build();
-    let mut cursor = coll.find(None, find_options).await.unwrap();
+    // let find_options = FindOptions::builder().sort(doc! {"quotes": -1}).build();
+    let mut cursor = coll.find(doc! {}).sort(doc! {"quotes": -1}).await.unwrap();
+    // let mut cursor = coll.find(None, find_options).await.unwrap();
 
     // Iterate over the results of the cursor.
     let mut categories: Vec<Category> = vec![];
@@ -232,7 +228,7 @@ pub async fn categories_by_user_id(db: Database, user_id: ObjectId) -> GqlResult
 
     let coll_categories = db.collection::<Document>("categories");
     let mut cursor_categories = coll_categories
-        .find(doc! {"_id": {"$in": category_ids}}, None)
+        .find(doc! {"_id": {"$in": category_ids}})
         .await?;
 
     let mut categories: Vec<Category> = vec![];
@@ -262,7 +258,7 @@ pub async fn category_by_id(db: Database, id: ObjectId) -> GqlResult<Category> {
     let coll = db.collection::<Document>("categories");
 
     let category_document = coll
-        .find_one(doc! {"_id": id}, None)
+        .find_one(doc! {"_id": id})
         .await
         .expect("Document not found")
         .unwrap();
@@ -276,7 +272,7 @@ pub async fn category_by_slug(db: Database, slug: &str) -> GqlResult<Category> {
     let coll = db.collection::<Document>("categories");
 
     let category_document = coll
-        .find_one(doc! {"slug": slug.to_lowercase()}, None)
+        .find_one(doc! {"slug": slug.to_lowercase()})
         .await
         .expect("Document not found")
         .unwrap();
@@ -289,7 +285,7 @@ pub async fn category_by_slug(db: Database, slug: &str) -> GqlResult<Category> {
 async fn categories_users_by_user_id(db: Database, user_id: ObjectId) -> Vec<CategoryUser> {
     let coll_categories_users = db.collection::<Document>("categories_users");
     let mut cursor_categories_users = coll_categories_users
-        .find(doc! {"user_id": user_id}, None)
+        .find(doc! {"user_id": user_id})
         .await
         .unwrap();
 

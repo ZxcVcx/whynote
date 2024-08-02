@@ -39,7 +39,7 @@ pub async fn cred_encode(username: &str, password: &str) -> String {
         &mut cred,
     );
 
-    base64::engine::general_purpose::URL_SAFE.encode(&cred)
+    base64::engine::general_purpose::URL_SAFE.encode(cred)
 }
 
 pub async fn cred_verify(username: &str, pwd_try: &str, actual_credential: &str) -> bool {
@@ -78,9 +78,9 @@ impl Claims {
             .unwrap()
             .as_secs();
         Self {
-            email: email,
-            username: username,
-            uat: uat,
+            email,
+            username,
+            uat,
             exp: uat + CFG.get("CLAIM_EXP").unwrap().parse::<u64>().unwrap(),
         }
     }

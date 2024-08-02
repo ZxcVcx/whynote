@@ -131,7 +131,7 @@ pub fn NewArticlesComponent(props: &NewArticlesComponentProps) -> Html {
     let categories_setter = props.categories_setter.clone();
 
     // let file_map = use_state(HashMap::<String, Vec<String>>::new);
-    let file_map = use_state(|| FileMap::new());
+    let file_map = use_state(FileMap::new);
 
     let on_file_change = {
         let file_map = file_map.clone();

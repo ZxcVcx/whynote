@@ -124,7 +124,7 @@ pub fn ManageNav() -> Html {
 /// Nav component
 #[function_component]
 pub fn ManageTopContainer() -> Html {
-    let login_state = use_state(|| is_logged_in());
+    let login_state = use_state(is_logged_in);
     html! {
         <div class="container py-4">
             <ManageHeader {login_state}/>

@@ -29,8 +29,8 @@ impl DataSource {
 
         // 返回值 mongodb datasource
         DataSource {
-            client: client,
-            db: db,
+            client,
+            db,
         }
     }
 }

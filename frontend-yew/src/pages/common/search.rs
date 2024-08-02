@@ -13,7 +13,7 @@ pub struct SearchPageProps {}
 #[function_component]
 pub fn SearchPage(props: &SearchPageProps) -> Html {
     let SearchPageProps {} = props;
-    let articles = use_state(|| vec![]);
+    let articles = use_state(Vec::new);
     let search_query = use_state(|| "".to_string());
 
     let articles_clone = articles.clone();

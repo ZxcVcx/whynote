@@ -37,8 +37,8 @@ pub struct CategoryTableProps {
 pub fn CategoryTable(props: &CategoryTableProps) -> Html {
     let categories = props.categories.clone();
     let editing = use_state(|| None::<String>); // Track which category is being edited
-    let name = use_state(|| String::new());
-    let description = use_state(|| String::new());
+    let name = use_state(String::new);
+    let description = use_state(String::new);
 
     html! {
         <table class="table">
@@ -218,7 +218,7 @@ pub struct CategoryManagePageProps {}
 #[function_component]
 pub fn CategoryManagePage(props: &CategoryManagePageProps) -> Html {
     let CategoryManagePageProps {} = props;
-    let categories = use_state(|| Vec::new());
+    let categories = use_state(Vec::new);
     let error = use_state(|| None);
 
     {

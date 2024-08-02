@@ -42,7 +42,7 @@ pub fn Editor(props: &EditorProps) -> Html {
     let html = use_state(|| markdown_to_html(init_content));
     let subject = use_state(|| init_subject.to_string());
     let summary = use_state(|| init_summary.to_string());
-    let categories: UseStateHandle<Vec<Value>> = use_state(|| Vec::new());
+    let categories: UseStateHandle<Vec<Value>> = use_state(Vec::new);
     // let categories = use_state(|| Vec::<Value>::new());
     let category_id = use_state(|| init_category_id.clone());
     let published = use_state(|| init_published);

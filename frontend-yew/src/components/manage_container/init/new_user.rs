@@ -67,8 +67,8 @@ pub struct NewUserComponentProps {
 pub fn NewUserComponent(props: &NewUserComponentProps) -> Html {
     // let NewUserComponentProps {token_setter} = props;
     let token_setter = props.token_setter.clone();
-    let user_state = use_state(|| NewUser::empty());
-    let token_info_state = use_state(|| UserNewToken::empty());
+    let user_state = use_state(NewUser::empty);
+    let token_info_state = use_state(UserNewToken::empty);
     let remember_me = use_state(|| true);
 
     let input_hidden = classes!(vec!["input-group", "mb-1", "visually-hidden"]);
@@ -84,7 +84,7 @@ pub fn NewUserComponent(props: &NewUserComponentProps) -> Html {
         ..DivShows::all_hide()
     });
 
-    let continue_show_state = use_state(|| ContinueShows::all_hide());
+    let continue_show_state = use_state(ContinueShows::all_hide);
 
     let on_email_change = {
         let user = user_state.clone();
