@@ -16,11 +16,11 @@ pub async fn build_request(query: Value) -> Result<web_sys::Request, FetchError>
     let headers = Headers::new().unwrap();
     headers.set("Content-Type", "application/json").unwrap();
     headers.set("Accept", "application/json").unwrap();
-    let mut req_opts = RequestInit::new();
-    req_opts.headers(&headers);
-    req_opts.method("POST");
-    req_opts.body(Some(&JsValue::from_str(query.to_string().as_str())));
-    req_opts.mode(RequestMode::Cors);
+    let req_opts = RequestInit::new();
+    req_opts.set_headers(&headers);
+    req_opts.set_method("POST");
+    req_opts.set_body(&JsValue::from_str(query.to_string().as_str()));
+    req_opts.set_mode(RequestMode::Cors);
 
     let req = web_sys::Request::new_with_str_and_init(api_url.to_owned().as_str(), &req_opts)?;
     Ok(req)
@@ -35,11 +35,11 @@ pub async fn build_request_with_token(query: Value) -> Result<web_sys::Request, 
         "Authorization",
         format!("Bearer {}", CFG.get("TOKEN").unwrap()).as_str(),
     )?;
-    let mut req_opts = RequestInit::new();
-    req_opts.headers(&headers);
-    req_opts.method("POST");
-    req_opts.body(Some(&JsValue::from_str(query.to_string().as_str())));
-    req_opts.mode(RequestMode::Cors);
+    let req_opts = RequestInit::new();
+    req_opts.set_headers(&headers);
+    req_opts.set_method("POST");
+    req_opts.set_body(&JsValue::from_str(query.to_string().as_str()));
+    req_opts.set_mode(RequestMode::Cors);
 
     let req = web_sys::Request::new_with_str_and_init(api_url.to_owned().as_str(), &req_opts)?;
     Ok(req)

@@ -17,7 +17,7 @@ async fn salt(username: &str) -> Vec<u8> {
         0xcd,
     ];
 
-    let mut salt = Vec::with_capacity(db_salt_component.len() + username.as_bytes().len());
+    let mut salt = Vec::with_capacity(db_salt_component.len() + username.len());
     salt.extend(db_salt_component.as_ref());
     salt.extend(username.as_bytes());
     salt
